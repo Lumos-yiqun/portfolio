@@ -95,6 +95,7 @@
         justify-content: center;
         color: var(--muted);
         transition: background 0.15s, color 0.15s;
+        flex-shrink: 0;
       }
 
       .back-btn:hover {
@@ -109,11 +110,21 @@
       }
 
       .wallet-card {
-        background: linear-gradient(145deg, var(--surface) 0%, #111620 100%);
-        border: 1px solid var(--border);
+        background: linear-gradient(160deg, #181e2a 0%, #0e1118 100%);
+        border: 1px solid rgba(255,255,255,0.07);
         border-radius: var(--radius);
-        padding: 18px 18px 16px;
-        margin-bottom: 18px;
+        padding: 16px 18px 14px;
+        margin-bottom: 14px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .wallet-card::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(56,189,248,0.25), transparent);
       }
 
       .wallet-row {
@@ -123,29 +134,48 @@
       }
 
       .wallet-name {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        letter-spacing: -0.03em;
+        letter-spacing: -0.02em;
+        color: var(--muted);
+      }
+
+      .wallet-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0;
       }
 
       .unified {
         text-align: center;
-        padding: 8px 0 14px;
+        padding: 6px 0 16px;
       }
 
       .unified-label {
-        font-size: 0.75rem;
+        font-size: 0.72rem;
         color: var(--muted2);
         text-transform: uppercase;
-        letter-spacing: 0.12em;
-        margin-bottom: 6px;
+        letter-spacing: 0.14em;
+        margin-bottom: 8px;
       }
 
       .unified-value {
-        font-size: 2rem;
+        font-size: 2.4rem;
         font-weight: 700;
         letter-spacing: -0.04em;
         font-variant-numeric: tabular-nums;
+        background: linear-gradient(180deg, #f1f5f9 60%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .section-label {
@@ -168,10 +198,10 @@
         border-radius: var(--radius-sm);
         padding: 14px 14px 12px;
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         gap: 12px;
         cursor: pointer;
-        transition: border-color 0.15s, background 0.15s;
+        transition: border-color 0.18s, background 0.18s, transform 0.1s;
         text-align: left;
         width: 100%;
       }
@@ -181,8 +211,12 @@
         background: var(--surface2);
       }
 
+      .token-row:active {
+        transform: scale(0.985);
+      }
+
       .token-row.dust {
-        opacity: 0.88;
+        opacity: 0.8;
       }
 
       .token-icon {
@@ -224,47 +258,67 @@
       .token-main {
         flex: 1;
         min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .token-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
       }
 
       .token-line1 {
         display: flex;
         align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
+        gap: 6px;
       }
 
       .token-symbol {
-        font-weight: 600;
+        font-weight: 700;
         font-size: 0.98rem;
+        letter-spacing: -0.01em;
       }
 
       .token-fullname {
-        font-size: 0.8rem;
-        color: var(--muted);
+        font-size: 0.78rem;
+        color: var(--muted2);
       }
 
       .dust-badge {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
         color: var(--orange);
         background: var(--orange-bg);
-        padding: 2px 8px;
+        padding: 2px 7px;
         border-radius: 6px;
+        flex-shrink: 0;
+      }
+
+      .token-values {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+        flex-shrink: 0;
       }
 
       .token-balance {
-        font-size: 0.95rem;
-        font-weight: 500;
-        margin-top: 4px;
+        font-size: 0.92rem;
+        font-weight: 600;
         font-variant-numeric: tabular-nums;
+        color: var(--text);
+        letter-spacing: -0.01em;
       }
 
       .token-fiat {
-        font-size: 0.85rem;
-        color: var(--muted);
-        margin-top: 2px;
+        font-size: 0.8rem;
+        color: var(--muted2);
         font-variant-numeric: tabular-nums;
       }
 
@@ -421,20 +475,45 @@
         width: 1.2em;
         display: inline-block;
         text-align: center;
+        transition: transform 0.22s ease;
       }
 
       .chain-row-wrap.is-expanded .chain-chev {
-        transform: rotate(0deg);
+        transform: rotate(90deg);
+      }
+
+      /* 链彩色圆点 */
+      .chain-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 2px;
+      }
+
+      /* 步骤条挂载时重置父容器的文字变形 */
+      #receive-step,
+      #send-step {
+        text-transform: none;
+        letter-spacing: normal;
+        font-size: 1rem;
+        color: inherit;
+        margin-bottom: 0;
       }
 
       .l2-panel {
         background: #0a0c10;
-        padding: 0 10px 10px;
-        display: none;
+        padding: 0 10px 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.28s ease, padding 0.2s ease;
       }
 
       .chain-row-wrap.is-expanded .l2-panel {
-        display: block;
+        max-height: 600px;
+        padding: 0 10px 10px;
       }
 
       .addr-row {
@@ -477,18 +556,59 @@
         width: 100%;
         text-align: left;
         cursor: pointer;
-        transition: border-color 0.15s, background 0.15s;
+        transition: border-color 0.18s, background 0.18s;
         -webkit-appearance: none;
         appearance: none;
         display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .addr-row-btn .addr-content {
+        flex: 1;
+        min-width: 0;
+        display: flex;
         flex-direction: column;
-        align-items: stretch;
         gap: 2px;
       }
 
+      .addr-row-btn .addr-arrow {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted2);
+        transition: background 0.15s, border-color 0.15s, color 0.15s;
+      }
+
+      .addr-row-btn:hover .addr-arrow {
+        background: rgba(56,189,248,0.15);
+        border-color: rgba(56,189,248,0.35);
+        color: var(--accent);
+      }
+
       .addr-row-btn:hover {
-        border-color: rgba(56, 189, 248, 0.35);
+        border-color: rgba(56, 189, 248, 0.4);
         background: var(--surface2);
+      }
+
+      .addr-tx-hint {
+        font-size: 0.65rem;
+        color: var(--muted2);
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+
+      .addr-tx-hint svg {
+        flex-shrink: 0;
       }
 
       .addr-hint {
@@ -523,10 +643,44 @@
       }
 
       .tx-row {
-        padding: 10px 10px;
+        padding: 11px 12px;
         background: var(--surface);
-        border-radius: 8px;
+        border-radius: 10px;
         border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .tx-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+      }
+
+      .tx-icon.pos {
+        background: rgba(52,211,153,0.15);
+        color: var(--success);
+      }
+
+      .tx-icon.neg {
+        background: rgba(248,113,113,0.15);
+        color: #f87171;
+      }
+
+      .tx-icon.swap {
+        background: rgba(56,189,248,0.12);
+        color: var(--accent);
+      }
+
+      .tx-body {
+        flex: 1;
+        min-width: 0;
       }
 
       .tx-row-top {
@@ -537,7 +691,7 @@
       }
 
       .tx-kind {
-        font-size: 0.82rem;
+        font-size: 0.84rem;
         font-weight: 600;
         color: var(--text);
       }
@@ -570,27 +724,81 @@
         line-height: 1.45;
       }
 
+      /* ──── 首页快捷操作栏 ──── */
+      .home-action-bar {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 4px 0 20px;
+      }
+
+      .home-action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text);
+        transition: opacity 0.15s, transform 0.12s;
+        padding: 0;
+        min-width: 64px;
+      }
+
+      .home-action-btn:active {
+        transform: scale(0.93);
+      }
+
+      .home-action-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s, border-color 0.15s;
+      }
+
+      .home-action-btn:hover .home-action-icon {
+        background: var(--surface2);
+        border-color: rgba(56, 189, 248, 0.3);
+      }
+
+      .home-action-icon.primary-icon {
+        background: linear-gradient(145deg, #38bdf8, #0ea5e9);
+        border-color: transparent;
+      }
+
+      .home-action-btn:hover .home-action-icon.primary-icon {
+        filter: brightness(1.08);
+        border-color: transparent;
+      }
+
+      .home-action-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .home-action-label {
+        font-size: 0.76rem;
+        font-weight: 500;
+        color: var(--muted);
+        letter-spacing: 0.01em;
+      }
+
+      /* ──── 代币详情 / 转收款通用操作区 ──── */
       .actions {
         display: flex;
         gap: 10px;
         margin-top: 8px;
       }
 
-      .home-actions {
-        margin-top: 2px;
-        margin-bottom: 14px;
-        flex-wrap: nowrap;
-        gap: 8px;
-      }
-
-      .home-actions .btn {
-        padding: 12px 8px;
-        font-size: 0.84rem;
-      }
-
       .actions.detail-actions {
         margin-top: 0;
-        margin-bottom: 14px;
+        margin-bottom: 18px;
       }
 
       .btn {
@@ -599,11 +807,11 @@
         border-radius: 12px;
         font-size: 0.92rem;
         font-weight: 600;
-        transition: transform 0.1s, opacity 0.15s;
+        transition: transform 0.1s, filter 0.15s, background 0.15s;
       }
 
       .btn:active {
-        transform: scale(0.98);
+        transform: scale(0.97);
       }
 
       .btn-secondary {
@@ -613,16 +821,18 @@
       }
 
       .btn-secondary:hover {
-        background: #222a36;
+        background: #252d3a;
+        border-color: rgba(255,255,255,0.12);
       }
 
       .btn-primary {
         background: linear-gradient(180deg, #38bdf8, #0ea5e9);
         color: #0c1220;
+        font-weight: 700;
       }
 
       .btn-primary:hover {
-        filter: brightness(1.06);
+        filter: brightness(1.07);
       }
 
       .receive-header {
@@ -635,6 +845,81 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
         margin-bottom: 14px;
+      }
+
+      /* ──── 步骤进度条 ──── */
+      .step-progress {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 24px;
+      }
+
+      .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+      }
+
+      .step-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        background: var(--surface2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--muted2);
+        transition: all 0.2s;
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-dot.active {
+        border-color: var(--accent);
+        background: var(--accent-dim);
+        color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(56,189,248,0.12);
+      }
+
+      .step-dot.done {
+        border-color: var(--success);
+        background: rgba(52,211,153,0.15);
+        color: var(--success);
+      }
+
+      .step-name {
+        font-size: 0.65rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+        font-weight: 500;
+      }
+
+      .step-name.active {
+        color: var(--accent);
+      }
+
+      .step-name.done {
+        color: var(--success);
+      }
+
+      .step-connector {
+        flex: 1;
+        height: 2px;
+        background: var(--border);
+        margin-bottom: 22px;
+        transition: background 0.2s;
+      }
+
+      .step-connector.done {
+        background: var(--success);
       }
 
       .option-list {
@@ -881,6 +1166,7 @@
         <div class="wallet-card">
           <div class="wallet-row">
             <span class="wallet-name">Randy</span>
+            <span class="wallet-avatar">R</span>
           </div>
         </div>
 
@@ -889,11 +1175,24 @@
           <div class="unified-value" id="unified-total">$0.00</div>
         </div>
 
-        <div class="actions home-actions">
-          <button type="button" class="btn btn-secondary" id="btn-send-home">Send</button>
-          <button type="button" class="btn btn-primary" id="btn-receive-home">Receive</button>
-          <button type="button" class="btn btn-secondary" id="btn-tx-home" aria-label="交易记录">
-            交易记录
+        <div class="home-action-bar">
+          <button type="button" class="home-action-btn" id="btn-send-home">
+            <span class="home-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </span>
+            <span class="home-action-label">Send</span>
+          </button>
+          <button type="button" class="home-action-btn" id="btn-receive-home">
+            <span class="home-action-icon primary-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0c1220" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </span>
+            <span class="home-action-label">Receive</span>
+          </button>
+          <button type="button" class="home-action-btn" id="btn-tx-home">
+            <span class="home-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </span>
+            <span class="home-action-label">记录</span>
           </button>
         </div>
 
@@ -911,7 +1210,7 @@
 
       <section id="screen-tx-home" class="screen" aria-label="交易记录">
         <div class="top-bar">
-          <button type="button" class="back-btn" id="btn-back-tx-home" aria-label="返回">←</button>
+          <button type="button" class="back-btn" id="btn-back-tx-home" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
           <span class="page-title">交易记录</span>
           <span style="width: 40px"></span>
         </div>
@@ -921,7 +1220,7 @@
 
       <section id="screen-detail" class="screen" aria-label="代币详情">
         <div class="top-bar">
-          <button type="button" class="back-btn" id="btn-back-detail" aria-label="返回">←</button>
+          <button type="button" class="back-btn" id="btn-back-detail" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
           <span class="page-title" id="detail-title">—</span>
           <span style="width: 40px"></span>
         </div>
@@ -941,7 +1240,7 @@
 
       <section id="screen-tx-address" class="screen" aria-label="地址交易记录">
         <div class="top-bar">
-          <button type="button" class="back-btn" id="btn-back-tx-addr" aria-label="返回">←</button>
+          <button type="button" class="back-btn" id="btn-back-tx-addr" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
           <span class="page-title" id="tx-addr-title">记录</span>
           <span style="width: 40px"></span>
         </div>
@@ -951,7 +1250,7 @@
 
       <section id="screen-receive" class="screen" aria-label="收款">
         <div class="top-bar receive-header">
-          <button type="button" class="back-btn" id="btn-back-receive" aria-label="返回">←</button>
+          <button type="button" class="back-btn" id="btn-back-receive" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
           <span class="page-title" id="receive-title">收款</span>
           <span style="width: 40px"></span>
         </div>
@@ -961,7 +1260,7 @@
 
       <section id="screen-send" class="screen" aria-label="转账">
         <div class="top-bar receive-header">
-          <button type="button" class="back-btn" id="btn-back-send" aria-label="返回">←</button>
+          <button type="button" class="back-btn" id="btn-back-send" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
           <span class="page-title" id="send-title">转账</span>
           <span style="width: 40px"></span>
         </div>
@@ -1183,9 +1482,11 @@
             '">' +
             '<span class="option-chain-block">' +
             '<span class="option-chain-kind">网络</span>' +
+            '<span style="display:flex;align-items:center;gap:8px">' +
+            chainDotHtml(chainName) +
             '<span class="option-chain-name">' +
             chainName +
-            "</span>" +
+            "</span></span>" +
             "</span>" +
             '<span class="option-chevron" aria-hidden="true">›</span>' +
             "</button>"
@@ -1222,6 +1523,19 @@
           });
         }
 
+        function txIconHtml(kind, sign) {
+          var cls = kind === "swap" ? "swap" : sign;
+          var icon;
+          if (kind === "receive") {
+            icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+          } else if (kind === "send") {
+            icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+          } else {
+            icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
+          }
+          return '<div class="tx-icon ' + cls + '">' + icon + '</div>';
+        }
+
         function renderTxRowsHtmlHome(entries) {
           var kindMap = { send: "发送", receive: "收款", swap: "兑换" };
           if (entries.length === 0) {
@@ -1235,26 +1549,20 @@
               var sign = tx.amount.trim().indexOf("-") === 0 ? "neg" : "pos";
               return (
                 '<div class="tx-row">' +
+                txIconHtml(tx.kind, sign) +
+                '<div class="tx-body">' +
                 '<div class="tx-row-top">' +
                 '<span class="tx-kind">' +
-                sym +
-                " · " +
-                kl +
+                sym + " · " + kl +
                 "</span>" +
-                '<span class="tx-amt ' +
-                sign +
-                '">' +
-                tx.amount +
-                " " +
-                sym +
+                '<span class="tx-amt ' + sign + '">' +
+                tx.amount + " " + sym +
                 "</span>" +
                 "</div>" +
                 '<div class="tx-row-meta">' +
-                tx.chain +
-                " · " +
-                tx.account +
-                " · " +
-                formatTxTime(tx.time) +
+                chainDotHtml(tx.chain) + " " +
+                tx.chain + " · " + tx.account + " · " + formatTxTime(tx.time) +
+                "</div>" +
                 "</div>" +
                 "</div>"
               );
@@ -1272,23 +1580,17 @@
             .map(function (tx) {
               var kl = kindMap[tx.kind] || tx.kind;
               var sign = tx.amount.trim().indexOf("-") === 0 ? "neg" : "pos";
-              var meta = formatTxTime(tx.time);
               return (
                 '<div class="tx-row">' +
+                txIconHtml(tx.kind, sign) +
+                '<div class="tx-body">' +
                 '<div class="tx-row-top">' +
-                '<span class="tx-kind">' +
-                kl +
-                "</span>" +
-                '<span class="tx-amt ' +
-                sign +
-                '">' +
-                tx.amount +
-                " " +
-                symbol +
+                '<span class="tx-kind">' + kl + "</span>" +
+                '<span class="tx-amt ' + sign + '">' +
+                tx.amount + " " + symbol +
                 "</span>" +
                 "</div>" +
-                '<div class="tx-row-meta">' +
-                meta +
+                '<div class="tx-row-meta">' + formatTxTime(tx.time) + "</div>" +
                 "</div>" +
                 "</div>"
               );
@@ -1361,12 +1663,46 @@
           },
         };
 
+        var CHAIN_COLORS = {
+          Arbitrum: "#28a0f0",
+          HyperEVM: "#a78bfa",
+          Ethereum: "#8b9eb7",
+        };
+
+        function chainDotHtml(chain) {
+          var color = CHAIN_COLORS[chain] || "#64748b";
+          return '<span class="chain-dot" style="background:' + color + '" aria-hidden="true"></span>';
+        }
+
+        /** step: 1-based; total: total steps; labels: array */
+        function stepProgressHtml(step, labels) {
+          var html = '<div class="step-progress">';
+          for (var i = 0; i < labels.length; i++) {
+            var dotClass = i + 1 < step ? "step-dot done" : (i + 1 === step ? "step-dot active" : "step-dot");
+            var nameClass = i + 1 < step ? "step-name done" : (i + 1 === step ? "step-name active" : "step-name");
+            var icon = i + 1 < step
+              ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+              : (i + 1);
+            html += '<div class="step-item">';
+            html += '<div class="' + dotClass + '">' + icon + '</div>';
+            html += '<span class="' + nameClass + '">' + labels[i] + '</span>';
+            html += '</div>';
+            if (i < labels.length - 1) {
+              var connClass = i + 1 < step ? "step-connector done" : "step-connector";
+              html += '<div class="' + connClass + '"></div>';
+            }
+          }
+          html += '</div>';
+          return html;
+        }
+
         function showScreen(name) {
           Object.keys(screens).forEach(function (k) {
             screens[k].classList.remove("is-active");
           });
           screens[name].classList.add("is-active");
           state.view = name;
+          window.scrollTo(0, 0);
         }
 
         function openHome() {
@@ -1466,21 +1802,25 @@
                 '">' +
                 tokenIconHtml(t) +
                 '<div class="token-main">' +
+                '<div class="token-info">' +
                 '<div class="token-line1">' +
                 '<span class="token-symbol">' +
                 t.symbol +
                 "</span>" +
+                dustBadge +
+                "</div>" +
                 '<span class="token-fullname">' +
                 t.name +
                 "</span>" +
-                dustBadge +
                 "</div>" +
+                '<div class="token-values">' +
                 '<div class="token-balance">' +
                 t.balance +
                 " " +
                 t.symbol +
                 "</div>" +
                 fiatHtml +
+                "</div>" +
                 "</div>" +
                 "</button>"
               );
@@ -1528,9 +1868,11 @@
               tokenId +
               '">' +
               '<button type="button" class="chain-row" aria-expanded="false">' +
+              '<span style="display:flex;align-items:center;gap:6px">' +
+              chainDotHtml(chain) +
               '<span class="chain-name">' +
               chain +
-              "</span>" +
+              "</span></span>" +
               '<span><span class="chain-amt">' +
               amt +
               " " +
@@ -1568,6 +1910,7 @@
                       '" data-account="' +
                       a.account +
                       '">' +
+                      '<div class="addr-content">' +
                       '<div class="addr-line">' +
                       '<span class="addr-account">' +
                       a.account +
@@ -1581,7 +1924,12 @@
                       '<div class="addr-hex">' +
                       a.address +
                       "</div>" +
-                      '<div class="addr-hint">点击查看此地址下该代币的交易记录</div>' +
+                      '<div class="addr-tx-hint">' +
+                      '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+                      "查看交易记录" +
+                      "</div>" +
+                      "</div>" +
+                      '<span class="addr-arrow" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>' +
                       "</button>"
                     );
                   })
@@ -1623,18 +1971,18 @@
           return list[0] || null;
         }
 
+        var RECEIVE_STEP_LABELS = ["代币", "公链", "地址"];
+
+        function receiveStepIndex(step) {
+          return { token: 1, chain: 2, address: 3, qr: 4 }[step] || 1;
+        }
+
         function renderReceive() {
           var r = state.receive;
-          var steps = {
-            token: "步骤 1 · 选择代币",
-            chain: "步骤 2 · 选择公链",
-            address: "步骤 3 · 选择地址",
-            qr: "收款信息",
-          };
 
           if (r.step === "token") {
             el.receiveTitle.textContent = "收款";
-            el.receiveStep.textContent = steps.token;
+            el.receiveStep.innerHTML = stepProgressHtml(1, RECEIVE_STEP_LABELS);
             el.receiveBody.innerHTML =
               '<div class="option-list">' +
               Object.keys(TOKENS)
@@ -1654,7 +2002,7 @@
             var tid = r.tokenId;
             var t = TOKENS[tid];
             el.receiveTitle.textContent = "收款 · " + t.symbol;
-            el.receiveStep.textContent = steps.chain;
+            el.receiveStep.innerHTML = stepProgressHtml(2, RECEIVE_STEP_LABELS);
             el.receiveBody.innerHTML =
               '<div class="option-list">' +
               CHAINS.map(function (c) {
@@ -1679,7 +2027,7 @@
             var t2 = TOKENS[tid2];
             var list2 = getReceiveAddresses(tid2, r.chain);
             el.receiveTitle.textContent = "收款 · " + t2.symbol;
-            el.receiveStep.textContent = steps.address;
+            el.receiveStep.innerHTML = stepProgressHtml(3, RECEIVE_STEP_LABELS);
             el.receiveBody.innerHTML =
               '<p class="recv-meta" style="text-align:left;margin-bottom:12px;color:var(--muted)">链 ' +
               r.chain +
@@ -1714,7 +2062,7 @@
             var tid3 = r.tokenId;
             var t3 = TOKENS[tid3];
             el.receiveTitle.textContent = "收款";
-            el.receiveStep.textContent = steps.qr;
+            el.receiveStep.innerHTML = stepProgressHtml(4, RECEIVE_STEP_LABELS);
 
             el.receiveBody.innerHTML =
               '<div class="qr-screen">' +
@@ -1771,18 +2119,14 @@
           };
         }
 
+        var SEND_STEP_LABELS = ["代币", "公链", "地址"];
+
         function renderSend() {
           var s = state.send;
-          var steps = {
-            token: "步骤 1 · 选择代币",
-            chain: "步骤 2 · 选择公链（仅显示有余额的链）",
-            address: "步骤 3 · 选择转出地址",
-            form: "转账表单",
-          };
 
           if (s.step === "token") {
             el.sendTitle.textContent = "转账";
-            el.sendStep.textContent = steps.token;
+            el.sendStep.innerHTML = stepProgressHtml(1, SEND_STEP_LABELS);
             el.sendBody.innerHTML =
               '<div class="option-list">' +
               Object.keys(TOKENS)
@@ -1808,7 +2152,7 @@
             var t = TOKENS[tid];
             var chains = getChainsWithBalance(tid);
             el.sendTitle.textContent = "转账 · " + t.symbol;
-            el.sendStep.textContent = steps.chain;
+            el.sendStep.innerHTML = stepProgressHtml(2, SEND_STEP_LABELS);
             if (chains.length === 0) {
               el.sendBody.innerHTML =
                 '<p class="recv-meta">该代币暂无可转出余额。</p>' +
@@ -1850,7 +2194,7 @@
             var t2 = TOKENS[tid2];
             var list2 = getReceiveAddresses(tid2, s.chain);
             el.sendTitle.textContent = "转账 · " + t2.symbol;
-            el.sendStep.textContent = steps.address;
+            el.sendStep.innerHTML = stepProgressHtml(3, SEND_STEP_LABELS);
             el.sendBody.innerHTML =
               '<p class="recv-meta" style="text-align:left;margin-bottom:12px;color:var(--muted)">链 ' +
               s.chain +
@@ -1896,7 +2240,7 @@
             var row = findAddressRow(tid3, s.chain, s.account);
             var addrDisp = row ? row.address : "—";
             el.sendTitle.textContent = "转账";
-            el.sendStep.textContent = steps.form;
+            el.sendStep.innerHTML = "";
             el.sendBody.innerHTML =
               '<div class="send-form-screen">' +
               '<p class="recv-meta">' +
