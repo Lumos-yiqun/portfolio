@@ -1196,7 +1196,7 @@
           </button>
         </div>
 
-        <div class="section-label">Assets（4）</div>
+        <div class="section-label">Assets（5）</div>
         <div class="token-list" id="token-list"></div>
 
         <div class="ph-block" id="ph-block">
@@ -1271,7 +1271,7 @@
 
     <script>
       (function () {
-        const CHAINS = ["Arbitrum", "HyperEVM", "Ethereum"];
+        const CHAINS = ["Tron", "Arbitrum", "Hyperliquid", "Ethereum"];
 
         /** CoinGecko CDN 官方代币图标（原型展示用） */
         const TOKENS = {
@@ -1311,13 +1311,23 @@
             fiat: 0.07,
             dust: true,
           },
+          usdt: {
+            id: "usdt",
+            symbol: "USDT",
+            name: "Tether USD",
+            iconUrl: "https://assets.coingecko.com/coins/images/325/small/Tether.png",
+            balance: "2,500",
+            fiat: 2500,
+            dust: false,
+          },
         };
 
         const DISTRIBUTION = {
-          eth: { Arbitrum: "0.8", HyperEVM: "0.245", Ethereum: "0.2" },
-          usdc: { Arbitrum: "800", HyperEVM: "200", Ethereum: "200" },
-          arb: { Arbitrum: "16", HyperEVM: "0", Ethereum: "0" },
-          link: { Arbitrum: "0", HyperEVM: "0", Ethereum: "0.0052" },
+          eth:  { Tron: "0",     Arbitrum: "0.8",  Hyperliquid: "0.245", Ethereum: "0.2" },
+          usdc: { Tron: "0",     Arbitrum: "800",  Hyperliquid: "200",   Ethereum: "200" },
+          arb:  { Tron: "0",     Arbitrum: "16",   Hyperliquid: "0",     Ethereum: "0" },
+          link: { Tron: "0",     Arbitrum: "0",    Hyperliquid: "0",     Ethereum: "0.0052" },
+          usdt: { Tron: "2000",  Arbitrum: "500",  Ethereum: "0" },
         };
 
         /** 每个网络下固定两条地址，便于演示多地址选择与 L2 展开 */
@@ -1326,7 +1336,7 @@
             { account: "Main", balance: "600", address: "0x7f3a4b8c...de9f8b2c" },
             { account: "DeFi", balance: "200", address: "0x9e8f1a2b...3c4d5e6f" },
           ],
-          "usdc-HyperEVM": [
+          "usdc-Hyperliquid": [
             { account: "Main", balance: "120", address: "0xa1b2c3d4...e5f67890" },
             { account: "DeFi", balance: "80", address: "0xb2c3d4e5...f6071829" },
           ],
@@ -1338,7 +1348,7 @@
             { account: "Main", balance: "0.5", address: "0x7f3a4b8c...de9f8b2c" },
             { account: "DeFi", balance: "0.3", address: "0x8a4b5c6d...e7f8091a" },
           ],
-          "eth-HyperEVM": [
+          "eth-Hyperliquid": [
             { account: "Main", balance: "0.15", address: "0x7f3a4b8c...de9f8b2c" },
             { account: "DeFi", balance: "0.095", address: "0x1a2b3c4d...5e6f7081" },
           ],
@@ -1350,7 +1360,7 @@
             { account: "Main", balance: "10", address: "0x7f3a4b8c...de9f8b2c" },
             { account: "DeFi", balance: "6", address: "0x3c4d5e6f...708192a3" },
           ],
-          "arb-HyperEVM": [
+          "arb-Hyperliquid": [
             { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
             { account: "DeFi", balance: "0", address: "0x4d5e6f70...8192a3b4" },
           ],
@@ -1366,9 +1376,21 @@
             { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
             { account: "DeFi", balance: "0", address: "0x708192a3...b4c5d6e7" },
           ],
-          "link-HyperEVM": [
+          "link-Hyperliquid": [
             { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
             { account: "DeFi", balance: "0", address: "0x8192a3b4...c5d6e7f8" },
+          ],
+          "usdt-Tron": [
+            { account: "Main", balance: "1500", address: "TRx7f3a4B8cDe9F...8b2C1d2E" },
+            { account: "DeFi", balance: "500",  address: "TRx9E8F1a2B3C4D...5E6f7081" },
+          ],
+          "usdt-Arbitrum": [
+            { account: "Main", balance: "300", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "200", address: "0x9e8f1a2b...3c4d5e6f" },
+          ],
+          "usdt-Ethereum": [
+            { account: "Main", balance: "0", address: "0x9e8f1a2b...3c4d5e6f" },
+            { account: "DeFi", balance: "0", address: "0x2b3c4d5e...6f708192" },
           ],
         };
 
@@ -1386,29 +1408,37 @@
           { tokenId: "usdc", chain: "Arbitrum", account: "Main", kind: "swap", amount: "+25", time: "2026-04-04T11:00:00Z" },
           { tokenId: "usdc", chain: "Arbitrum", account: "DeFi", kind: "receive", amount: "+200", time: "2026-04-05T18:00:00Z" },
           { tokenId: "usdc", chain: "Arbitrum", account: "DeFi", kind: "send", amount: "-80", time: "2026-04-03T08:30:00Z" },
-          { tokenId: "usdc", chain: "HyperEVM", account: "Main", kind: "receive", amount: "+120", time: "2026-04-07T10:00:00Z" },
-          { tokenId: "usdc", chain: "HyperEVM", account: "Main", kind: "send", amount: "-40", time: "2026-04-02T16:45:00Z" },
-          { tokenId: "usdc", chain: "HyperEVM", account: "DeFi", kind: "receive", amount: "+80", time: "2026-04-06T12:20:00Z" },
+          { tokenId: "usdc", chain: "Hyperliquid", account: "Main", kind: "receive", amount: "+120", time: "2026-04-07T10:00:00Z" },
+          { tokenId: "usdc", chain: "Hyperliquid", account: "Main", kind: "send", amount: "-40", time: "2026-04-02T16:45:00Z" },
+          { tokenId: "usdc", chain: "Hyperliquid", account: "DeFi", kind: "receive", amount: "+80", time: "2026-04-06T12:20:00Z" },
           { tokenId: "usdc", chain: "Ethereum", account: "Main", kind: "receive", amount: "+130", time: "2026-04-07T06:15:00Z" },
           { tokenId: "usdc", chain: "Ethereum", account: "Main", kind: "send", amount: "-20", time: "2026-04-01T20:00:00Z" },
           { tokenId: "usdc", chain: "Ethereum", account: "DeFi", kind: "swap", amount: "+70", time: "2026-04-05T07:50:00Z" },
           { tokenId: "eth", chain: "Arbitrum", account: "Main", kind: "receive", amount: "+0.2", time: "2026-04-07T13:00:00Z" },
           { tokenId: "eth", chain: "Arbitrum", account: "Main", kind: "send", amount: "-0.05", time: "2026-04-05T22:10:00Z" },
           { tokenId: "eth", chain: "Arbitrum", account: "DeFi", kind: "receive", amount: "+0.3", time: "2026-04-06T09:00:00Z" },
-          { tokenId: "eth", chain: "HyperEVM", account: "Main", kind: "receive", amount: "+0.1", time: "2026-04-07T08:40:00Z" },
-          { tokenId: "eth", chain: "HyperEVM", account: "DeFi", kind: "send", amount: "-0.02", time: "2026-04-04T14:00:00Z" },
+          { tokenId: "eth", chain: "Hyperliquid", account: "Main", kind: "receive", amount: "+0.1", time: "2026-04-07T08:40:00Z" },
+          { tokenId: "eth", chain: "Hyperliquid", account: "DeFi", kind: "send", amount: "-0.02", time: "2026-04-04T14:00:00Z" },
           { tokenId: "eth", chain: "Ethereum", account: "Main", kind: "receive", amount: "+0.08", time: "2026-04-06T19:30:00Z" },
           { tokenId: "eth", chain: "Ethereum", account: "DeFi", kind: "send", amount: "-0.05", time: "2026-04-03T11:25:00Z" },
           { tokenId: "arb", chain: "Arbitrum", account: "Main", kind: "receive", amount: "+6", time: "2026-04-07T12:00:00Z" },
           { tokenId: "arb", chain: "Arbitrum", account: "Main", kind: "send", amount: "-2", time: "2026-04-05T10:00:00Z" },
           { tokenId: "arb", chain: "Arbitrum", account: "DeFi", kind: "receive", amount: "+6", time: "2026-04-04T15:20:00Z" },
-          { tokenId: "arb", chain: "HyperEVM", account: "Main", kind: "receive", amount: "+0", time: "2026-04-01T10:00:00Z" },
+          { tokenId: "arb", chain: "Hyperliquid", account: "Main", kind: "receive", amount: "+0", time: "2026-04-01T10:00:00Z" },
           { tokenId: "arb", chain: "Ethereum", account: "DeFi", kind: "send", amount: "-0", time: "2026-03-28T12:00:00Z" },
           { tokenId: "link", chain: "Ethereum", account: "Main", kind: "receive", amount: "+0.002", time: "2026-04-06T21:00:00Z" },
           { tokenId: "link", chain: "Ethereum", account: "Main", kind: "send", amount: "-0.001", time: "2026-04-02T09:30:00Z" },
           { tokenId: "link", chain: "Ethereum", account: "DeFi", kind: "receive", amount: "+0.0022", time: "2026-04-07T07:00:00Z" },
           { tokenId: "link", chain: "Arbitrum", account: "Main", kind: "swap", amount: "+0", time: "2026-03-30T08:00:00Z" },
-          { tokenId: "link", chain: "HyperEVM", account: "DeFi", kind: "receive", amount: "+0", time: "2026-03-29T18:00:00Z" },
+          { tokenId: "link", chain: "Hyperliquid", account: "DeFi", kind: "receive", amount: "+0", time: "2026-03-29T18:00:00Z" },
+          { tokenId: "usdt", chain: "Tron", account: "Main", kind: "receive", amount: "+500",  time: "2026-04-07T15:30:00Z" },
+          { tokenId: "usdt", chain: "Tron", account: "Main", kind: "send",    amount: "-200",  time: "2026-04-06T10:20:00Z" },
+          { tokenId: "usdt", chain: "Tron", account: "Main", kind: "receive", amount: "+1200", time: "2026-04-04T08:00:00Z" },
+          { tokenId: "usdt", chain: "Tron", account: "DeFi", kind: "receive", amount: "+500",  time: "2026-04-05T20:15:00Z" },
+          { tokenId: "usdt", chain: "Tron", account: "DeFi", kind: "swap",    amount: "+100",  time: "2026-04-03T14:00:00Z" },
+          { tokenId: "usdt", chain: "Arbitrum", account: "Main", kind: "receive", amount: "+300", time: "2026-04-07T09:45:00Z" },
+          { tokenId: "usdt", chain: "Arbitrum", account: "Main", kind: "send",    amount: "-50",  time: "2026-04-05T11:30:00Z" },
+          { tokenId: "usdt", chain: "Arbitrum",    account: "DeFi",  kind: "receive", amount: "+200", time: "2026-04-06T16:00:00Z" },
         ];
 
         const FULL_ADDRESS = "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a";
@@ -1664,8 +1694,9 @@
         };
 
         var CHAIN_COLORS = {
+          Tron:     "#ef4444",
           Arbitrum: "#28a0f0",
-          HyperEVM: "#a78bfa",
+          Hyperliquid: "#a78bfa",
           Ethereum: "#8b9eb7",
         };
 
@@ -1779,7 +1810,7 @@
         function renderHome() {
           el.unifiedTotal.textContent = formatUsd(totalBalanceFiat());
 
-          var order = ["eth", "usdc", "arb", "link"].sort(function (a, b) {
+          var order = Object.keys(TOKENS).sort(function (a, b) {
             var fa = TOKENS[a].fiat != null ? TOKENS[a].fiat : 0;
             var fb = TOKENS[b].fiat != null ? TOKENS[b].fiat : 0;
             return fb - fa;
@@ -1857,7 +1888,9 @@
             el.dustBanner.classList.add("hidden");
           }
 
-          el.chainList.innerHTML = CHAINS.map(function (chain) {
+          el.chainList.innerHTML = CHAINS.filter(function (chain) {
+            return dist == null || dist[chain] !== undefined;
+          }).map(function (chain) {
             var amt = dist[chain] != null ? dist[chain] : "0";
             var symbol = t.symbol;
             var key = tokenId + "-" + chain;
