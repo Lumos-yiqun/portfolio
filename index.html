@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Portfolio 原型 · PRD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+    <style>
+      /* Portfolio PRD Prototype — 深色钱包风格 */
+      :root {
+        --bg: #0c0e12;
+        --surface: #141820;
+        --surface2: #1a202c;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --muted2: #64748b;
+        --accent: #38bdf8;
+        --accent-dim: rgba(56, 189, 248, 0.15);
+        --orange: #fb923c;
+        --orange-bg: rgba(251, 146, 60, 0.12);
+        --success: #34d399;
+        --radius: 14px;
+        --radius-sm: 10px;
+        --font: "DM Sans", "SF Pro Display", system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        background: none;
+        color: inherit;
+      }
+
+      .app {
+        max-width: 420px;
+        margin: 0 auto;
+        min-height: 100vh;
+        padding: 20px 18px 32px;
+        position: relative;
+      }
+
+      .screen {
+        display: none;
+        animation: fadeIn 0.22s ease;
+      }
+
+      .screen.is-active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .back-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .back-btn:hover {
+        background: var(--surface2);
+        color: var(--text);
+      }
+
+      .page-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      .wallet-card {
+        background: linear-gradient(145deg, var(--surface) 0%, #111620 100%);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px 18px 16px;
+        margin-bottom: 18px;
+      }
+
+      .wallet-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .wallet-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+
+      .unified {
+        text-align: center;
+        padding: 8px 0 14px;
+      }
+
+      .unified-label {
+        font-size: 0.75rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 6px;
+      }
+
+      .unified-value {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .section-label {
+        font-size: 0.72rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin: 8px 0 12px 4px;
+      }
+
+      .token-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .token-row {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 14px 14px 12px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+        text-align: left;
+        width: 100%;
+      }
+
+      .token-row:hover {
+        border-color: rgba(56, 189, 248, 0.35);
+        background: var(--surface2);
+      }
+
+      .token-row.dust {
+        opacity: 0.88;
+      }
+
+      .token-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--surface2);
+        flex-shrink: 0;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+      }
+
+      .token-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .hero-icon-wrap {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 14px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+      }
+
+      .hero-icon-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .token-main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .token-line1 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .token-symbol {
+        font-weight: 600;
+        font-size: 0.98rem;
+      }
+
+      .token-fullname {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .dust-badge {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--orange);
+        background: var(--orange-bg);
+        padding: 2px 8px;
+        border-radius: 6px;
+      }
+
+      .token-balance {
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-top: 4px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .token-fiat {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 2px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .token-row.dust .token-fiat {
+        color: var(--muted2);
+      }
+
+      .token-fiat.muted-strong {
+        color: var(--muted2);
+      }
+
+      .ph-block {
+        margin-top: 20px;
+        border: 1px dashed var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+      }
+
+      .ph-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .ph-toggle:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .ph-chevron {
+        transition: transform 0.2s;
+        font-size: 0.75rem;
+      }
+
+      .ph-block.is-open .ph-chevron {
+        transform: rotate(180deg);
+      }
+
+      .ph-content {
+        display: none;
+        padding: 0 10px 12px;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .ph-block.is-open .ph-content {
+        display: flex;
+      }
+
+      .ph-token {
+        font-size: 0.85rem;
+        color: var(--muted2);
+        padding: 8px 8px;
+        background: var(--bg);
+        border-radius: 8px;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 12px 0 20px;
+      }
+
+      .hero-symbol {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+
+      .hero-total {
+        font-size: 0.95rem;
+        color: var(--muted);
+        margin-top: 6px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .dust-banner {
+        background: var(--orange-bg);
+        border: 1px solid rgba(251, 146, 60, 0.25);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        margin-bottom: 16px;
+        font-size: 0.82rem;
+        color: #fdba74;
+        line-height: 1.45;
+      }
+
+      .dust-banner strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--orange);
+      }
+
+      .network-block {
+        margin-bottom: 20px;
+      }
+
+      .network-label {
+        font-size: 0.72rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 10px;
+      }
+
+      .chain-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+      }
+
+      .chain-row-wrap {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .chain-row-wrap:last-child {
+        border-bottom: none;
+      }
+
+      .chain-row {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 14px;
+        background: var(--surface);
+        transition: background 0.12s;
+      }
+
+      .chain-row:hover {
+        background: var(--surface2);
+      }
+
+      .chain-name {
+        font-weight: 500;
+        font-size: 0.92rem;
+      }
+
+      .chain-amt {
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .chain-chev {
+        margin-left: 8px;
+        font-size: 0.7rem;
+        color: var(--muted2);
+        width: 1.2em;
+        display: inline-block;
+        text-align: center;
+      }
+
+      .chain-row-wrap.is-expanded .chain-chev {
+        transform: rotate(0deg);
+      }
+
+      .l2-panel {
+        background: #0a0c10;
+        padding: 0 10px 10px;
+        display: none;
+      }
+
+      .chain-row-wrap.is-expanded .l2-panel {
+        display: block;
+      }
+
+      .addr-row {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 10px;
+        border-radius: 8px;
+        background: var(--surface);
+        margin-top: 6px;
+        border: 1px solid var(--border);
+      }
+
+      .addr-account {
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .addr-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+      }
+
+      .addr-balance {
+        font-size: 0.8rem;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .addr-hex {
+        font-size: 0.72rem;
+        color: var(--muted2);
+        font-family: ui-monospace, monospace;
+        word-break: break-all;
+      }
+
+      .addr-row-btn {
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+        -webkit-appearance: none;
+        appearance: none;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+      }
+
+      .addr-row-btn:hover {
+        border-color: rgba(56, 189, 248, 0.35);
+        background: var(--surface2);
+      }
+
+      .addr-hint {
+        font-size: 0.68rem;
+        color: var(--muted2);
+        margin-top: 6px;
+      }
+
+      .tx-block {
+        margin-bottom: 18px;
+      }
+
+      .tx-home-body {
+        padding-bottom: 8px;
+      }
+
+      .tx-home-body .tx-list {
+        max-height: none;
+        overflow: visible;
+      }
+
+      .tx-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.2);
+        max-height: 280px;
+        overflow-y: auto;
+      }
+
+      .tx-row {
+        padding: 10px 10px;
+        background: var(--surface);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+
+      .tx-row-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .tx-kind {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .tx-amt {
+        font-size: 0.88rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .tx-amt.pos {
+        color: var(--success);
+      }
+
+      .tx-amt.neg {
+        color: #f87171;
+      }
+
+      .tx-row-meta {
+        font-size: 0.72rem;
+        color: var(--muted2);
+        margin-top: 6px;
+        line-height: 1.35;
+      }
+
+      .tx-addr-sub {
+        font-size: 0.8rem;
+        color: var(--muted);
+        padding: 0 0 14px;
+        line-height: 1.45;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .home-actions {
+        margin-top: 2px;
+        margin-bottom: 14px;
+        flex-wrap: nowrap;
+        gap: 8px;
+      }
+
+      .home-actions .btn {
+        padding: 12px 8px;
+        font-size: 0.84rem;
+      }
+
+      .actions.detail-actions {
+        margin-top: 0;
+        margin-bottom: 14px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 13px 16px;
+        border-radius: 12px;
+        font-size: 0.92rem;
+        font-weight: 600;
+        transition: transform 0.1s, opacity 0.15s;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .btn-secondary {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .btn-secondary:hover {
+        background: #222a36;
+      }
+
+      .btn-primary {
+        background: linear-gradient(180deg, #38bdf8, #0ea5e9);
+        color: #0c1220;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.06);
+      }
+
+      .receive-header {
+        margin-bottom: 8px;
+      }
+
+      .receive-step-label {
+        font-size: 0.72rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 14px;
+      }
+
+      .option-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .option-btn {
+        width: 100%;
+        text-align: left;
+        padding: 14px 16px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        transition: border-color 0.15s, background 0.15s;
+      }
+
+      .option-btn:hover {
+        border-color: rgba(56, 189, 248, 0.4);
+        background: var(--surface2);
+      }
+
+      /* 选代币：图标 + 简称 / 全称分行 */
+      .option-btn-token {
+        align-items: center;
+      }
+
+      .option-btn-token .token-icon {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+      }
+
+      .option-token-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .option-token-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        min-width: 0;
+      }
+
+      .option-token-ticker {
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--text);
+      }
+
+      .option-token-fullname {
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: var(--muted2);
+        line-height: 1.25;
+      }
+
+      .option-token-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--muted2);
+      }
+
+      /* 选网络：标签「网络」+ 链名 */
+      .option-btn-chain {
+        align-items: center;
+      }
+
+      .option-chain-block {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .option-chain-kind {
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--accent);
+      }
+
+      .option-chain-name {
+        font-size: 1.02rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+
+      .option-chevron {
+        flex-shrink: 0;
+        font-size: 1rem;
+        color: var(--muted2);
+        opacity: 0.85;
+      }
+
+      .option-sub {
+        font-size: 0.78rem;
+        color: var(--muted2);
+        margin-top: 4px;
+      }
+
+      /* 转账 · 选转出地址：突出显示该地址下当前代币余额 */
+      .option-btn-send-addr {
+        align-items: flex-start;
+      }
+
+      .option-send-addr-main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .option-send-addr-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .option-send-acc {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .option-send-balance {
+        font-size: 0.88rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--accent);
+        white-space: nowrap;
+      }
+
+      .option-send-balance-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-right: 6px;
+      }
+
+      .qr-screen {
+        text-align: center;
+        padding-top: 8px;
+      }
+
+      .qr-placeholder {
+        width: 200px;
+        height: 200px;
+        margin: 16px auto 20px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      }
+
+      .qr-placeholder svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .recv-meta {
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+
+      .recv-address-full {
+        font-size: 0.75rem;
+        color: var(--muted2);
+        font-family: ui-monospace, monospace;
+        word-break: break-all;
+        padding: 12px;
+        background: var(--surface);
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        text-align: left;
+        margin-top: 12px;
+      }
+
+      .copy-hint {
+        font-size: 0.72rem;
+        color: var(--muted2);
+        margin-top: 10px;
+      }
+
+      .send-form-label {
+        display: block;
+        font-size: 0.72rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 10px;
+      }
+
+      .send-input {
+        width: 100%;
+        padding: 12px 14px;
+        margin-top: 6px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-family: inherit;
+      }
+
+      .send-form-screen {
+        text-align: left;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section id="screen-home" class="screen is-active" aria-label="Portfolio 首页">
+        <div class="wallet-card">
+          <div class="wallet-row">
+            <span class="wallet-name">Randy</span>
+          </div>
+        </div>
+
+        <div class="unified">
+          <div class="unified-label">Total Balance</div>
+          <div class="unified-value" id="unified-total">$0.00</div>
+        </div>
+
+        <div class="actions home-actions">
+          <button type="button" class="btn btn-secondary" id="btn-send-home">Send</button>
+          <button type="button" class="btn btn-primary" id="btn-receive-home">Receive</button>
+          <button type="button" class="btn btn-secondary" id="btn-tx-home" aria-label="交易记录">
+            交易记录
+          </button>
+        </div>
+
+        <div class="section-label">Assets（4）</div>
+        <div class="token-list" id="token-list"></div>
+
+        <div class="ph-block" id="ph-block">
+          <button type="button" class="ph-toggle" id="ph-toggle">
+            <span>Previously held (2)</span>
+            <span class="ph-chevron">▼</span>
+          </button>
+          <div class="ph-content" id="ph-list"></div>
+        </div>
+      </section>
+
+      <section id="screen-tx-home" class="screen" aria-label="交易记录">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-tx-home" aria-label="返回">←</button>
+          <span class="page-title">交易记录</span>
+          <span style="width: 40px"></span>
+        </div>
+        <div class="receive-step-label">全部代币 · 全部网络</div>
+        <div id="tx-home-body" class="tx-home-body"></div>
+      </section>
+
+      <section id="screen-detail" class="screen" aria-label="代币详情">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-detail" aria-label="返回">←</button>
+          <span class="page-title" id="detail-title">—</span>
+          <span style="width: 40px"></span>
+        </div>
+        <div id="detail-hero" class="hero"></div>
+        <div id="dust-banner" class="dust-banner hidden"></div>
+
+        <div class="actions detail-actions">
+          <button type="button" class="btn btn-secondary" id="btn-send">Send</button>
+          <button type="button" class="btn btn-primary" id="btn-receive-detail">Receive</button>
+        </div>
+
+        <div class="network-block">
+          <div class="network-label">按网络分布</div>
+          <div class="chain-list" id="chain-list"></div>
+        </div>
+      </section>
+
+      <section id="screen-tx-address" class="screen" aria-label="地址交易记录">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-tx-addr" aria-label="返回">←</button>
+          <span class="page-title" id="tx-addr-title">记录</span>
+          <span style="width: 40px"></span>
+        </div>
+        <div class="tx-addr-sub" id="tx-addr-sub"></div>
+        <div class="tx-list" id="tx-addr-list" style="max-height: none"></div>
+      </section>
+
+      <section id="screen-receive" class="screen" aria-label="收款">
+        <div class="top-bar receive-header">
+          <button type="button" class="back-btn" id="btn-back-receive" aria-label="返回">←</button>
+          <span class="page-title" id="receive-title">收款</span>
+          <span style="width: 40px"></span>
+        </div>
+        <div class="receive-step-label" id="receive-step"></div>
+        <div id="receive-body"></div>
+      </section>
+
+      <section id="screen-send" class="screen" aria-label="转账">
+        <div class="top-bar receive-header">
+          <button type="button" class="back-btn" id="btn-back-send" aria-label="返回">←</button>
+          <span class="page-title" id="send-title">转账</span>
+          <span style="width: 40px"></span>
+        </div>
+        <div class="receive-step-label" id="send-step"></div>
+        <div id="send-body"></div>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        const CHAINS = ["Arbitrum", "HyperEVM", "Ethereum"];
+
+        /** CoinGecko CDN 官方代币图标（原型展示用） */
+        const TOKENS = {
+          eth: {
+            id: "eth",
+            symbol: "ETH",
+            name: "Ethereum",
+            iconUrl: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
+            balance: "1.245",
+            fiat: 3112.5,
+            dust: false,
+          },
+          usdc: {
+            id: "usdc",
+            symbol: "USDC",
+            name: "USD Coin",
+            iconUrl: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png",
+            balance: "1,200",
+            fiat: 1200,
+            dust: false,
+          },
+          arb: {
+            id: "arb",
+            symbol: "ARB",
+            name: "Arbitrum",
+            iconUrl: "https://assets.coingecko.com/coins/images/16547/small/arb.jpg",
+            balance: "16",
+            fiat: 16,
+            dust: false,
+          },
+          link: {
+            id: "link",
+            symbol: "LINK",
+            name: "Chainlink",
+            iconUrl: "https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png",
+            balance: "0.0052",
+            fiat: 0.07,
+            dust: true,
+          },
+        };
+
+        const DISTRIBUTION = {
+          eth: { Arbitrum: "0.8", HyperEVM: "0.245", Ethereum: "0.2" },
+          usdc: { Arbitrum: "800", HyperEVM: "200", Ethereum: "200" },
+          arb: { Arbitrum: "16", HyperEVM: "0", Ethereum: "0" },
+          link: { Arbitrum: "0", HyperEVM: "0", Ethereum: "0.0052" },
+        };
+
+        /** 每个网络下固定两条地址，便于演示多地址选择与 L2 展开 */
+        const ADDRESSES = {
+          "usdc-Arbitrum": [
+            { account: "Main", balance: "600", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "200", address: "0x9e8f1a2b...3c4d5e6f" },
+          ],
+          "usdc-HyperEVM": [
+            { account: "Main", balance: "120", address: "0xa1b2c3d4...e5f67890" },
+            { account: "DeFi", balance: "80", address: "0xb2c3d4e5...f6071829" },
+          ],
+          "usdc-Ethereum": [
+            { account: "Main", balance: "130", address: "0xfeedface...00000001" },
+            { account: "DeFi", balance: "70", address: "0xcafebabe...00000002" },
+          ],
+          "eth-Arbitrum": [
+            { account: "Main", balance: "0.5", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "0.3", address: "0x8a4b5c6d...e7f8091a" },
+          ],
+          "eth-HyperEVM": [
+            { account: "Main", balance: "0.15", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "0.095", address: "0x1a2b3c4d...5e6f7081" },
+          ],
+          "eth-Ethereum": [
+            { account: "Main", balance: "0.12", address: "0x9e8f1a2b...3c4d5e6f" },
+            { account: "DeFi", balance: "0.08", address: "0x2b3c4d5e...6f708192" },
+          ],
+          "arb-Arbitrum": [
+            { account: "Main", balance: "10", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "6", address: "0x3c4d5e6f...708192a3" },
+          ],
+          "arb-HyperEVM": [
+            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x4d5e6f70...8192a3b4" },
+          ],
+          "arb-Ethereum": [
+            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x5e6f7081...92a3b4c5" },
+          ],
+          "link-Ethereum": [
+            { account: "Main", balance: "0.003", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "0.0022", address: "0x6f708192...a3b4c5d6" },
+          ],
+          "link-Arbitrum": [
+            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x708192a3...b4c5d6e7" },
+          ],
+          "link-HyperEVM": [
+            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x8192a3b4...c5d6e7f8" },
+          ],
+        };
+
+        const PREVIOUSLY_HELD = [
+          { symbol: "PEPE", name: "Pepe", hint: "0 余额 · 曾持有" },
+          { symbol: "WETH", name: "Wrapped Ether", hint: "0 余额 · 曾持有" },
+        ];
+
+        /**
+         * 演示交易流水：同一数组按代币聚全链；按 tokenId + chain + account 筛单地址
+         */
+        var TX_ENTRIES = [
+          { tokenId: "usdc", chain: "Arbitrum", account: "Main", kind: "receive", amount: "+50", time: "2026-04-07T14:22:00Z" },
+          { tokenId: "usdc", chain: "Arbitrum", account: "Main", kind: "send", amount: "-100", time: "2026-04-06T09:10:00Z" },
+          { tokenId: "usdc", chain: "Arbitrum", account: "Main", kind: "swap", amount: "+25", time: "2026-04-04T11:00:00Z" },
+          { tokenId: "usdc", chain: "Arbitrum", account: "DeFi", kind: "receive", amount: "+200", time: "2026-04-05T18:00:00Z" },
+          { tokenId: "usdc", chain: "Arbitrum", account: "DeFi", kind: "send", amount: "-80", time: "2026-04-03T08:30:00Z" },
+          { tokenId: "usdc", chain: "HyperEVM", account: "Main", kind: "receive", amount: "+120", time: "2026-04-07T10:00:00Z" },
+          { tokenId: "usdc", chain: "HyperEVM", account: "Main", kind: "send", amount: "-40", time: "2026-04-02T16:45:00Z" },
+          { tokenId: "usdc", chain: "HyperEVM", account: "DeFi", kind: "receive", amount: "+80", time: "2026-04-06T12:20:00Z" },
+          { tokenId: "usdc", chain: "Ethereum", account: "Main", kind: "receive", amount: "+130", time: "2026-04-07T06:15:00Z" },
+          { tokenId: "usdc", chain: "Ethereum", account: "Main", kind: "send", amount: "-20", time: "2026-04-01T20:00:00Z" },
+          { tokenId: "usdc", chain: "Ethereum", account: "DeFi", kind: "swap", amount: "+70", time: "2026-04-05T07:50:00Z" },
+          { tokenId: "eth", chain: "Arbitrum", account: "Main", kind: "receive", amount: "+0.2", time: "2026-04-07T13:00:00Z" },
+          { tokenId: "eth", chain: "Arbitrum", account: "Main", kind: "send", amount: "-0.05", time: "2026-04-05T22:10:00Z" },
+          { tokenId: "eth", chain: "Arbitrum", account: "DeFi", kind: "receive", amount: "+0.3", time: "2026-04-06T09:00:00Z" },
+          { tokenId: "eth", chain: "HyperEVM", account: "Main", kind: "receive", amount: "+0.1", time: "2026-04-07T08:40:00Z" },
+          { tokenId: "eth", chain: "HyperEVM", account: "DeFi", kind: "send", amount: "-0.02", time: "2026-04-04T14:00:00Z" },
+          { tokenId: "eth", chain: "Ethereum", account: "Main", kind: "receive", amount: "+0.08", time: "2026-04-06T19:30:00Z" },
+          { tokenId: "eth", chain: "Ethereum", account: "DeFi", kind: "send", amount: "-0.05", time: "2026-04-03T11:25:00Z" },
+          { tokenId: "arb", chain: "Arbitrum", account: "Main", kind: "receive", amount: "+6", time: "2026-04-07T12:00:00Z" },
+          { tokenId: "arb", chain: "Arbitrum", account: "Main", kind: "send", amount: "-2", time: "2026-04-05T10:00:00Z" },
+          { tokenId: "arb", chain: "Arbitrum", account: "DeFi", kind: "receive", amount: "+6", time: "2026-04-04T15:20:00Z" },
+          { tokenId: "arb", chain: "HyperEVM", account: "Main", kind: "receive", amount: "+0", time: "2026-04-01T10:00:00Z" },
+          { tokenId: "arb", chain: "Ethereum", account: "DeFi", kind: "send", amount: "-0", time: "2026-03-28T12:00:00Z" },
+          { tokenId: "link", chain: "Ethereum", account: "Main", kind: "receive", amount: "+0.002", time: "2026-04-06T21:00:00Z" },
+          { tokenId: "link", chain: "Ethereum", account: "Main", kind: "send", amount: "-0.001", time: "2026-04-02T09:30:00Z" },
+          { tokenId: "link", chain: "Ethereum", account: "DeFi", kind: "receive", amount: "+0.0022", time: "2026-04-07T07:00:00Z" },
+          { tokenId: "link", chain: "Arbitrum", account: "Main", kind: "swap", amount: "+0", time: "2026-03-30T08:00:00Z" },
+          { tokenId: "link", chain: "HyperEVM", account: "DeFi", kind: "receive", amount: "+0", time: "2026-03-29T18:00:00Z" },
+        ];
+
+        const FULL_ADDRESS = "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a";
+
+        function buildQrSvg() {
+          var rects = "";
+          for (var y = 0; y < 16; y++) {
+            for (var x = 0; x < 16; x++) {
+              if ((x * 13 + y * 7) % 5 !== 0) {
+                rects += '<rect x="' + (2 + x * 4) + '" y="' + (2 + y * 4) + '" width="3.5" height="3.5" fill="#0c0e12"/>';
+              }
+            }
+          }
+          return (
+            '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="176" height="176">' +
+            '<rect fill="#ffffff" width="64" height="64"/>' +
+            rects +
+            '<rect x="4" y="4" width="18" height="18" fill="none" stroke="#0c0e12" stroke-width="2"/>' +
+            '<rect x="42" y="4" width="18" height="18" fill="none" stroke="#0c0e12" stroke-width="2"/>' +
+            '<rect x="4" y="42" width="18" height="18" fill="none" stroke="#0c0e12" stroke-width="2"/>' +
+            "</svg>"
+          );
+        }
+
+        function formatUsd(n) {
+          return n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function tokenIconHtml(t) {
+          return (
+            '<div class="token-icon" aria-hidden="true">' +
+            '<img src="' +
+            t.iconUrl +
+            '" alt="" width="40" height="40" loading="lazy" decoding="async" referrerpolicy="no-referrer" />' +
+            "</div>"
+          );
+        }
+
+        /** 收款/转账 · 选代币行 */
+        function pickTokenOptionHtml(t, dataAttr, dataVal) {
+          return (
+            '<button type="button" class="option-btn option-btn-token" ' +
+            dataAttr +
+            '="' +
+            dataVal +
+            '">' +
+            '<span class="option-token-row">' +
+            tokenIconHtml(t) +
+            '<span class="option-token-text">' +
+            '<span class="option-token-label">代币</span>' +
+            '<span class="option-token-ticker">' +
+            t.symbol +
+            "</span>" +
+            '<span class="option-token-fullname">' +
+            t.name +
+            "</span>" +
+            "</span>" +
+            "</span>" +
+            '<span class="option-chevron" aria-hidden="true">›</span>' +
+            "</button>"
+          );
+        }
+
+        /** 收款/转账 · 选公链行 */
+        function pickChainOptionHtml(chainName, dataAttr, dataVal) {
+          return (
+            '<button type="button" class="option-btn option-btn-chain" ' +
+            dataAttr +
+            '="' +
+            dataVal +
+            '">' +
+            '<span class="option-chain-block">' +
+            '<span class="option-chain-kind">网络</span>' +
+            '<span class="option-chain-name">' +
+            chainName +
+            "</span>" +
+            "</span>" +
+            '<span class="option-chevron" aria-hidden="true">›</span>' +
+            "</button>"
+          );
+        }
+
+        function totalBalanceFiat() {
+          var s = 0;
+          Object.keys(TOKENS).forEach(function (k) {
+            var t = TOKENS[k];
+            if (t.fiat != null) s += t.fiat;
+          });
+          return s;
+        }
+
+        function formatTxTime(iso) {
+          var d = new Date(iso);
+          if (isNaN(d.getTime())) return iso;
+          return d.toLocaleString("zh-CN", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+        }
+
+        /** 首页：钱包内全部代币、全部网络的流水聚合 */
+        function filterTxForAllTokens() {
+          return TX_ENTRIES.slice().sort(function (a, b) {
+            return new Date(b.time) - new Date(a.time);
+          });
+        }
+
+        function filterTxForAddress(tokenId, chain, account) {
+          return TX_ENTRIES.filter(function (x) {
+            return x.tokenId === tokenId && x.chain === chain && x.account === account;
+          }).sort(function (a, b) {
+            return new Date(b.time) - new Date(a.time);
+          });
+        }
+
+        function renderTxRowsHtmlHome(entries) {
+          var kindMap = { send: "发送", receive: "收款", swap: "兑换" };
+          if (entries.length === 0) {
+            return '<p class="recv-meta" style="padding:8px">暂无交易记录</p>';
+          }
+          return entries
+            .map(function (tx) {
+              var t = TOKENS[tx.tokenId];
+              var sym = t ? t.symbol : tx.tokenId;
+              var kl = kindMap[tx.kind] || tx.kind;
+              var sign = tx.amount.trim().indexOf("-") === 0 ? "neg" : "pos";
+              return (
+                '<div class="tx-row">' +
+                '<div class="tx-row-top">' +
+                '<span class="tx-kind">' +
+                sym +
+                " · " +
+                kl +
+                "</span>" +
+                '<span class="tx-amt ' +
+                sign +
+                '">' +
+                tx.amount +
+                " " +
+                sym +
+                "</span>" +
+                "</div>" +
+                '<div class="tx-row-meta">' +
+                tx.chain +
+                " · " +
+                tx.account +
+                " · " +
+                formatTxTime(tx.time) +
+                "</div>" +
+                "</div>"
+              );
+            })
+            .join("");
+        }
+
+        /** 单地址交易页：副行仅显示时间（网络·账户已在页头） */
+        function renderTxRowsHtml(entries, symbol) {
+          var kindMap = { send: "发送", receive: "收款", swap: "兑换" };
+          if (entries.length === 0) {
+            return '<p class="recv-meta" style="padding:8px">暂无交易记录</p>';
+          }
+          return entries
+            .map(function (tx) {
+              var kl = kindMap[tx.kind] || tx.kind;
+              var sign = tx.amount.trim().indexOf("-") === 0 ? "neg" : "pos";
+              var meta = formatTxTime(tx.time);
+              return (
+                '<div class="tx-row">' +
+                '<div class="tx-row-top">' +
+                '<span class="tx-kind">' +
+                kl +
+                "</span>" +
+                '<span class="tx-amt ' +
+                sign +
+                '">' +
+                tx.amount +
+                " " +
+                symbol +
+                "</span>" +
+                "</div>" +
+                '<div class="tx-row-meta">' +
+                meta +
+                "</div>" +
+                "</div>"
+              );
+            })
+            .join("");
+        }
+
+        function openTxAddressScreen(tokenId, chain, account) {
+          var t = TOKENS[tokenId];
+          var row = findAddressRow(tokenId, chain, account);
+          el.txAddrTitle.textContent = t.symbol + " · 地址记录";
+          el.txAddrSub.innerHTML =
+            "<strong>" +
+            chain +
+            "</strong> · 账户 " +
+            account +
+            "<br/><span style=\"font-family:ui-monospace;font-size:0.78rem;color:var(--muted2)\">" +
+            (row ? row.address : "—") +
+            "</span>";
+          el.txAddrList.innerHTML = renderTxRowsHtml(filterTxForAddress(tokenId, chain, account), t.symbol);
+          showScreen("txAddress");
+        }
+
+        var screens = {
+          home: document.getElementById("screen-home"),
+          txHome: document.getElementById("screen-tx-home"),
+          detail: document.getElementById("screen-detail"),
+          receive: document.getElementById("screen-receive"),
+          send: document.getElementById("screen-send"),
+          txAddress: document.getElementById("screen-tx-address"),
+        };
+
+        var el = {
+          unifiedTotal: document.getElementById("unified-total"),
+          tokenList: document.getElementById("token-list"),
+          txHomeBody: document.getElementById("tx-home-body"),
+          phBlock: document.getElementById("ph-block"),
+          phToggle: document.getElementById("ph-toggle"),
+          detailTitle: document.getElementById("detail-title"),
+          detailHero: document.getElementById("detail-hero"),
+          dustBanner: document.getElementById("dust-banner"),
+          chainList: document.getElementById("chain-list"),
+          receiveTitle: document.getElementById("receive-title"),
+          receiveStep: document.getElementById("receive-step"),
+          receiveBody: document.getElementById("receive-body"),
+          sendTitle: document.getElementById("send-title"),
+          sendStep: document.getElementById("send-step"),
+          sendBody: document.getElementById("send-body"),
+          txAddrTitle: document.getElementById("tx-addr-title"),
+          txAddrSub: document.getElementById("tx-addr-sub"),
+          txAddrList: document.getElementById("tx-addr-list"),
+        };
+
+        var state = {
+          view: "home",
+          tokenId: null,
+          receive: {
+            entry: "home",
+            step: "token",
+            tokenId: null,
+            chain: null,
+            account: null,
+          },
+          send: {
+            entry: "home",
+            step: "token",
+            tokenId: null,
+            chain: null,
+            account: null,
+          },
+        };
+
+        function showScreen(name) {
+          Object.keys(screens).forEach(function (k) {
+            screens[k].classList.remove("is-active");
+          });
+          screens[name].classList.add("is-active");
+          state.view = name;
+        }
+
+        function openHome() {
+          state.tokenId = null;
+          showScreen("home");
+          renderHome();
+        }
+
+        function openDetail(tokenId) {
+          state.tokenId = tokenId;
+          renderDetail(tokenId);
+          showScreen("detail");
+        }
+
+        function openTxHome() {
+          el.txHomeBody.innerHTML =
+            '<div class="tx-list">' + renderTxRowsHtmlHome(filterTxForAllTokens()) + "</div>";
+          showScreen("txHome");
+          window.scrollTo(0, 0);
+        }
+
+        function openReceiveFromHome() {
+          state.receive = {
+            entry: "home",
+            step: "token",
+            tokenId: null,
+            chain: null,
+            account: null,
+          };
+          renderReceive();
+          showScreen("receive");
+        }
+
+        function openReceiveFromToken() {
+          var tid = state.tokenId;
+          if (!tid) return;
+          state.receive = {
+            entry: "token",
+            step: "chain",
+            tokenId: tid,
+            chain: null,
+            account: null,
+          };
+          renderReceive();
+          showScreen("receive");
+        }
+
+        function openSendFromHome() {
+          state.send = {
+            entry: "home",
+            step: "token",
+            tokenId: null,
+            chain: null,
+            account: null,
+          };
+          renderSend();
+          showScreen("send");
+        }
+
+        function openSendFromToken() {
+          var tid = state.tokenId;
+          if (!tid) return;
+          state.send = {
+            entry: "token",
+            step: "chain",
+            tokenId: tid,
+            chain: null,
+            account: null,
+          };
+          renderSend();
+          showScreen("send");
+        }
+
+        function renderHome() {
+          el.unifiedTotal.textContent = formatUsd(totalBalanceFiat());
+
+          var order = ["eth", "usdc", "arb", "link"].sort(function (a, b) {
+            var fa = TOKENS[a].fiat != null ? TOKENS[a].fiat : 0;
+            var fb = TOKENS[b].fiat != null ? TOKENS[b].fiat : 0;
+            return fb - fa;
+          });
+
+          el.tokenList.innerHTML = order
+            .map(function (id) {
+              var t = TOKENS[id];
+              var dust = t.dust ? " dust" : "";
+              var fiatHtml =
+                t.fiat != null
+                  ? '<div class="token-fiat">' + formatUsd(t.fiat) + "</div>"
+                  : '<div class="token-fiat muted-strong">—</div>';
+              var dustBadge = t.dust ? '<span class="dust-badge">Dust</span>' : "";
+              return (
+                '<button type="button" class="token-row' +
+                dust +
+                '" data-token="' +
+                id +
+                '">' +
+                tokenIconHtml(t) +
+                '<div class="token-main">' +
+                '<div class="token-line1">' +
+                '<span class="token-symbol">' +
+                t.symbol +
+                "</span>" +
+                '<span class="token-fullname">' +
+                t.name +
+                "</span>" +
+                dustBadge +
+                "</div>" +
+                '<div class="token-balance">' +
+                t.balance +
+                " " +
+                t.symbol +
+                "</div>" +
+                fiatHtml +
+                "</div>" +
+                "</button>"
+              );
+            })
+            .join("");
+        }
+
+        function renderDetail(tokenId) {
+          var t = TOKENS[tokenId];
+          var dist = DISTRIBUTION[tokenId];
+
+          el.detailTitle.textContent = t.symbol;
+          var fiatStr = t.fiat != null ? formatUsd(t.fiat) : "—";
+          el.detailHero.innerHTML =
+            '<div class="hero-icon-wrap"><img src="' +
+            t.iconUrl +
+            '" alt="" width="64" height="64" loading="lazy" decoding="async" referrerpolicy="no-referrer" /></div>' +
+            '<div class="hero-symbol">' +
+            t.symbol +
+            "</div>" +
+            '<div class="hero-total">合计：' +
+            t.balance +
+            " " +
+            t.symbol +
+            "（" +
+            fiatStr +
+            "）</div>";
+
+          if (t.dust) {
+            el.dustBanner.classList.remove("hidden");
+            el.dustBanner.innerHTML =
+              "<strong>Dust — 估值低于 $0.10</strong>" + "余额极小，可通过 Send 或 Swap 处理。";
+          } else {
+            el.dustBanner.classList.add("hidden");
+          }
+
+          el.chainList.innerHTML = CHAINS.map(function (chain) {
+            var amt = dist[chain] != null ? dist[chain] : "0";
+            var symbol = t.symbol;
+            var key = tokenId + "-" + chain;
+            return (
+              '<div class="chain-row-wrap" data-chain="' +
+              chain +
+              '" data-token="' +
+              tokenId +
+              '">' +
+              '<button type="button" class="chain-row" aria-expanded="false">' +
+              '<span class="chain-name">' +
+              chain +
+              "</span>" +
+              '<span><span class="chain-amt">' +
+              amt +
+              " " +
+              symbol +
+              '</span><span class="chain-chev">›</span></span>' +
+              "</button>" +
+              '<div class="l2-panel" id="l2-' +
+              key +
+              '"></div>' +
+              "</div>"
+            );
+          }).join("");
+
+          el.chainList.querySelectorAll(".chain-row-wrap").forEach(function (wrap) {
+            var chain = wrap.dataset.chain;
+            var tid = wrap.dataset.token;
+            var key = tid + "-" + chain;
+            var addrs = ADDRESSES[key] || [];
+            var panel = wrap.querySelector(".l2-panel");
+
+            wrap.querySelector(".chain-row").addEventListener("click", function () {
+              var isOpen = wrap.classList.toggle("is-expanded");
+              wrap.querySelector(".chain-row").setAttribute("aria-expanded", String(isOpen));
+              var chev = wrap.querySelector(".chain-chev");
+              if (chev) chev.textContent = isOpen ? "⌄" : "›";
+
+              if (isOpen && panel && !panel.dataset.rendered) {
+                panel.innerHTML = addrs
+                  .map(function (a) {
+                    return (
+                      '<button type="button" class="addr-row addr-row-btn" data-token="' +
+                      tid +
+                      '" data-chain="' +
+                      chain +
+                      '" data-account="' +
+                      a.account +
+                      '">' +
+                      '<div class="addr-line">' +
+                      '<span class="addr-account">' +
+                      a.account +
+                      "</span>" +
+                      '<span class="addr-balance">' +
+                      a.balance +
+                      " " +
+                      TOKENS[tid].symbol +
+                      "</span>" +
+                      "</div>" +
+                      '<div class="addr-hex">' +
+                      a.address +
+                      "</div>" +
+                      '<div class="addr-hint">点击查看此地址下该代币的交易记录</div>' +
+                      "</button>"
+                    );
+                  })
+                  .join("");
+                panel.dataset.rendered = "1";
+              }
+            });
+          });
+
+          document.getElementById("btn-back-detail").onclick = function () {
+            openHome();
+          };
+          document.getElementById("btn-send").onclick = function () {
+            openSendFromToken();
+          };
+          document.getElementById("btn-receive-detail").onclick = function () {
+            openReceiveFromToken();
+          };
+        }
+
+        function getReceiveAddresses(tokenId, chain) {
+          var key = tokenId + "-" + chain;
+          return ADDRESSES[key] || [];
+        }
+
+        /** 仅列出该代币在该链上余额 > 0 的网络（PRD 转账 L2） */
+        function getChainsWithBalance(tokenId) {
+          var dist = DISTRIBUTION[tokenId] || {};
+          return CHAINS.filter(function (c) {
+            return parseFloat(dist[c] || "0") > 0;
+          });
+        }
+
+        function findAddressRow(tokenId, chain, account) {
+          var list = getReceiveAddresses(tokenId, chain);
+          for (var i = 0; i < list.length; i++) {
+            if (list[i].account === account) return list[i];
+          }
+          return list[0] || null;
+        }
+
+        function renderReceive() {
+          var r = state.receive;
+          var steps = {
+            token: "步骤 1 · 选择代币",
+            chain: "步骤 2 · 选择公链",
+            address: "步骤 3 · 选择地址",
+            qr: "收款信息",
+          };
+
+          if (r.step === "token") {
+            el.receiveTitle.textContent = "收款";
+            el.receiveStep.textContent = steps.token;
+            el.receiveBody.innerHTML =
+              '<div class="option-list">' +
+              Object.keys(TOKENS)
+                .map(function (k) {
+                  return pickTokenOptionHtml(TOKENS[k], "data-pick-token", TOKENS[k].id);
+                })
+                .join("") +
+              "</div>";
+            el.receiveBody.querySelectorAll("[data-pick-token]").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                r.tokenId = btn.dataset.pickToken;
+                r.step = "chain";
+                renderReceive();
+              });
+            });
+          } else if (r.step === "chain") {
+            var tid = r.tokenId;
+            var t = TOKENS[tid];
+            el.receiveTitle.textContent = "收款 · " + t.symbol;
+            el.receiveStep.textContent = steps.chain;
+            el.receiveBody.innerHTML =
+              '<div class="option-list">' +
+              CHAINS.map(function (c) {
+                return pickChainOptionHtml(c, "data-pick-chain", c);
+              }).join("") +
+              "</div>";
+            el.receiveBody.querySelectorAll("[data-pick-chain]").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                r.chain = btn.dataset.pickChain;
+                var list = getReceiveAddresses(r.tokenId, r.chain);
+                if (list.length > 1) {
+                  r.step = "address";
+                } else {
+                  r.account = list[0] ? list[0].account : "Main";
+                  r.step = "qr";
+                }
+                renderReceive();
+              });
+            });
+          } else if (r.step === "address") {
+            var tid2 = r.tokenId;
+            var t2 = TOKENS[tid2];
+            var list2 = getReceiveAddresses(tid2, r.chain);
+            el.receiveTitle.textContent = "收款 · " + t2.symbol;
+            el.receiveStep.textContent = steps.address;
+            el.receiveBody.innerHTML =
+              '<p class="recv-meta" style="text-align:left;margin-bottom:12px;color:var(--muted)">链 ' +
+              r.chain +
+              " 上有多个地址，请选择收款账户。</p>" +
+              '<div class="option-list">' +
+              list2
+                .map(function (a) {
+                  return (
+                    '<button type="button" class="option-btn" data-pick-acc="' +
+                    a.account +
+                    '">' +
+                    "<span><div>" +
+                    a.account +
+                    "</div>" +
+                    '<div class="option-sub">' +
+                    a.address +
+                    "</div></span>" +
+                    '<span style="color:var(--muted2)">›</span>' +
+                    "</button>"
+                  );
+                })
+                .join("") +
+              "</div>";
+            el.receiveBody.querySelectorAll("[data-pick-acc]").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                r.account = btn.dataset.pickAcc;
+                r.step = "qr";
+                renderReceive();
+              });
+            });
+          } else if (r.step === "qr") {
+            var tid3 = r.tokenId;
+            var t3 = TOKENS[tid3];
+            el.receiveTitle.textContent = "收款";
+            el.receiveStep.textContent = steps.qr;
+
+            el.receiveBody.innerHTML =
+              '<div class="qr-screen">' +
+              '<p class="recv-meta">' +
+              t3.symbol +
+              " · " +
+              r.chain +
+              (r.account ? " · " + r.account : "") +
+              "</p>" +
+              '<div class="qr-placeholder" aria-hidden="true">' +
+              buildQrSvg() +
+              "</div>" +
+              '<div class="recv-address-full">' +
+              FULL_ADDRESS +
+              "</div>" +
+              '<p class="copy-hint">演示原型：地址与二维码为占位，真实环境由后端生成。</p>' +
+              '<button type="button" class="btn btn-secondary" id="recv-done" style="margin-top:16px;width:100%">完成</button>' +
+              "</div>";
+            document.getElementById("recv-done").onclick = function () {
+              if (state.receive.entry === "token") {
+                openDetail(state.tokenId);
+              } else {
+                openHome();
+              }
+            };
+          }
+
+          document.getElementById("btn-back-receive").onclick = function () {
+            if (r.step === "token") {
+              openHome();
+            } else if (r.step === "chain") {
+              if (r.entry === "token") {
+                openDetail(r.tokenId);
+              } else {
+                r.step = "token";
+                r.tokenId = null;
+                renderReceive();
+              }
+            } else if (r.step === "address") {
+              r.step = "chain";
+              r.account = null;
+              renderReceive();
+            } else if (r.step === "qr") {
+              var list3 = getReceiveAddresses(r.tokenId, r.chain);
+              if (list3.length > 1) {
+                r.step = "address";
+                r.account = null;
+              } else {
+                r.step = "chain";
+                r.account = null;
+              }
+              renderReceive();
+            }
+          };
+        }
+
+        function renderSend() {
+          var s = state.send;
+          var steps = {
+            token: "步骤 1 · 选择代币",
+            chain: "步骤 2 · 选择公链（仅显示有余额的链）",
+            address: "步骤 3 · 选择转出地址",
+            form: "转账表单",
+          };
+
+          if (s.step === "token") {
+            el.sendTitle.textContent = "转账";
+            el.sendStep.textContent = steps.token;
+            el.sendBody.innerHTML =
+              '<div class="option-list">' +
+              Object.keys(TOKENS)
+                .map(function (k) {
+                  return pickTokenOptionHtml(TOKENS[k], "data-send-pick-token", TOKENS[k].id);
+                })
+                .join("") +
+              "</div>";
+            el.sendBody.querySelectorAll("[data-send-pick-token]").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                s.tokenId = btn.dataset.sendPickToken;
+                var chains = getChainsWithBalance(s.tokenId);
+                if (chains.length === 0) {
+                  alert("原型：该代币当前无可转出余额。");
+                  return;
+                }
+                s.step = "chain";
+                renderSend();
+              });
+            });
+          } else if (s.step === "chain") {
+            var tid = s.tokenId;
+            var t = TOKENS[tid];
+            var chains = getChainsWithBalance(tid);
+            el.sendTitle.textContent = "转账 · " + t.symbol;
+            el.sendStep.textContent = steps.chain;
+            if (chains.length === 0) {
+              el.sendBody.innerHTML =
+                '<p class="recv-meta">该代币暂无可转出余额。</p>' +
+                '<button type="button" class="btn btn-secondary" id="send-empty-back" style="margin-top:16px;width:100%">返回</button>';
+              document.getElementById("send-empty-back").onclick = function () {
+                if (s.entry === "token") {
+                  openDetail(s.tokenId);
+                } else {
+                  s.step = "token";
+                  s.tokenId = null;
+                  renderSend();
+                }
+              };
+            } else {
+              el.sendBody.innerHTML =
+                '<div class="option-list">' +
+                chains
+                  .map(function (c) {
+                    return pickChainOptionHtml(c, "data-send-pick-chain", c);
+                  })
+                  .join("") +
+                "</div>";
+              el.sendBody.querySelectorAll("[data-send-pick-chain]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                  s.chain = btn.dataset.sendPickChain;
+                  var list = getReceiveAddresses(s.tokenId, s.chain);
+                  if (list.length > 1) {
+                    s.step = "address";
+                  } else {
+                    s.account = list[0] ? list[0].account : "Main";
+                    s.step = "form";
+                  }
+                  renderSend();
+                });
+              });
+            }
+          } else if (s.step === "address") {
+            var tid2 = s.tokenId;
+            var t2 = TOKENS[tid2];
+            var list2 = getReceiveAddresses(tid2, s.chain);
+            el.sendTitle.textContent = "转账 · " + t2.symbol;
+            el.sendStep.textContent = steps.address;
+            el.sendBody.innerHTML =
+              '<p class="recv-meta" style="text-align:left;margin-bottom:12px;color:var(--muted)">链 ' +
+              s.chain +
+              " 上有多个资金来源，请选择转出账户。以下为该地址在<strong>当前代币</strong>下的可用余额（本链）。</p>" +
+              '<div class="option-list">' +
+              list2
+                .map(function (a) {
+                  return (
+                    '<button type="button" class="option-btn option-btn-send-addr" data-send-pick-acc="' +
+                    a.account +
+                    '">' +
+                    '<span class="option-send-addr-main">' +
+                    '<span class="option-send-addr-top">' +
+                    '<span class="option-send-acc">' +
+                    a.account +
+                    "</span>" +
+                    '<span class="option-send-balance"><span class="option-send-balance-label">余额</span>' +
+                    a.balance +
+                    " " +
+                    t2.symbol +
+                    "</span>" +
+                    "</span>" +
+                    '<div class="option-sub">' +
+                    a.address +
+                    "</div>" +
+                    "</span>" +
+                    '<span class="option-chevron" aria-hidden="true">›</span>' +
+                    "</button>"
+                  );
+                })
+                .join("") +
+              "</div>";
+            el.sendBody.querySelectorAll("[data-send-pick-acc]").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                s.account = btn.dataset.sendPickAcc;
+                s.step = "form";
+                renderSend();
+              });
+            });
+          } else if (s.step === "form") {
+            var tid3 = s.tokenId;
+            var t3 = TOKENS[tid3];
+            var row = findAddressRow(tid3, s.chain, s.account);
+            var addrDisp = row ? row.address : "—";
+            el.sendTitle.textContent = "转账";
+            el.sendStep.textContent = steps.form;
+            el.sendBody.innerHTML =
+              '<div class="send-form-screen">' +
+              '<p class="recv-meta">' +
+              t3.symbol +
+              " · " +
+              s.chain +
+              (s.account ? " · " + s.account : "") +
+              "</p>" +
+              '<p class="recv-meta" style="font-size:0.78rem">资金来源（已选定）<br/><span style="font-family:ui-monospace">' +
+              addrDisp +
+              "</span></p>" +
+              '<label class="send-form-label">收款地址</label>' +
+              '<input type="text" class="send-input" readonly value="" placeholder="0x…（演示未填写）" />' +
+              '<label class="send-form-label">金额</label>' +
+              '<input type="text" class="send-input" readonly value="" placeholder="0.00 ' +
+              t3.symbol +
+              '" />' +
+              '<button type="button" class="btn btn-primary" id="send-done" style="margin-top:18px;width:100%">确认转账（原型）</button>' +
+              '<p class="copy-hint">演示：完成代币 → 网络 → 转出地址后进入表单；真实环境再输入收款方、金额并签名。</p>' +
+              "</div>";
+            document.getElementById("send-done").onclick = function () {
+              alert("原型：此处将提交链上交易。");
+              if (state.send.entry === "token") {
+                openDetail(state.tokenId);
+              } else {
+                openHome();
+              }
+            };
+          }
+
+          document.getElementById("btn-back-send").onclick = function () {
+            if (s.step === "token") {
+              openHome();
+            } else if (s.step === "chain") {
+              if (s.entry === "token") {
+                openDetail(s.tokenId);
+              } else {
+                s.step = "token";
+                s.tokenId = null;
+                renderSend();
+              }
+            } else if (s.step === "address") {
+              s.step = "chain";
+              s.account = null;
+              renderSend();
+            } else if (s.step === "form") {
+              var list3 = getReceiveAddresses(s.tokenId, s.chain);
+              if (list3.length > 1) {
+                s.step = "address";
+                s.account = null;
+              } else {
+                s.step = "chain";
+                s.account = null;
+              }
+              renderSend();
+            }
+          };
+        }
+
+        function init() {
+          document.getElementById("btn-receive-home").addEventListener("click", openReceiveFromHome);
+          document.getElementById("btn-send-home").addEventListener("click", openSendFromHome);
+
+          document.getElementById("btn-tx-home").addEventListener("click", openTxHome);
+
+          document.getElementById("btn-back-tx-home").addEventListener("click", openHome);
+
+          document.getElementById("btn-back-tx-addr").addEventListener("click", function () {
+            if (state.tokenId) openDetail(state.tokenId);
+          });
+
+          el.chainList.addEventListener("click", function (e) {
+            var addrBtn = e.target.closest(".addr-row-btn");
+            if (!addrBtn) return;
+            openTxAddressScreen(addrBtn.dataset.token, addrBtn.dataset.chain, addrBtn.dataset.account);
+          });
+
+          el.phToggle.addEventListener("click", function () {
+            el.phBlock.classList.toggle("is-open");
+          });
+
+          renderHome();
+
+          el.tokenList.addEventListener("click", function (e) {
+            var row = e.target.closest("[data-token]");
+            if (row) openDetail(row.dataset.token);
+          });
+
+          var phList = document.getElementById("ph-list");
+          phList.innerHTML = PREVIOUSLY_HELD.map(function (p) {
+            return (
+              '<div class="ph-token">' +
+              p.symbol +
+              " · " +
+              p.name +
+              '<br/><span style="font-size:0.78rem">' +
+              p.hint +
+              "</span></div>"
+            );
+          }).join("");
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>
