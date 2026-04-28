@@ -8,22 +8,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
     <style>
-      /* Portfolio PRD Prototype — 深色钱包风格 */
+      /* Portfolio PRD Prototype — 浅色钱包风格 */
       :root {
-        --bg: #0c0e12;
-        --surface: #141820;
-        --surface2: #1a202c;
-        --border: rgba(255, 255, 255, 0.08);
-        --text: #f1f5f9;
-        --muted: #94a3b8;
-        --muted2: #64748b;
-        --accent: #38bdf8;
-        --accent-dim: rgba(56, 189, 248, 0.15);
-        --orange: #fb923c;
-        --orange-bg: rgba(251, 146, 60, 0.12);
-        --success: #34d399;
-        --radius: 14px;
-        --radius-sm: 10px;
+        --bg: #f0f2f7;
+        --surface: #ffffff;
+        --surface2: #f5f7fb;
+        --border: rgba(0, 0, 0, 0.07);
+        --border2: rgba(0, 0, 0, 0.04);
+        --text: #0d1117;
+        --muted: #5a6475;
+        --muted2: #9ba3af;
+        --accent: #2563eb;
+        --accent-dim: rgba(37, 99, 235, 0.1);
+        --orange: #f97316;
+        --orange-bg: rgba(249, 115, 22, 0.1);
+        --success: #16a34a;
+        --success-bg: rgba(22, 163, 74, 0.1);
+        --danger: #ef4444;
+        --danger-bg: rgba(239, 68, 68, 0.1);
+        --radius: 20px;
+        --radius-sm: 14px;
+        --radius-xs: 10px;
+        --shadow: 0 2px 12px rgba(0,0,0,0.07);
+        --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
         --font: "DM Sans", "SF Pro Display", system-ui, sans-serif;
       }
 
@@ -55,13 +62,13 @@
         max-width: 420px;
         margin: 0 auto;
         min-height: 100vh;
-        padding: 20px 18px 32px;
+        padding: 16px 16px 32px;
         position: relative;
       }
 
       .screen {
         display: none;
-        animation: fadeIn 0.22s ease;
+        animation: fadeIn 0.2s ease;
       }
 
       .screen.is-active {
@@ -69,146 +76,221 @@
       }
 
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(6px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
       }
 
       .top-bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
 
       .back-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--surface);
+        box-shadow: var(--shadow);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--muted);
-        transition: background 0.15s, color 0.15s;
+        color: var(--text);
+        transition: background 0.15s, box-shadow 0.15s;
         flex-shrink: 0;
       }
 
       .back-btn:hover {
         background: var(--surface2);
-        color: var(--text);
       }
 
       .page-title {
-        font-size: 1.05rem;
+        font-size: 1rem;
         font-weight: 600;
         letter-spacing: -0.02em;
+        color: var(--text);
       }
 
-      .wallet-card {
-        background: linear-gradient(160deg, #181e2a 0%, #0e1118 100%);
-        border: 1px solid rgba(255,255,255,0.07);
-        border-radius: var(--radius);
-        padding: 16px 18px 14px;
-        margin-bottom: 14px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .wallet-card::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(56,189,248,0.25), transparent);
-      }
-
-      .wallet-row {
+      /* ─── 首页顶部用户栏 ─── */
+      .home-topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-bottom: 4px;
       }
 
-      .wallet-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        color: var(--muted);
+      .home-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 0.82rem;
+        font-weight: 700;
       }
 
-      .wallet-avatar {
-        width: 32px;
-        height: 32px;
+      .home-user-pill {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: var(--surface);
+        border-radius: 99px;
+        padding: 5px 12px 5px 7px;
+        box-shadow: var(--shadow);
+      }
+
+      .home-user-avatar {
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         background: linear-gradient(135deg, var(--accent), #7c3aed);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.8rem;
+        font-size: 0.68rem;
         font-weight: 700;
         color: #fff;
-        letter-spacing: 0;
       }
 
-      .unified {
+      .home-user-name {
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      /* ─── 环形图区域 ─── */
+      .donut-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px 0 4px;
+        position: relative;
+      }
+
+      .donut-wrap {
+        position: relative;
+        width: 220px;
+        height: 220px;
+        margin: 0 auto;
+      }
+
+      .donut-svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+      }
+
+      .donut-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        padding: 6px 0 16px;
+        pointer-events: none;
       }
 
-      .unified-label {
+      .donut-label {
         font-size: 0.72rem;
         color: var(--muted2);
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        margin-bottom: 8px;
+        letter-spacing: 0.04em;
+        margin-bottom: 4px;
       }
 
-      .unified-value {
-        font-size: 2.4rem;
+      .donut-value {
+        font-size: 1.9rem;
         font-weight: 700;
         letter-spacing: -0.04em;
+        color: var(--text);
         font-variant-numeric: tabular-nums;
-        background: linear-gradient(180deg, #f1f5f9 60%, #94a3b8 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        line-height: 1;
+      }
+
+      .donut-change {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        margin-top: 8px;
+        padding: 4px 10px;
+        border-radius: 99px;
+        font-size: 0.76rem;
+        font-weight: 600;
+      }
+
+      .donut-change.pos {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+
+      .donut-change.neg {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+
+      /* ─── 资产列表区 ─── */
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0 12px;
       }
 
       .section-label {
         font-size: 0.72rem;
+        font-weight: 700;
         color: var(--muted2);
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        margin: 8px 0 12px 4px;
+      }
+
+      .section-all-link {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+
+      .token-pct-pill {
+        font-size: 0.68rem;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 99px;
+        background: var(--accent-dim);
+        color: var(--accent);
+        white-space: nowrap;
       }
 
       .token-list {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
       }
 
       .token-row {
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: none;
         border-radius: var(--radius-sm);
         padding: 14px 14px 12px;
         display: flex;
         align-items: center;
         gap: 12px;
         cursor: pointer;
-        transition: border-color 0.18s, background 0.18s, transform 0.1s;
+        transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
         text-align: left;
         width: 100%;
+        box-shadow: var(--shadow);
       }
 
       .token-row:hover {
-        border-color: rgba(56, 189, 248, 0.35);
         background: var(--surface2);
+        box-shadow: var(--shadow-lg);
       }
 
       .token-row:active {
@@ -216,18 +298,17 @@
       }
 
       .token-row.dust {
-        opacity: 0.8;
+        opacity: 0.7;
       }
 
       .token-icon {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         background: var(--surface2);
         flex-shrink: 0;
         overflow: hidden;
-        border: 1px solid var(--border);
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
       }
 
       .token-icon img {
@@ -237,15 +318,15 @@
         display: block;
       }
 
+      /* ─── 代币详情 Hero ─── */
       .hero-icon-wrap {
-        width: 64px;
-        height: 64px;
-        margin: 0 auto 14px;
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 12px;
         border-radius: 50%;
         overflow: hidden;
-        border: 1px solid var(--border);
         background: var(--surface2);
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.14);
       }
 
       .hero-icon-wrap img {
@@ -253,6 +334,129 @@
         height: 100%;
         object-fit: cover;
         display: block;
+      }
+
+      /* 价格区 */
+      .hero-price-block {
+        text-align: center;
+        margin-bottom: 4px;
+      }
+
+      .hero-price-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .hero-price-symbol {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .hero-price-meta {
+        font-size: 0.75rem;
+        color: var(--muted2);
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .price-change-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 3px 9px;
+        border-radius: 99px;
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+
+      .price-change-pill.pos {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+
+      .price-change-pill.neg {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+
+      /* 走势图 */
+      .sparkline-wrap {
+        margin: 12px -16px 0;
+        height: 80px;
+        overflow: hidden;
+      }
+
+      .sparkline-svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* 时间选择器 */
+      .period-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+        margin: 10px 0 18px;
+      }
+
+      .period-tab {
+        padding: 6px 16px;
+        border-radius: 99px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--muted);
+        background: none;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .period-tab.active {
+        background: var(--surface);
+        color: var(--text);
+        box-shadow: var(--shadow);
+      }
+
+      /* 分栏余额卡 */
+      .balance-split-card {
+        display: flex;
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        margin-bottom: 18px;
+        overflow: hidden;
+      }
+
+      .balance-split-cell {
+        flex: 1;
+        padding: 16px 14px;
+        text-align: center;
+      }
+
+      .balance-split-cell + .balance-split-cell {
+        border-left: 1px solid var(--border);
+      }
+
+      .balance-split-label {
+        font-size: 0.7rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 6px;
+      }
+
+      .balance-split-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
       }
 
       .token-main {
@@ -281,6 +485,7 @@
         font-weight: 700;
         font-size: 0.98rem;
         letter-spacing: -0.01em;
+        color: var(--text);
       }
 
       .token-fullname {
@@ -304,36 +509,32 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        gap: 2px;
+        gap: 4px;
         flex-shrink: 0;
       }
 
       .token-balance {
-        font-size: 0.92rem;
-        font-weight: 600;
+        font-size: 0.94rem;
+        font-weight: 700;
         font-variant-numeric: tabular-nums;
         color: var(--text);
         letter-spacing: -0.01em;
       }
 
       .token-fiat {
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         color: var(--muted2);
         font-variant-numeric: tabular-nums;
       }
 
-      .token-row.dust .token-fiat {
-        color: var(--muted2);
-      }
-
-      .token-fiat.muted-strong {
-        color: var(--muted2);
-      }
+      .token-row.dust .token-fiat { color: var(--muted2); }
+      .token-fiat.muted-strong { color: var(--muted2); }
 
       .ph-block {
-        margin-top: 20px;
-        border: 1px dashed var(--border);
+        margin-top: 16px;
+        background: var(--surface);
         border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
         overflow: hidden;
       }
 
@@ -342,84 +543,59 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 14px;
+        padding: 13px 16px;
         color: var(--muted);
-        font-size: 0.88rem;
+        font-size: 0.86rem;
       }
 
-      .ph-toggle:hover {
-        background: rgba(255, 255, 255, 0.03);
-      }
+      .ph-toggle:hover { background: var(--surface2); }
 
       .ph-chevron {
         transition: transform 0.2s;
         font-size: 0.75rem;
       }
 
-      .ph-block.is-open .ph-chevron {
-        transform: rotate(180deg);
-      }
+      .ph-block.is-open .ph-chevron { transform: rotate(180deg); }
 
       .ph-content {
         display: none;
-        padding: 0 10px 12px;
+        padding: 0 12px 12px;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
       }
 
-      .ph-block.is-open .ph-content {
-        display: flex;
-      }
+      .ph-block.is-open .ph-content { display: flex; }
 
       .ph-token {
-        font-size: 0.85rem;
+        font-size: 0.84rem;
         color: var(--muted2);
-        padding: 8px 8px;
-        background: var(--bg);
-        border-radius: 8px;
-      }
-
-      .hero {
-        text-align: center;
-        padding: 12px 0 20px;
-      }
-
-      .hero-symbol {
-        font-size: 1.75rem;
-        font-weight: 700;
-        letter-spacing: -0.03em;
-      }
-
-      .hero-total {
-        font-size: 0.95rem;
-        color: var(--muted);
-        margin-top: 6px;
-        font-variant-numeric: tabular-nums;
+        padding: 8px 10px;
+        background: var(--surface2);
+        border-radius: var(--radius-xs);
       }
 
       .dust-banner {
         background: var(--orange-bg);
-        border: 1px solid rgba(251, 146, 60, 0.25);
         border-radius: var(--radius-sm);
         padding: 12px 14px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         font-size: 0.82rem;
-        color: #fdba74;
+        color: var(--orange);
         line-height: 1.45;
+        border: 1px solid rgba(249,115,22,0.18);
       }
 
       .dust-banner strong {
         display: block;
-        margin-bottom: 4px;
-        color: var(--orange);
+        margin-bottom: 3px;
+        font-weight: 700;
       }
 
-      .network-block {
-        margin-bottom: 20px;
-      }
+      .network-block { margin-bottom: 20px; }
 
       .network-label {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
+        font-weight: 700;
         color: var(--muted2);
         text-transform: uppercase;
         letter-spacing: 0.08em;
@@ -429,18 +605,14 @@
       .chain-list {
         display: flex;
         flex-direction: column;
-        gap: 0;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        overflow: hidden;
+        gap: 8px;
       }
 
       .chain-row-wrap {
-        border-bottom: 1px solid var(--border);
-      }
-
-      .chain-row-wrap:last-child {
-        border-bottom: none;
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        overflow: hidden;
       }
 
       .chain-row {
@@ -448,28 +620,35 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 14px;
-        background: var(--surface);
+        padding: 14px 16px;
+        background: transparent;
         transition: background 0.12s;
       }
 
-      .chain-row:hover {
-        background: var(--surface2);
-      }
+      .chain-row:hover { background: var(--surface2); }
 
       .chain-name {
-        font-weight: 500;
+        font-weight: 600;
         font-size: 0.92rem;
+        color: var(--text);
       }
 
       .chain-amt {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         color: var(--muted);
         font-variant-numeric: tabular-nums;
       }
 
+      .chain-pct {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--muted2);
+        min-width: 3.5em;
+        text-align: right;
+      }
+
       .chain-chev {
-        margin-left: 8px;
+        margin-left: 6px;
         font-size: 0.7rem;
         color: var(--muted2);
         width: 1.2em;
@@ -478,14 +657,12 @@
         transition: transform 0.22s ease;
       }
 
-      .chain-row-wrap.is-expanded .chain-chev {
-        transform: rotate(90deg);
-      }
+      .chain-row-wrap.is-expanded .chain-chev { transform: rotate(90deg); }
 
       /* 链彩色圆点 */
       .chain-dot {
-        width: 8px;
-        height: 8px;
+        width: 9px;
+        height: 9px;
         border-radius: 50%;
         flex-shrink: 0;
         display: inline-block;
@@ -504,7 +681,7 @@
       }
 
       .l2-panel {
-        background: #0a0c10;
+        background: var(--surface2);
         padding: 0 10px 0;
         max-height: 0;
         overflow: hidden;
@@ -520,16 +697,17 @@
         display: flex;
         flex-direction: column;
         gap: 2px;
-        padding: 10px 10px;
-        border-radius: 8px;
+        padding: 10px 12px;
+        border-radius: var(--radius-xs);
         background: var(--surface);
         margin-top: 6px;
-        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
       }
 
       .addr-account {
         font-size: 0.85rem;
-        font-weight: 500;
+        font-weight: 600;
+        color: var(--text);
       }
 
       .addr-line {
@@ -546,7 +724,7 @@
       }
 
       .addr-hex {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         color: var(--muted2);
         font-family: ui-monospace, monospace;
         word-break: break-all;
@@ -556,7 +734,7 @@
         width: 100%;
         text-align: left;
         cursor: pointer;
-        transition: border-color 0.18s, background 0.18s;
+        transition: background 0.15s, box-shadow 0.15s;
         -webkit-appearance: none;
         appearance: none;
         display: flex;
@@ -578,8 +756,8 @@
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: var(--surface2);
+        border: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -588,18 +766,17 @@
       }
 
       .addr-row-btn:hover .addr-arrow {
-        background: rgba(56,189,248,0.15);
-        border-color: rgba(56,189,248,0.35);
+        background: var(--accent-dim);
+        border-color: rgba(37,99,235,0.3);
         color: var(--accent);
       }
 
       .addr-row-btn:hover {
-        border-color: rgba(56, 189, 248, 0.4);
         background: var(--surface2);
       }
 
       .addr-tx-hint {
-        font-size: 0.65rem;
+        font-size: 0.64rem;
         color: var(--muted2);
         margin-top: 4px;
         display: flex;
@@ -607,9 +784,7 @@
         gap: 3px;
       }
 
-      .addr-tx-hint svg {
-        flex-shrink: 0;
-      }
+      .addr-tx-hint svg { flex-shrink: 0; }
 
       .addr-hint {
         font-size: 0.68rem;
@@ -634,27 +809,23 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.2);
         max-height: 280px;
         overflow-y: auto;
       }
 
       .tx-row {
-        padding: 11px 12px;
+        padding: 12px 14px;
         background: var(--surface);
-        border-radius: 10px;
-        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
         display: flex;
         align-items: center;
         gap: 10px;
       }
 
       .tx-icon {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         flex-shrink: 0;
         display: flex;
@@ -663,25 +834,11 @@
         font-size: 0.8rem;
       }
 
-      .tx-icon.pos {
-        background: rgba(52,211,153,0.15);
-        color: var(--success);
-      }
+      .tx-icon.pos  { background: var(--success-bg); color: var(--success); }
+      .tx-icon.neg  { background: var(--danger-bg);  color: var(--danger); }
+      .tx-icon.swap { background: var(--accent-dim); color: var(--accent); }
 
-      .tx-icon.neg {
-        background: rgba(248,113,113,0.15);
-        color: #f87171;
-      }
-
-      .tx-icon.swap {
-        background: rgba(56,189,248,0.12);
-        color: var(--accent);
-      }
-
-      .tx-body {
-        flex: 1;
-        min-width: 0;
-      }
+      .tx-body { flex: 1; min-width: 0; }
 
       .tx-row-top {
         display: flex;
@@ -698,95 +855,86 @@
 
       .tx-amt {
         font-size: 0.88rem;
-        font-weight: 600;
+        font-weight: 700;
         font-variant-numeric: tabular-nums;
       }
 
-      .tx-amt.pos {
-        color: var(--success);
-      }
-
-      .tx-amt.neg {
-        color: #f87171;
-      }
+      .tx-amt.pos { color: var(--success); }
+      .tx-amt.neg { color: var(--danger); }
 
       .tx-row-meta {
         font-size: 0.72rem;
         color: var(--muted2);
-        margin-top: 6px;
+        margin-top: 5px;
         line-height: 1.35;
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
 
       .tx-addr-sub {
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         color: var(--muted);
         padding: 0 0 14px;
-        line-height: 1.45;
+        line-height: 1.5;
       }
 
       /* ──── 首页快捷操作栏 ──── */
       .home-action-bar {
         display: flex;
         justify-content: center;
-        gap: 20px;
-        margin: 4px 0 20px;
+        gap: 16px;
+        margin: 4px 0 4px;
       }
 
       .home-action-btn {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 7px;
         background: none;
         border: none;
         cursor: pointer;
         color: var(--text);
-        transition: opacity 0.15s, transform 0.12s;
+        transition: transform 0.12s;
         padding: 0;
-        min-width: 64px;
+        min-width: 68px;
       }
 
-      .home-action-btn:active {
-        transform: scale(0.93);
-      }
+      .home-action-btn:active { transform: scale(0.93); }
 
       .home-action-icon {
         width: 56px;
         height: 56px;
         border-radius: 18px;
         background: var(--surface);
-        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background 0.15s, border-color 0.15s;
+        transition: background 0.15s, box-shadow 0.15s;
       }
 
       .home-action-btn:hover .home-action-icon {
         background: var(--surface2);
-        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: var(--shadow-lg);
       }
 
       .home-action-icon.primary-icon {
-        background: linear-gradient(145deg, #38bdf8, #0ea5e9);
-        border-color: transparent;
+        background: var(--accent);
+        box-shadow: 0 4px 16px rgba(37,99,235,0.35);
       }
 
       .home-action-btn:hover .home-action-icon.primary-icon {
-        filter: brightness(1.08);
-        border-color: transparent;
+        filter: brightness(1.1);
       }
 
-      .home-action-icon svg {
-        width: 22px;
-        height: 22px;
-      }
+      .home-action-icon svg { width: 22px; height: 22px; }
 
       .home-action-label {
-        font-size: 0.76rem;
-        font-weight: 500;
+        font-size: 0.74rem;
+        font-weight: 600;
         color: var(--muted);
-        letter-spacing: 0.01em;
       }
 
       /* ──── 代币详情 / 转收款通用操作区 ──── */
@@ -803,41 +951,40 @@
 
       .btn {
         flex: 1;
-        padding: 13px 16px;
-        border-radius: 12px;
+        padding: 14px 16px;
+        border-radius: var(--radius-sm);
         font-size: 0.92rem;
         font-weight: 600;
-        transition: transform 0.1s, filter 0.15s, background 0.15s;
+        transition: transform 0.1s, filter 0.15s, box-shadow 0.15s;
+        box-shadow: var(--shadow);
       }
 
-      .btn:active {
-        transform: scale(0.97);
-      }
+      .btn:active { transform: scale(0.97); }
 
       .btn-secondary {
-        background: var(--surface2);
+        background: var(--surface);
         border: 1px solid var(--border);
         color: var(--text);
       }
 
       .btn-secondary:hover {
-        background: #252d3a;
-        border-color: rgba(255,255,255,0.12);
+        background: var(--surface2);
+        box-shadow: var(--shadow-lg);
       }
 
       .btn-primary {
-        background: linear-gradient(180deg, #38bdf8, #0ea5e9);
-        color: #0c1220;
+        background: var(--accent);
+        color: #fff;
         font-weight: 700;
+        border: none;
       }
 
       .btn-primary:hover {
-        filter: brightness(1.07);
+        filter: brightness(1.08);
+        box-shadow: 0 4px 16px rgba(37,99,235,0.35);
       }
 
-      .receive-header {
-        margin-bottom: 8px;
-      }
+      .receive-header { margin-bottom: 8px; }
 
       .receive-step-label {
         font-size: 0.72rem;
@@ -846,6 +993,7 @@
         letter-spacing: 0.1em;
         margin-bottom: 14px;
       }
+
 
       /* ──── 步骤进度条 ──── */
       .step-progress {
@@ -868,7 +1016,8 @@
         height: 28px;
         border-radius: 50%;
         border: 2px solid var(--border);
-        background: var(--surface2);
+        background: var(--surface);
+        box-shadow: var(--shadow);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -884,12 +1033,12 @@
         border-color: var(--accent);
         background: var(--accent-dim);
         color: var(--accent);
-        box-shadow: 0 0 0 4px rgba(56,189,248,0.12);
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
       }
 
       .step-dot.done {
         border-color: var(--success);
-        background: rgba(52,211,153,0.15);
+        background: var(--success-bg);
         color: var(--success);
       }
 
@@ -933,19 +1082,20 @@
         text-align: left;
         padding: 14px 16px;
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: none;
         border-radius: var(--radius-sm);
         font-size: 0.95rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        transition: border-color 0.15s, background 0.15s;
+        transition: background 0.15s, box-shadow 0.15s;
+        box-shadow: var(--shadow);
       }
 
       .option-btn:hover {
-        border-color: rgba(56, 189, 248, 0.4);
         background: var(--surface2);
+        box-shadow: var(--shadow-lg);
       }
 
       /* 选代币：图标 + 简称 / 全称分行 */
@@ -1093,9 +1243,9 @@
         height: 200px;
         margin: 16px auto 20px;
         background: #fff;
-        border-radius: 12px;
+        border-radius: 16px;
         padding: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        box-shadow: var(--shadow-lg);
       }
 
       .qr-placeholder svg {
@@ -1116,10 +1266,9 @@
         color: var(--muted2);
         font-family: ui-monospace, monospace;
         word-break: break-all;
-        padding: 12px;
-        background: var(--surface);
-        border-radius: 10px;
-        border: 1px solid var(--border);
+        padding: 12px 14px;
+        background: var(--surface2);
+        border-radius: var(--radius-xs);
         text-align: left;
         margin-top: 12px;
       }
@@ -1130,49 +1279,986 @@
         margin-top: 10px;
       }
 
+      /* QR 收款页增强 */
+      .qr-chain-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--surface2);
+        border-radius: 99px;
+        padding: 5px 14px 5px 10px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+
+      .recv-address-full {
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .recv-address-full:hover {
+        background: #e8edf5;
+      }
+
+      .recv-address-full:active {
+        background: #dde4f0;
+      }
+
+      .btn-copy-addr {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        margin-top: 14px;
+        padding: 13px 16px;
+        border-radius: var(--radius-sm);
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.92rem;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: filter 0.15s, transform 0.1s;
+        box-shadow: 0 4px 16px rgba(37,99,235,0.28);
+      }
+
+      .btn-copy-addr:hover { filter: brightness(1.08); }
+      .btn-copy-addr:active { transform: scale(0.97); }
+      .btn-copy-addr.copied {
+        background: var(--success);
+        box-shadow: 0 4px 16px rgba(22,163,74,0.28);
+      }
+
+      /* 复制成功 toast */
+      .copy-toast {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%) translateY(12px);
+        background: #1a1a2e;
+        color: #fff;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 10px 22px;
+        border-radius: 99px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s, transform 0.2s;
+        z-index: 9999;
+        white-space: nowrap;
+      }
+
+      .copy-toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
       .send-form-label {
         display: block;
         font-size: 0.72rem;
         color: var(--muted2);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        margin-top: 10px;
+        margin-top: 14px;
       }
 
       .send-input {
         width: 100%;
-        padding: 12px 14px;
+        padding: 13px 14px;
         margin-top: 6px;
-        border-radius: 10px;
+        border-radius: var(--radius-xs);
         border: 1px solid var(--border);
-        background: var(--surface2);
-        color: var(--muted);
+        background: var(--surface);
+        color: var(--text);
         font-size: 0.9rem;
         font-family: inherit;
+        box-shadow: var(--shadow);
       }
 
-      .send-form-screen {
+      .send-form-screen { text-align: left; }
+
+      .hidden { display: none !important; }
+
+      /* ─── 空钱包状态 ─── */
+      .empty-state-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 32px 0 16px;
+        text-align: center;
+      }
+
+      .empty-state-illus {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #e8f0fe, #dbeafe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        box-shadow: 0 8px 32px rgba(37,99,235,0.12);
+      }
+
+      .empty-state-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.03em;
+        margin-bottom: 8px;
+      }
+
+      .empty-state-sub {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.55;
+        max-width: 260px;
+      }
+
+      /* ── 功能引导卡片 ── */
+      .feature-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 4px 20px 28px;
+      }
+
+      .feature-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: var(--bg);
         text-align: left;
+        cursor: pointer;
+        transition: background .15s, box-shadow .15s;
+        box-shadow: var(--shadow);
+      }
+      .feature-card:active {
+        background: var(--surface2);
+        box-shadow: none;
       }
 
-      .hidden {
-        display: none !important;
+      .feature-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
+      .feature-card-ai .feature-card-icon {
+        background: linear-gradient(135deg, #ede9fe 0%, #dbeafe 100%);
+        color: #6d28d9;
+      }
+      .feature-card-hl .feature-card-icon {
+        background: linear-gradient(135deg, #ede9fe 0%, #f3e8ff 100%);
+        color: #a78bfa;
+      }
+
+      .feature-card-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .feature-card-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+      }
+      .feature-card-desc {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .feature-card-arrow {
+        color: var(--muted2);
+        flex-shrink: 0;
+      }
+
+      .empty-balance {
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: var(--muted2);
+        letter-spacing: -0.04em;
+        margin: 20px 0 4px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .empty-balance-label {
+        font-size: 0.72rem;
+        color: var(--muted2);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 28px;
+      }
+
+      /* 空状态收款：网络选择中 Hyperliquid 默认高亮 */
+      .option-btn-chain-default {
+        border: 2px solid var(--accent) !important;
+        background: var(--accent-dim) !important;
+      }
+
+      .option-chain-default-badge {
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--accent);
+        background: var(--accent-dim);
+        padding: 2px 8px;
+        border-radius: 99px;
+        flex-shrink: 0;
+      }
+
+      /* 原型切换按钮 */
+      .demo-toggle-bar {
+        display: none;
+      }
+
+      .demo-state-btn {
+        display: block;
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+        background: none;
+        border: 1px dashed rgba(0,0,0,0.18);
+        border-radius: 12px;
+        cursor: pointer;
+        text-align: center;
+        transition: color 0.15s, border-color 0.15s;
+        font-family: inherit;
+        letter-spacing: 0.01em;
+      }
+
+      .demo-state-btn:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+
+      /* ── Hyperliquid 页面 ── */
+      .hl-brand-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0 4px;
+      }
+      .hl-brand-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .hl-brand-name { font-size: 1.1rem; font-weight: 700; }
+      .hl-brand-sub  { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+      .hl-stats-card {
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        border-radius: var(--radius);
+        padding: 22px 20px 18px;
+        margin: 14px 0 14px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .hl-stats-card::after {
+        content: "";
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 140px; height: 140px;
+        border-radius: 50%;
+        background: rgba(167,139,250,0.12);
+        pointer-events: none;
+      }
+      .hl-stats-label {
+        font-size: 0.72rem;
+        color: rgba(255,255,255,0.55);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .hl-stats-value {
+        font-size: 2.1rem;
+        font-weight: 700;
+        line-height: 1.1;
+        position: relative;
+        z-index: 1;
+      }
+      .hl-stats-pnl {
+        margin-top: 8px;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+      }
+      .hl-pnl-zero { color: rgba(255,255,255,0.45); }
+      .hl-pnl-pos  { color: #4ade80; }
+      .hl-pnl-neg  { color: #f87171; }
+
+      .hl-action-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .hl-action-row .btn { font-size: 0.9rem; padding: 11px; }
+
+      .hl-empty-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0 24px;
+        text-align: center;
+      }
+      .hl-empty-icon {
+        width: 68px; height: 68px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(167,139,250,0.15) 0%, rgba(124,58,237,0.08) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+        color: #a78bfa;
+      }
+      .hl-empty-title  { font-size: 1.02rem; font-weight: 700; margin-bottom: 8px; }
+      .hl-empty-desc   { font-size: 0.82rem; color: var(--muted); line-height: 1.65; max-width: 270px; margin-bottom: 22px; }
+      .hl-empty-cta    { width: 100%; max-width: 264px; padding: 13px; font-size: 0.95rem; font-weight: 600; }
+
+      .gasless-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.74rem;
+        color: var(--success);
+        background: var(--success-bg);
+        border-radius: 99px;
+        padding: 5px 12px;
+        margin-top: 10px;
+      }
+
+      .hl-section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin: 0 0 8px;
+      }
+      .hl-position-card {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        padding: 13px 15px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: var(--shadow);
+      }
+      .hl-pos-left  { display: flex; flex-direction: column; gap: 4px; }
+      .hl-pos-pair  { font-size: 0.9rem; font-weight: 700; }
+      .hl-pos-meta  { font-size: 0.74rem; color: var(--muted); }
+      .hl-pos-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+      .hl-pos-pnl   { font-size: 0.86rem; font-weight: 600; }
+      .hl-pos-size  { font-size: 0.74rem; color: var(--muted); }
+      .hl-side-long {
+        display: inline-block;
+        background: var(--success-bg); color: var(--success);
+        font-size: 0.68rem; font-weight: 700;
+        padding: 2px 7px; border-radius: 6px;
+        text-transform: uppercase; letter-spacing: 0.03em;
+      }
+      .hl-side-short {
+        display: inline-block;
+        background: var(--danger-bg); color: var(--danger);
+        font-size: 0.68rem; font-weight: 700;
+        padding: 2px 7px; border-radius: 6px;
+        text-transform: uppercase; letter-spacing: 0.03em;
+      }
+      .hl-balance-card {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        padding: 14px 15px;
+        margin-bottom: 8px;
+        box-shadow: var(--shadow);
+      }
+      .hl-balance-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.83rem;
+        padding: 5px 0;
+      }
+      .hl-balance-item:not(:last-child) { border-bottom: 1px solid var(--border2); }
+      .hl-balance-item-label { color: var(--muted); }
+      .hl-balance-item-val   { font-weight: 600; }
+
+      .hl-demo-row { text-align: center; margin-bottom: 16px; }
+      .hl-demo-row button {
+        font-size: 0.74rem; color: var(--muted2);
+        text-decoration: underline; padding: 4px 6px;
+      }
+
+      /* Deposit / Withdraw */
+      .hl-token-pick {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        padding: 14px 16px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+        width: 100%;
+        text-align: left;
+        box-shadow: var(--shadow);
+      }
+      .hl-token-pick:hover { border-color: var(--accent); background: var(--accent-dim); }
+      .hl-token-pick-icon { width: 38px; height: 38px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+      .hl-token-pick-icon img { width: 100%; height: 100%; object-fit: cover; }
+      .hl-token-pick-info { flex: 1; }
+      .hl-token-pick-name { font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+      .hl-token-pick-bal  { font-size: 0.76rem; color: var(--muted); margin-top: 2px; }
+      .hl-token-pick-chain {
+        font-size: 0.68rem; color: var(--muted2);
+        background: var(--surface2);
+        padding: 2px 7px; border-radius: 99px;
+        font-weight: 500;
+      }
+
+      .hl-amount-card {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        padding: 15px; margin-bottom: 10px;
+        box-shadow: var(--shadow);
+      }
+      .hl-amount-top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.76rem; color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .hl-amount-input-row { display: flex; align-items: center; gap: 8px; }
+      .hl-amount-input {
+        flex: 1;
+        border: none;
+        background: var(--surface2);
+        border-radius: var(--radius-xs);
+        padding: 10px 12px;
+        font-size: 1.08rem; font-weight: 600;
+        font-family: var(--font); color: var(--text);
+        outline: none;
+      }
+      .hl-amount-input:focus { box-shadow: 0 0 0 2px var(--accent); }
+      .hl-max-btn {
+        font-size: 0.75rem; font-weight: 700;
+        color: var(--accent); background: var(--accent-dim);
+        padding: 6px 10px; border-radius: 8px; white-space: nowrap;
+      }
+
+      .hl-fee-card {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        padding: 13px 15px; margin-bottom: 10px;
+        box-shadow: var(--shadow);
+      }
+      .hl-fee-row  { display: flex; justify-content: space-between; font-size: 0.81rem; padding: 4px 0; }
+      .hl-fee-label { color: var(--muted); }
+      .hl-fee-val   { font-weight: 500; }
+      .hl-fee-divider { border: none; border-top: 1px solid var(--border); margin: 6px 0; }
+      .hl-fee-total .hl-fee-label,
+      .hl-fee-total .hl-fee-val { font-weight: 700; font-size: 0.88rem; color: var(--text); }
+
+      .gasless-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--success-bg); color: var(--success);
+        border-radius: var(--radius-sm);
+        padding: 10px 14px; font-size: 0.8rem; font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .paymaster-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--accent-dim); color: var(--accent);
+        border-radius: var(--radius-sm);
+        padding: 10px 14px; font-size: 0.8rem; font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .paymaster-info {
+        font-size: 0.76rem; color: var(--muted);
+        background: var(--surface2);
+        border-radius: var(--radius-sm);
+        padding: 9px 12px; margin-bottom: 10px;
+        border-left: 3px solid var(--accent);
+        line-height: 1.5;
+      }
+
+      .hl-confirm-card {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        padding: 15px; margin-bottom: 10px;
+        box-shadow: var(--shadow);
+      }
+      .hl-confirm-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.84rem; padding: 5px 0;
+      }
+      .hl-confirm-row:not(:last-child) { border-bottom: 1px solid var(--border2); }
+      .hl-confirm-label { color: var(--muted); }
+      .hl-confirm-val   { font-weight: 600; }
+
+      /* ══ 新增样式 ══ */
+
+      /* Beta 徽章（操作按钮旁） */
+      .action-beta-badge {
+        font-size: 0.55rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #fff;
+        background: linear-gradient(135deg, #7c3aed, #2563eb);
+        padding: 1px 5px;
+        border-radius: 5px;
+        line-height: 1.6;
+        flex-shrink: 0;
+      }
+
+      /* 账户活动卡片 */
+      .activity-card {
+        width: 100%;
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        padding: 14px 14px 10px;
+        margin: 14px 0 8px;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+      }
+      .activity-card:hover { background: var(--surface2); box-shadow: var(--shadow-lg); }
+      .activity-card:active { transform: scale(0.99); }
+
+      .activity-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .activity-card-title {
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .activity-card-link {
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .activity-preview-list { display: flex; flex-direction: column; gap: 6px; }
+      .activity-preview-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+      }
+      .activity-preview-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .activity-preview-icon.recv { background: var(--success-bg); color: var(--success); }
+      .activity-preview-icon.send { background: var(--danger-bg); color: var(--danger); }
+      .activity-preview-icon.swap { background: var(--accent-dim); color: var(--accent); }
+      .activity-preview-desc { flex: 1; color: var(--text); font-weight: 500; }
+      .activity-preview-chain { color: var(--muted2); font-size: 0.73rem; }
+      .activity-preview-amount { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 0.78rem; margin-left: auto; }
+      .activity-preview-amount.recv { color: var(--success); }
+      .activity-preview-amount.send { color: var(--danger); }
+      .activity-preview-amount.swap { color: var(--muted); }
+
+      /* ── Tab 栏（通用） ── */
+      .new-tab-bar {
+        display: flex;
+        gap: 4px;
+        background: var(--surface2);
+        border-radius: var(--radius-xs);
+        padding: 3px;
+        margin-bottom: 14px;
+      }
+      .new-tab-btn {
+        flex: 1;
+        padding: 7px 0;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--muted);
+        background: transparent;
+        transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      }
+      .new-tab-btn.active {
+        background: var(--surface);
+        color: var(--text);
+        box-shadow: var(--shadow);
+      }
+
+      /* ── 总计栏 ── */
+      .new-total-bar {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .new-total-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted2); }
+      .new-total-value { font-size: 1.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+      /* ── DeFi 卡片 ── */
+      .new-defi-list { display: flex; flex-direction: column; gap: 10px; }
+      .new-defi-card {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        padding: 14px;
+      }
+      .new-defi-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .new-defi-protocol { font-weight: 700; font-size: 0.92rem; color: var(--text); }
+      .new-defi-meta { font-size: 0.74rem; color: var(--muted2); margin-top: 2px; }
+      .new-defi-status {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 2px 8px;
+        border-radius: 99px;
+        flex-shrink: 0;
+      }
+      .new-defi-status.active { background: var(--success-bg); color: var(--success); }
+      .new-defi-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.82rem;
+        padding: 4px 0;
+        border-bottom: 1px solid var(--border2);
+      }
+      .new-defi-row:last-child { border-bottom: none; }
+      .new-defi-label { color: var(--muted); }
+      .new-defi-val { font-weight: 600; color: var(--text); }
+
+      /* ── NFT 列表 ── */
+      .new-nft-list { display: flex; flex-direction: column; gap: 10px; }
+      .new-nft-card {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        padding: 12px 14px;
+      }
+      .new-nft-placeholder {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .new-nft-info { flex: 1; }
+      .new-nft-name { font-weight: 700; font-size: 0.88rem; color: var(--text); }
+      .new-nft-collection { font-size: 0.74rem; color: var(--muted2); margin-top: 2px; }
+      .new-nft-floor { font-size: 0.78rem; font-weight: 600; color: var(--success); margin-top: 4px; }
+
+      /* ── 交易记录行（账户活动详情） ── */
+      .new-tx-list { display: flex; flex-direction: column; gap: 8px; }
+      .new-tx-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        padding: 12px 14px;
+      }
+      .new-tx-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.82rem;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .new-tx-icon.recv { background: var(--success-bg); color: var(--success); }
+      .new-tx-icon.send { background: var(--danger-bg); color: var(--danger); }
+      .new-tx-icon.swap { background: var(--accent-dim); color: var(--accent); }
+      .new-tx-icon.defi { background: rgba(96,165,250,0.12); color: #60a5fa; }
+      .new-tx-body { flex: 1; min-width: 0; }
+      .new-tx-title { font-size: 0.86rem; font-weight: 600; color: var(--text); }
+      .new-tx-meta { font-size: 0.72rem; color: var(--muted2); margin-top: 2px; }
+      .new-tx-amount { font-size: 0.84rem; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+      .new-tx-amount.recv { color: var(--success); }
+      .new-tx-amount.send { color: var(--danger); }
+      .new-tx-amount.swap { color: var(--muted); }
+      .new-tx-amount.defi { color: #60a5fa; }
+
+      /* ── 质押总览卡片 ── */
+      .new-staking-overview {
+        background: linear-gradient(135deg, #1e3a5f, #2563eb);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin-bottom: 18px;
+        color: #fff;
+      }
+      .new-staking-stat-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .new-staking-stat { flex: 1; }
+      .new-staking-stat-label { font-size: 0.68rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+      .new-staking-stat-val { font-size: 1.05rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+      .new-staking-stat-sub { font-size: 0.72rem; opacity: 0.75; margin-top: 2px; }
+      .new-staking-actions { display: flex; gap: 10px; }
+      .new-staking-btn {
+        flex: 1;
+        padding: 10px 0;
+        border-radius: var(--radius-xs);
+        font-size: 0.86rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.15s;
+      }
+      .new-staking-btn.primary { background: #fff; color: #2563eb; }
+      .new-staking-btn.secondary { background: rgba(255,255,255,0.15); color: #fff; }
+      .new-staking-btn:active { opacity: 0.8; }
+
+      /* ── 收益记录 ── */
+      .new-reward-list {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .new-reward-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--border2);
+        font-size: 0.84rem;
+      }
+      .new-reward-row:last-child { border-bottom: none; }
+      .new-reward-date { color: var(--muted2); min-width: 50px; }
+      .new-reward-eth { flex: 1; color: var(--success); font-weight: 600; }
+      .new-reward-usd { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+      /* ── Agent Trading ── */
+      .new-beta-pill {
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: linear-gradient(135deg, #7c3aed, #2563eb);
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 6px;
+        vertical-align: middle;
+      }
+      .new-agent-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin: 0 0 14px;
+        line-height: 1.5;
+      }
+      .new-agent-card {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        padding: 16px;
+      }
+      .new-agent-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .new-agent-card-name { font-weight: 700; font-size: 0.96rem; color: var(--text); }
+      .new-agent-card-time { font-size: 0.72rem; color: var(--muted2); margin-top: 3px; }
+      .new-agent-status {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 99px;
+        flex-shrink: 0;
+      }
+      .new-agent-status.running { background: var(--success-bg); color: var(--success); }
+      .new-agent-capabilities { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+      .new-cap-tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 99px;
+        background: var(--accent-dim);
+        color: var(--accent);
+      }
+      .new-agent-protocols-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .new-proto-dot {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6rem;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .new-proto-dot.lg { width: 32px; height: 32px; font-size: 0.7rem; }
+      .new-agent-btns { display: flex; gap: 10px; }
+      .new-agent-btn {
+        flex: 1;
+        padding: 10px 0;
+        border-radius: var(--radius-xs);
+        font-size: 0.86rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.15s, transform 0.1s;
+      }
+      .new-agent-btn.primary { background: var(--accent); color: #fff; }
+      .new-agent-btn.secondary { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+      .new-agent-btn:active { transform: scale(0.97); opacity: 0.85; }
+
+      /* 协议 Agent 列表 */
+      .new-proto-agent-list { display: flex; flex-direction: column; gap: 8px; }
+      .new-proto-agent-item {
+        background: var(--surface);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .new-proto-agent-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 14px;
+        cursor: pointer;
+        transition: background 0.12s;
+      }
+      .new-proto-agent-row:hover { background: var(--surface2); }
+      .new-proto-agent-left { display: flex; align-items: center; gap: 10px; }
+      .new-proto-agent-name { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+      .new-proto-agent-type { font-size: 0.72rem; color: var(--muted2); margin-top: 2px; }
+      .new-proto-agent-right { display: flex; align-items: center; gap: 10px; }
+
+      /* Toggle 开关 */
+      .new-toggle { position: relative; display: inline-block; width: 38px; height: 22px; flex-shrink: 0; }
+      .new-toggle input { opacity: 0; width: 0; height: 0; }
+      .new-toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background: var(--border);
+        border-radius: 99px;
+        transition: background 0.2s;
+      }
+      .new-toggle-slider::before {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        left: 3px;
+        top: 3px;
+        background: #fff;
+        border-radius: 50%;
+        transition: transform 0.2s;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      }
+      .new-toggle input:checked + .new-toggle-slider { background: var(--success); }
+      .new-toggle input:checked + .new-toggle-slider::before { transform: translateX(16px); }
+
+      /* 协议 Agent 展开内容 */
+      .new-proto-agent-expand { border-top: 1px solid var(--border2); }
+      .new-proto-expand-body { padding: 10px 14px 12px; }
+      .new-proto-detail-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        padding: 4px 0;
+        gap: 10px;
+      }
+      .new-proto-detail-row span:first-child { color: var(--muted); flex-shrink: 0; }
     </style>
   </head>
   <body>
+    <div class="demo-toggle-bar">
+      <button type="button" class="demo-toggle-fab" id="btn-demo-toggle">空钱包状态</button>
+    </div>
+
     <div class="app">
       <section id="screen-home" class="screen is-active" aria-label="Portfolio 首页">
-        <div class="wallet-card">
-          <div class="wallet-row">
-            <span class="wallet-name">Randy</span>
-            <span class="wallet-avatar">R</span>
+        <div class="home-topbar">
+          <div class="home-logo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="home-user-pill">
+            <div class="home-user-avatar">Y</div>
+            <span class="home-user-name">Yiqun</span>
           </div>
         </div>
 
-        <div class="unified">
-          <div class="unified-label">Total Balance</div>
-          <div class="unified-value" id="unified-total">$0.00</div>
+        <div class="donut-section" id="donut-section-clickable" style="cursor:pointer;">
+          <div class="donut-wrap">
+            <svg class="donut-svg" id="donut-svg" viewBox="0 0 220 220" aria-hidden="true"></svg>
+            <div class="donut-center">
+              <div class="donut-label">Portfolio balance</div>
+              <div class="donut-value" id="unified-total">$0</div>
+              <div class="donut-change pos" id="donut-change">+2.34%</div>
+            </div>
+          </div>
         </div>
 
         <div class="home-action-bar">
@@ -1180,24 +2266,73 @@
             <span class="home-action-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
             </span>
-            <span class="home-action-label">Send</span>
+            <span class="home-action-label">发送</span>
           </button>
           <button type="button" class="home-action-btn" id="btn-receive-home">
             <span class="home-action-icon primary-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#0c1220" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
             </span>
-            <span class="home-action-label">Receive</span>
+            <span class="home-action-label">接收</span>
           </button>
-          <button type="button" class="home-action-btn" id="btn-tx-home">
+          <button type="button" class="home-action-btn" id="btn-staking-home">
             <span class="home-action-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
             </span>
-            <span class="home-action-label">记录</span>
+            <span class="home-action-label">质押</span>
+          </button>
+          <button type="button" class="home-action-btn" id="btn-agent-home" style="position:relative;">
+            <span class="home-action-icon" style="background:linear-gradient(135deg,#7c3aed,#2563eb);box-shadow:0 4px 16px rgba(124,58,237,0.35);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.72V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.72A2 2 0 0 1 10 4a2 2 0 0 1 2-2z"/><path d="M5 14v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/><line x1="9" y1="17" x2="9.01" y2="17"/><line x1="15" y1="17" x2="15.01" y2="17"/></svg>
+            </span>
+            <span class="home-action-label" style="display:flex;align-items:center;gap:4px;">Agent 交易<span class="action-beta-badge">Beta</span></span>
           </button>
         </div>
 
-        <div class="section-label">Assets（5）</div>
+        <div class="section-header">
+          <span class="section-label">YOUR ASSETS</span>
+          <span class="section-all-link">All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </div>
         <div class="token-list" id="token-list"></div>
+
+        <!-- 账户活动卡片 -->
+        <button type="button" class="activity-card" id="btn-activity-card">
+          <div class="activity-card-header">
+            <span class="activity-card-title">账户活动</span>
+            <span class="activity-card-link">查看全部 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </div>
+          <div class="activity-preview-list">
+            <div class="activity-preview-row">
+              <span class="activity-preview-icon recv">↓</span>
+              <span class="activity-preview-desc">Received ETH</span>
+              <span class="activity-preview-chain">Arbitrum</span>
+              <span class="activity-preview-amount recv">+0.5 ETH</span>
+            </div>
+            <div class="activity-preview-row">
+              <span class="activity-preview-icon send">↑</span>
+              <span class="activity-preview-desc">Sent USDC</span>
+              <span class="activity-preview-chain">Ethereum</span>
+              <span class="activity-preview-amount send">-200 USDC</span>
+            </div>
+            <div class="activity-preview-row">
+              <span class="activity-preview-icon recv">↓</span>
+              <span class="activity-preview-desc">Received USDC</span>
+              <span class="activity-preview-chain">Arbitrum</span>
+              <span class="activity-preview-amount recv">+500 USDC</span>
+            </div>
+            <div class="activity-preview-row">
+              <span class="activity-preview-icon swap">↔</span>
+              <span class="activity-preview-desc">Move ARB</span>
+              <span class="activity-preview-chain">Arbitrum</span>
+              <span class="activity-preview-amount swap">16 ARB</span>
+            </div>
+            <div class="activity-preview-row">
+              <span class="activity-preview-icon recv">↓</span>
+              <span class="activity-preview-desc">Received LINK</span>
+              <span class="activity-preview-chain">Ethereum</span>
+              <span class="activity-preview-amount recv">+0.0052 LINK</span>
+            </div>
+          </div>
+        </button>
 
         <div class="ph-block" id="ph-block">
           <button type="button" class="ph-toggle" id="ph-toggle">
@@ -1206,6 +2341,108 @@
           </button>
           <div class="ph-content" id="ph-list"></div>
         </div>
+
+        <div style="padding:16px 16px 24px">
+          <button type="button" class="demo-state-btn" id="btn-demo-to-empty">切换到：空钱包状态（演示）</button>
+        </div>
+
+      </section>
+
+      <!-- 空钱包状态首页 -->
+      <section id="screen-home-empty" class="screen" aria-label="空钱包首页">
+        <div class="home-topbar">
+          <div class="home-logo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="home-user-pill">
+            <div class="home-user-avatar">Y</div>
+            <span class="home-user-name">Yiqun</span>
+          </div>
+        </div>
+
+        <div class="empty-balance">$0.00</div>
+        <div class="empty-balance-label">Total Balance</div>
+
+        <div class="home-action-bar">
+          <button type="button" class="home-action-btn" style="opacity:0.4;pointer-events:none">
+            <span class="home-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </span>
+            <span class="home-action-label">Send</span>
+          </button>
+          <button type="button" class="home-action-btn" id="btn-receive-empty">
+            <span class="home-action-icon primary-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </span>
+            <span class="home-action-label">Receive</span>
+          </button>
+          <button type="button" class="home-action-btn" id="btn-tx-empty" style="opacity:0.4;pointer-events:none">
+            <span class="home-action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </span>
+            <span class="home-action-label">记录</span>
+          </button>
+        </div>
+
+        <div class="empty-state-wrap">
+          <div class="empty-state-illus">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+              <rect x="6" y="18" width="44" height="30" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+              <path d="M6 26h44" stroke="#2563eb" stroke-width="2"/>
+              <rect x="12" y="32" width="12" height="6" rx="2" fill="#2563eb" opacity="0.4"/>
+              <circle cx="40" cy="12" r="10" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+              <path d="M40 8v4l2 2" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="empty-state-title">钱包已就绪</div>
+          <div class="empty-state-sub">还没有任何资产，通过收款地址充入资产，或发起转账开始使用。</div>
+        </div>
+
+        <!-- 功能引导卡片 -->
+        <div class="feature-cards">
+
+          <!-- AI Agent 卡片 -->
+          <button type="button" class="feature-card feature-card-ai">
+            <div class="feature-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.72V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.72A2 2 0 0 1 10 4a2 2 0 0 1 2-2z"/>
+                <path d="M5 14v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/>
+                <line x1="9" y1="17" x2="9.01" y2="17"/>
+                <line x1="15" y1="17" x2="15.01" y2="17"/>
+              </svg>
+            </div>
+            <div class="feature-card-body">
+              <div class="feature-card-title">AI Agent</div>
+              <div class="feature-card-desc">让 AI 帮你管理资产、执行链上操作，一句话完成复杂交易</div>
+            </div>
+            <div class="feature-card-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </button>
+
+          <!-- Hyperliquid 卡片 -->
+          <button type="button" class="feature-card feature-card-hl">
+            <div class="feature-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                <polyline points="16 7 22 7 22 13"/>
+              </svg>
+            </div>
+            <div class="feature-card-body">
+              <div class="feature-card-title">Hyperliquid</div>
+              <div class="feature-card-desc">高性能链上永续合约交易，享受 CEX 级别的速度与深度</div>
+            </div>
+            <div class="feature-card-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </button>
+
+        </div>
+
+        <div style="padding:16px 16px 24px">
+          <button type="button" class="demo-state-btn" id="btn-demo-to-normal">切换到：有资产状态（演示）</button>
+        </div>
+
       </section>
 
       <section id="screen-tx-home" class="screen" aria-label="交易记录">
@@ -1267,6 +2504,512 @@
         <div class="receive-step-label" id="send-step"></div>
         <div id="send-body"></div>
       </section>
+
+      <!-- ── Hyperliquid 主页面 ── -->
+      <section id="screen-hl" class="screen" aria-label="Hyperliquid">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-hl" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="page-title">Hyperliquid</span>
+          <span style="width:40px"></span>
+        </div>
+        <div id="hl-body"></div>
+      </section>
+
+      <!-- ── Hyperliquid 充值 ── -->
+      <section id="screen-hl-deposit" class="screen" aria-label="充值到 Hyperliquid">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-hl-deposit" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="page-title" id="hl-deposit-title">充值</span>
+          <span style="width:40px"></span>
+        </div>
+        <div class="receive-step-label" id="hl-deposit-step"></div>
+        <div id="hl-deposit-body"></div>
+      </section>
+
+      <!-- ── Hyperliquid 提款 ── -->
+      <section id="screen-hl-withdraw" class="screen" aria-label="从 Hyperliquid 提款">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-hl-withdraw" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="page-title" id="hl-withdraw-title">提款</span>
+          <span style="width:40px"></span>
+        </div>
+        <div class="receive-step-label" id="hl-withdraw-step"></div>
+        <div id="hl-withdraw-body"></div>
+      </section>
+
+      <!-- ── 资产详情 ── -->
+      <section id="screen-asset-detail" class="screen" aria-label="资产详情">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-asset-detail" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="page-title">资产概览</span>
+          <span style="width:40px"></span>
+        </div>
+
+        <!-- Tab 栏 -->
+        <div class="new-tab-bar" id="asset-detail-tabs">
+          <button type="button" class="new-tab-btn active" data-tab="token">Token</button>
+          <button type="button" class="new-tab-btn" data-tab="defi">DeFi</button>
+          <button type="button" class="new-tab-btn" data-tab="nft">NFT</button>
+        </div>
+
+        <!-- Token Tab -->
+        <div class="new-tab-content" id="asset-tab-token">
+          <div class="new-total-bar">
+            <span class="new-total-label">Token 持仓</span>
+            <span class="new-total-value">$4,318.41</span>
+          </div>
+          <div class="token-list" id="asset-token-list">
+            <button type="button" class="token-row" data-token="eth">
+              <div class="token-icon"><img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="ETH"></div>
+              <div class="token-main">
+                <div class="token-info"><div class="token-line1"><span class="token-symbol">ETH</span><span class="token-fullname">Ethereum</span></div><div style="font-size:0.75rem;color:var(--muted2)">0.845 ETH</div></div>
+                <div class="token-values"><div class="token-balance">$2,116.78</div></div>
+              </div>
+            </button>
+            <button type="button" class="token-row" data-token="usdc">
+              <div class="token-icon"><img src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png" alt="USDC"></div>
+              <div class="token-main">
+                <div class="token-info"><div class="token-line1"><span class="token-symbol">USDC</span><span class="token-fullname">USD Coin</span></div><div style="font-size:0.75rem;color:var(--muted2)">1,000 USDC</div></div>
+                <div class="token-values"><div class="token-balance">$1,000.00</div></div>
+              </div>
+            </button>
+            <button type="button" class="token-row" data-token="usdt">
+              <div class="token-icon"><img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT"></div>
+              <div class="token-main">
+                <div class="token-info"><div class="token-line1"><span class="token-symbol">USDT</span><span class="token-fullname">Tether USD</span></div><div style="font-size:0.75rem;color:var(--muted2)">700 USDT</div></div>
+                <div class="token-values"><div class="token-balance">$700.00</div></div>
+              </div>
+            </button>
+            <button type="button" class="token-row" data-token="arb">
+              <div class="token-icon"><img src="https://assets.coingecko.com/coins/images/16547/small/arb.jpg" alt="ARB"></div>
+              <div class="token-main">
+                <div class="token-info"><div class="token-line1"><span class="token-symbol">ARB</span><span class="token-fullname">Arbitrum</span></div><div style="font-size:0.75rem;color:var(--muted2)">22 ARB</div></div>
+                <div class="token-values"><div class="token-balance">$481.36</div></div>
+              </div>
+            </button>
+            <button type="button" class="token-row dust" data-token="link">
+              <div class="token-icon"><img src="https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png" alt="LINK"></div>
+              <div class="token-main">
+                <div class="token-info"><div class="token-line1"><span class="token-symbol">LINK</span><span class="token-fullname">Chainlink</span><span class="dust-badge">Dust</span></div><div style="font-size:0.75rem;color:var(--muted2)">0.0052 LINK</div></div>
+                <div class="token-values"><div class="token-balance">$0.07</div></div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- DeFi Tab -->
+        <div class="new-tab-content" id="asset-tab-defi" style="display:none">
+          <div class="new-total-bar">
+            <span class="new-total-label">DeFi 持仓</span>
+            <span class="new-total-value">$1,976.75</span>
+          </div>
+          <div class="new-defi-list">
+            <div class="new-defi-card">
+              <div class="new-defi-header">
+                <div>
+                  <div class="new-defi-protocol">Lido Finance</div>
+                  <div class="new-defi-meta">ETH 质押 · Ethereum</div>
+                </div>
+                <span class="new-defi-status active">Active</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">质押量</span><span class="new-defi-val">0.18 ETH</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">估值</span><span class="new-defi-val">$450.75</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">APY</span><span class="new-defi-val" style="color:var(--success)">3.9%</span>
+              </div>
+            </div>
+            <div class="new-defi-card">
+              <div class="new-defi-header">
+                <div>
+                  <div class="new-defi-protocol">Native Staking</div>
+                  <div class="new-defi-meta">ETH 质押 · Arbitrum</div>
+                </div>
+                <span class="new-defi-status active">Active</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">质押量</span><span class="new-defi-val">0.14 ETH</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">估值</span><span class="new-defi-val">$350.59</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">APY</span><span class="new-defi-val" style="color:var(--success)">3.6%</span>
+              </div>
+            </div>
+            <div class="new-defi-card">
+              <div class="new-defi-header">
+                <div>
+                  <div class="new-defi-protocol">Aave V3</div>
+                  <div class="new-defi-meta">Lending · Arbitrum</div>
+                </div>
+                <span class="new-defi-status active">Active</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">Supplied</span><span class="new-defi-val">500 USDC</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">Borrowed</span><span class="new-defi-val" style="color:var(--danger)">0.05 ETH</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">净估值</span><span class="new-defi-val">$374.91</span>
+              </div>
+            </div>
+            <div class="new-defi-card">
+              <div class="new-defi-header">
+                <div>
+                  <div class="new-defi-protocol">Uniswap V3</div>
+                  <div class="new-defi-meta">LP Position · Ethereum</div>
+                </div>
+                <span class="new-defi-status active">Active</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">流动性</span><span class="new-defi-val">0.12 ETH + 300 USDC</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">估值</span><span class="new-defi-val">$600.50</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">未收手续费</span><span class="new-defi-val" style="color:var(--success)">+$4.28</span>
+              </div>
+            </div>
+            <div class="new-defi-card">
+              <div class="new-defi-header">
+                <div>
+                  <div class="new-defi-protocol">Hyperliquid</div>
+                  <div class="new-defi-meta">Staking · HyperEVM</div>
+                </div>
+                <span class="new-defi-status active">Active</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">质押量</span><span class="new-defi-val">200 USDC</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">估值</span><span class="new-defi-val">$200.00</span>
+              </div>
+              <div class="new-defi-row">
+                <span class="new-defi-label">APY</span><span class="new-defi-val" style="color:var(--success)">8.5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NFT Tab -->
+        <div class="new-tab-content" id="asset-tab-nft" style="display:none">
+          <div class="new-total-bar">
+            <span class="new-total-label">NFT 持仓</span>
+            <span class="new-total-value">$1,199.00</span>
+          </div>
+          <div class="new-nft-list">
+            <div class="new-nft-card">
+              <div class="new-nft-placeholder" style="background:linear-gradient(135deg,#60a5fa,#818cf8)">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+              </div>
+              <div class="new-nft-info">
+                <div class="new-nft-name">Pudgy Penguins #1234</div>
+                <div class="new-nft-collection">Pudgy Penguins</div>
+                <div class="new-nft-floor">Floor ~$899.00</div>
+              </div>
+            </div>
+            <div class="new-nft-card">
+              <div class="new-nft-placeholder" style="background:linear-gradient(135deg,#f97316,#ef4444)">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+              </div>
+              <div class="new-nft-info">
+                <div class="new-nft-name">Azuki #5678</div>
+                <div class="new-nft-collection">Azuki</div>
+                <div class="new-nft-floor">Floor ~$300.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 账户活动详情 ── -->
+      <section id="screen-activity-detail" class="screen" aria-label="账户活动">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-activity-detail" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="page-title">账户活动</span>
+          <span style="width:40px"></span>
+        </div>
+
+        <div class="new-tab-bar" id="activity-detail-tabs">
+          <button type="button" class="new-tab-btn active" data-tab="onchain">On-Chain</button>
+          <button type="button" class="new-tab-btn" data-tab="offchain">Off-Chain</button>
+        </div>
+
+        <!-- On-Chain Tab -->
+        <div class="new-tab-content" id="activity-tab-onchain">
+          <div class="new-tx-list">
+            <div class="new-tx-row"><span class="new-tx-icon recv">↓</span><div class="new-tx-body"><div class="new-tx-title">Received ETH</div><div class="new-tx-meta">2 days ago · Arbitrum</div></div><span class="new-tx-amount recv">+0.5 ETH</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon send">↑</span><div class="new-tx-body"><div class="new-tx-title">Sent USDC</div><div class="new-tx-meta">3 days ago · Ethereum</div></div><span class="new-tx-amount send">-200 USDC</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon recv">↓</span><div class="new-tx-body"><div class="new-tx-title">Received USDC</div><div class="new-tx-meta">5 days ago · Arbitrum</div></div><span class="new-tx-amount recv">+500 USDC</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon swap">↔</span><div class="new-tx-body"><div class="new-tx-title">Move ARB</div><div class="new-tx-meta">1 week ago · Arbitrum</div></div><span class="new-tx-amount swap">16 ARB</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon recv">↓</span><div class="new-tx-body"><div class="new-tx-title">Received LINK</div><div class="new-tx-meta">1 week ago · Ethereum</div></div><span class="new-tx-amount recv">+0.0052 LINK</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon send">↑</span><div class="new-tx-body"><div class="new-tx-title">Sent ETH</div><div class="new-tx-meta">2 weeks ago · HyperEVM</div></div><span class="new-tx-amount send">-0.05 ETH</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon recv">↓</span><div class="new-tx-body"><div class="new-tx-title">Received USDT</div><div class="new-tx-meta">2 weeks ago · Tron</div></div><span class="new-tx-amount recv">+500 USDT</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon send">↑</span><div class="new-tx-body"><div class="new-tx-title">Sent USDT</div><div class="new-tx-meta">3 weeks ago · Arbitrum</div></div><span class="new-tx-amount send">-80 USDT</span></div>
+          </div>
+        </div>
+
+        <!-- Off-Chain Tab -->
+        <div class="new-tab-content" id="activity-tab-offchain" style="display:none">
+          <div class="new-tx-list">
+            <div class="new-tx-row"><span class="new-tx-icon defi">⬇</span><div class="new-tx-body"><div class="new-tx-title">Deposit to Aave</div><div class="new-tx-meta">3 days ago · Aave V3</div></div><span class="new-tx-amount defi">500 USDC</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon send">↑</span><div class="new-tx-body"><div class="new-tx-title">Borrow from Aave</div><div class="new-tx-meta">3 days ago · Aave V3</div></div><span class="new-tx-amount send">0.05 ETH</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon defi">+</span><div class="new-tx-body"><div class="new-tx-title">Add Liquidity</div><div class="new-tx-meta">1 week ago · Uniswap V3</div></div><span class="new-tx-amount defi">0.12 ETH + 300 USDC</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon defi">⬇</span><div class="new-tx-body"><div class="new-tx-title">Stake USDC</div><div class="new-tx-meta">1 week ago · Hyperliquid</div></div><span class="new-tx-amount defi">200 USDC</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon swap">✓</span><div class="new-tx-body"><div class="new-tx-title">Token Approval</div><div class="new-tx-meta">1 week ago · Uniswap V3</div></div><span class="new-tx-amount swap">∞ USDC</span></div>
+            <div class="new-tx-row"><span class="new-tx-icon recv">↓</span><div class="new-tx-body"><div class="new-tx-title">Claim Rewards</div><div class="new-tx-meta">2 weeks ago · Uniswap V3</div></div><span class="new-tx-amount recv">+4.28 USDC</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 质押详情 ── -->
+      <section id="screen-staking-detail" class="screen" aria-label="ETH 质押">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-staking-detail" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="page-title">ETH 质押</span>
+          <span style="width:40px"></span>
+        </div>
+
+        <!-- 总览卡片 -->
+        <div class="new-staking-overview">
+          <div class="new-staking-stat-row">
+            <div class="new-staking-stat">
+              <div class="new-staking-stat-label">已质押</div>
+              <div class="new-staking-stat-val">0.32 ETH</div>
+              <div class="new-staking-stat-sub">$801.34</div>
+            </div>
+            <div class="new-staking-stat">
+              <div class="new-staking-stat-label">累计收益</div>
+              <div class="new-staking-stat-val" style="color:var(--success)">+0.0048 ETH</div>
+            </div>
+            <div class="new-staking-stat">
+              <div class="new-staking-stat-label">综合 APY</div>
+              <div class="new-staking-stat-val" style="color:var(--success)">3.8%</div>
+            </div>
+          </div>
+          <div class="new-staking-actions">
+            <button type="button" class="new-staking-btn primary">质押更多</button>
+            <button type="button" class="new-staking-btn secondary">赎回</button>
+          </div>
+        </div>
+
+        <!-- 仓位列表 -->
+        <div class="section-header"><span class="section-label">质押仓位</span></div>
+        <div class="new-defi-list">
+          <div class="new-defi-card">
+            <div class="new-defi-header">
+              <div>
+                <div class="new-defi-protocol">Lido Finance</div>
+                <div class="new-defi-meta">Ethereum</div>
+              </div>
+              <span class="new-defi-status active">Active</span>
+            </div>
+            <div class="new-defi-row"><span class="new-defi-label">质押量</span><span class="new-defi-val">0.18 ETH</span></div>
+            <div class="new-defi-row"><span class="new-defi-label">估值</span><span class="new-defi-val">$450.75</span></div>
+            <div class="new-defi-row"><span class="new-defi-label">APY</span><span class="new-defi-val" style="color:var(--success)">3.9%</span></div>
+          </div>
+          <div class="new-defi-card">
+            <div class="new-defi-header">
+              <div>
+                <div class="new-defi-protocol">Native Staking</div>
+                <div class="new-defi-meta">Arbitrum</div>
+              </div>
+              <span class="new-defi-status active">Active</span>
+            </div>
+            <div class="new-defi-row"><span class="new-defi-label">质押量</span><span class="new-defi-val">0.14 ETH</span></div>
+            <div class="new-defi-row"><span class="new-defi-label">估值</span><span class="new-defi-val">$350.59</span></div>
+            <div class="new-defi-row"><span class="new-defi-label">APY</span><span class="new-defi-val" style="color:var(--success)">3.6%</span></div>
+          </div>
+        </div>
+
+        <!-- 收益记录 -->
+        <div class="section-header"><span class="section-label">收益记录</span></div>
+        <div class="new-reward-list">
+          <div class="new-reward-row"><span class="new-reward-date">Apr 27</span><span class="new-reward-eth">+0.00018 ETH</span><span class="new-reward-usd">+$0.45</span></div>
+          <div class="new-reward-row"><span class="new-reward-date">Apr 26</span><span class="new-reward-eth">+0.00018 ETH</span><span class="new-reward-usd">+$0.45</span></div>
+          <div class="new-reward-row"><span class="new-reward-date">Apr 25</span><span class="new-reward-eth">+0.00017 ETH</span><span class="new-reward-usd">+$0.43</span></div>
+          <div class="new-reward-row"><span class="new-reward-date">Apr 24</span><span class="new-reward-eth">+0.00019 ETH</span><span class="new-reward-usd">+$0.48</span></div>
+          <div class="new-reward-row"><span class="new-reward-date">Apr 23</span><span class="new-reward-eth">+0.00016 ETH</span><span class="new-reward-usd">+$0.40</span></div>
+        </div>
+      </section>
+
+      <!-- ── Agent Trading ── -->
+      <section id="screen-agent-trading" class="screen" aria-label="Agent Trading">
+        <div class="top-bar">
+          <button type="button" class="back-btn" id="btn-back-agent-trading" aria-label="返回"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="page-title" style="display:flex;align-items:center;gap:6px;">Agent Trading <span class="new-beta-pill">Beta</span></span>
+          <span style="width:40px"></span>
+        </div>
+
+        <div class="new-tab-bar" id="agent-trading-tabs">
+          <button type="button" class="new-tab-btn active" data-tab="global">全局 Agent</button>
+          <button type="button" class="new-tab-btn" data-tab="protocol">协议 Agent</button>
+        </div>
+
+        <!-- 全局 Agent Tab -->
+        <div class="new-tab-content" id="agent-tab-global">
+          <p class="new-agent-desc">单一 Agent 授权，可自主调用所有已接入 DeFi 协议执行策略。</p>
+
+          <div class="new-agent-card">
+            <div class="new-agent-card-header">
+              <div>
+                <div class="new-agent-card-name">Omni DeFi Agent</div>
+                <div class="new-agent-card-time">上次执行 15 min ago</div>
+              </div>
+              <span class="new-agent-status running">运行中</span>
+            </div>
+
+            <div class="new-agent-capabilities">
+              <span class="new-cap-tag">Swap</span>
+              <span class="new-cap-tag">借贷优化</span>
+              <span class="new-cap-tag">ETH质押复投</span>
+              <span class="new-cap-tag">LP再平衡</span>
+              <span class="new-cap-tag">收益收集</span>
+              <span class="new-cap-tag">清算防护</span>
+            </div>
+
+            <div class="new-agent-protocols-row">
+              <span style="font-size:0.72rem;color:var(--muted2);margin-right:6px;">已授权：</span>
+              <span class="new-proto-dot" style="background:#00a3ff;" title="Lido">Li</span>
+              <span class="new-proto-dot" style="background:#627eea;" title="Native">Na</span>
+              <span class="new-proto-dot" style="background:#b6509e;" title="Aave">Aa</span>
+              <span class="new-proto-dot" style="background:#ff007a;" title="Uniswap">Un</span>
+              <span class="new-proto-dot" style="background:#a78bfa;" title="Hyperliquid">Hy</span>
+            </div>
+
+            <div class="new-agent-btns">
+              <button type="button" class="new-agent-btn primary">启动 Agent</button>
+              <button type="button" class="new-agent-btn secondary">暂停 Agent</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 协议 Agent Tab -->
+        <div class="new-tab-content" id="agent-tab-protocol" style="display:none">
+          <p class="new-agent-desc">每个协议单独配置 Agent，授权相互隔离，精细管控风险。</p>
+
+          <div class="new-proto-agent-list">
+            <!-- Lido -->
+            <div class="new-proto-agent-item" id="proto-lido">
+              <div class="new-proto-agent-row" data-proto="lido">
+                <div class="new-proto-agent-left">
+                  <span class="new-proto-dot lg" style="background:#00a3ff;">Li</span>
+                  <div>
+                    <div class="new-proto-agent-name">Lido Finance</div>
+                    <div class="new-proto-agent-type">ETH质押</div>
+                  </div>
+                </div>
+                <div class="new-proto-agent-right">
+                  <span class="new-agent-status running" style="font-size:0.7rem">运行中</span>
+                  <label class="new-toggle"><input type="checkbox" checked><span class="new-toggle-slider"></span></label>
+                </div>
+              </div>
+              <div class="new-proto-agent-expand" id="expand-lido" style="display:none">
+                <div class="new-proto-expand-body">
+                  <div class="new-proto-detail-row"><span>上次执行</span><span>2h ago</span></div>
+                  <div class="new-proto-detail-row"><span>支持操作</span><span style="color:var(--accent)">自动复投 · 收益追踪 · 赎回提醒</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Native Staking -->
+            <div class="new-proto-agent-item" id="proto-native">
+              <div class="new-proto-agent-row" data-proto="native">
+                <div class="new-proto-agent-left">
+                  <span class="new-proto-dot lg" style="background:#627eea;">Na</span>
+                  <div>
+                    <div class="new-proto-agent-name">Native Staking</div>
+                    <div class="new-proto-agent-type">ETH质押</div>
+                  </div>
+                </div>
+                <div class="new-proto-agent-right">
+                  <span class="new-agent-status running" style="font-size:0.7rem">运行中</span>
+                  <label class="new-toggle"><input type="checkbox" checked><span class="new-toggle-slider"></span></label>
+                </div>
+              </div>
+              <div class="new-proto-agent-expand" id="expand-native" style="display:none">
+                <div class="new-proto-expand-body">
+                  <div class="new-proto-detail-row"><span>上次执行</span><span>2h ago</span></div>
+                  <div class="new-proto-detail-row"><span>支持操作</span><span style="color:var(--accent)">自动复投 · 收益追踪</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Aave V3 -->
+            <div class="new-proto-agent-item" id="proto-aave">
+              <div class="new-proto-agent-row" data-proto="aave">
+                <div class="new-proto-agent-left">
+                  <span class="new-proto-dot lg" style="background:#b6509e;">Aa</span>
+                  <div>
+                    <div class="new-proto-agent-name">Aave V3</div>
+                    <div class="new-proto-agent-type">Lending</div>
+                  </div>
+                </div>
+                <div class="new-proto-agent-right">
+                  <span class="new-agent-status running" style="font-size:0.7rem">运行中</span>
+                  <label class="new-toggle"><input type="checkbox" checked><span class="new-toggle-slider"></span></label>
+                </div>
+              </div>
+              <div class="new-proto-agent-expand" id="expand-aave" style="display:none">
+                <div class="new-proto-expand-body">
+                  <div class="new-proto-detail-row"><span>上次执行</span><span>3h ago</span></div>
+                  <div class="new-proto-detail-row"><span>支持操作</span><span style="color:var(--accent)">清算防护 · 利率优化</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Uniswap V3 -->
+            <div class="new-proto-agent-item" id="proto-uniswap">
+              <div class="new-proto-agent-row" data-proto="uniswap">
+                <div class="new-proto-agent-left">
+                  <span class="new-proto-dot lg" style="background:#ff007a;">Un</span>
+                  <div>
+                    <div class="new-proto-agent-name">Uniswap V3</div>
+                    <div class="new-proto-agent-type">LP Position</div>
+                  </div>
+                </div>
+                <div class="new-proto-agent-right">
+                  <span class="new-agent-status" style="font-size:0.7rem;color:var(--muted2)">未启用</span>
+                  <label class="new-toggle"><input type="checkbox"><span class="new-toggle-slider"></span></label>
+                </div>
+              </div>
+              <div class="new-proto-agent-expand" id="expand-uniswap" style="display:none">
+                <div class="new-proto-expand-body">
+                  <div class="new-proto-detail-row"><span>支持操作</span><span style="color:var(--accent)">LP再平衡 · 收益收集</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hyperliquid -->
+            <div class="new-proto-agent-item" id="proto-hyper">
+              <div class="new-proto-agent-row" data-proto="hyper">
+                <div class="new-proto-agent-left">
+                  <span class="new-proto-dot lg" style="background:#a78bfa;">Hy</span>
+                  <div>
+                    <div class="new-proto-agent-name">Hyperliquid</div>
+                    <div class="new-proto-agent-type">Staking</div>
+                  </div>
+                </div>
+                <div class="new-proto-agent-right">
+                  <span class="new-agent-status" style="font-size:0.7rem;color:var(--muted2)">未启用</span>
+                  <label class="new-toggle"><input type="checkbox"><span class="new-toggle-slider"></span></label>
+                </div>
+              </div>
+              <div class="new-proto-agent-expand" id="expand-hyper" style="display:none">
+                <div class="new-proto-expand-body">
+                  <div class="new-proto-detail-row"><span>支持操作</span><span style="color:var(--accent)">自动复投 · 收益追踪</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <script>
@@ -1280,8 +3023,8 @@
             symbol: "ETH",
             name: "Ethereum",
             iconUrl: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
-            balance: "1.245",
-            fiat: 3112.5,
+            balance: "0.845",
+            fiat: 2116.78,
             dust: false,
           },
           usdc: {
@@ -1289,8 +3032,17 @@
             symbol: "USDC",
             name: "USD Coin",
             iconUrl: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png",
-            balance: "1,200",
-            fiat: 1200,
+            balance: "1,000",
+            fiat: 1000,
+            dust: false,
+          },
+          usdt: {
+            id: "usdt",
+            symbol: "USDT",
+            name: "Tether USD",
+            iconUrl: "https://assets.coingecko.com/coins/images/325/small/Tether.png",
+            balance: "700",
+            fiat: 700,
             dust: false,
           },
           arb: {
@@ -1298,8 +3050,8 @@
             symbol: "ARB",
             name: "Arbitrum",
             iconUrl: "https://assets.coingecko.com/coins/images/16547/small/arb.jpg",
-            balance: "16",
-            fiat: 16,
+            balance: "22",
+            fiat: 481.36,
             dust: false,
           },
           link: {
@@ -1311,15 +3063,6 @@
             fiat: 0.07,
             dust: true,
           },
-          usdt: {
-            id: "usdt",
-            symbol: "USDT",
-            name: "Tether USD",
-            iconUrl: "https://assets.coingecko.com/coins/images/325/small/Tether.png",
-            balance: "2,500",
-            fiat: 2500,
-            dust: false,
-          },
         };
 
         const DISTRIBUTION = {
@@ -1327,70 +3070,70 @@
           usdc: { Tron: "0",     Arbitrum: "800",  Hyperliquid: "200",   Ethereum: "200" },
           arb:  { Tron: "0",     Arbitrum: "16",   Hyperliquid: "0",     Ethereum: "0" },
           link: { Tron: "0",     Arbitrum: "0",    Hyperliquid: "0",     Ethereum: "0.0052" },
-          usdt: { Tron: "2000",  Arbitrum: "500",  Ethereum: "0" },
+          usdt: { Tron: "2000",  Arbitrum: "500",  Ethereum: "1000" },
         };
 
         /** 每个网络下固定两条地址，便于演示多地址选择与 L2 展开 */
         const ADDRESSES = {
           "usdc-Arbitrum": [
-            { account: "Main", balance: "600", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "200", address: "0x9e8f1a2b...3c4d5e6f" },
+            { account: "Main", balance: "600", address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "200", address: "0x9e8f1a2b3c4d5e6f7081929394a5b6c73c4d5e6f" },
           ],
           "usdc-Hyperliquid": [
-            { account: "Main", balance: "120", address: "0xa1b2c3d4...e5f67890" },
-            { account: "DeFi", balance: "80", address: "0xb2c3d4e5...f6071829" },
+            { account: "Main", balance: "120", address: "0xa1b2c3d4e5f6708192a3b4c5d6e7f808e5f67890" },
+            { account: "DeFi", balance: "80",  address: "0xb2c3d4e5f6708192a3b4c5d6e7f80910f6071829" },
           ],
           "usdc-Ethereum": [
-            { account: "Main", balance: "130", address: "0xfeedface...00000001" },
-            { account: "DeFi", balance: "70", address: "0xcafebabe...00000002" },
+            { account: "Main", balance: "130", address: "0xfeedface1234567890abcdef1234567800000001" },
+            { account: "DeFi", balance: "70",  address: "0xcafebabe1234567890abcdef1234567800000002" },
           ],
           "eth-Arbitrum": [
-            { account: "Main", balance: "0.5", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "0.3", address: "0x8a4b5c6d...e7f8091a" },
+            { account: "Main", balance: "0.5",   address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "0.3",   address: "0x8a4b5c6d7e8f90a1b2c3d4e5f6a7b8c9e7f8091a" },
           ],
           "eth-Hyperliquid": [
-            { account: "Main", balance: "0.15", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "0.095", address: "0x1a2b3c4d...5e6f7081" },
+            { account: "Main", balance: "0.15",  address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "0.095", address: "0x1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d" },
           ],
           "eth-Ethereum": [
-            { account: "Main", balance: "0.12", address: "0x9e8f1a2b...3c4d5e6f" },
-            { account: "DeFi", balance: "0.08", address: "0x2b3c4d5e...6f708192" },
+            { account: "Main", balance: "0.12",  address: "0x9e8f1a2b3c4d5e6f7081929394a5b6c7d8e9f0a1" },
+            { account: "DeFi", balance: "0.08",  address: "0x2b3c4d5e6f7081929394a5b6c7d8e9f0a16f7081" },
           ],
           "arb-Arbitrum": [
-            { account: "Main", balance: "10", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "6", address: "0x3c4d5e6f...708192a3" },
+            { account: "Main", balance: "10", address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "6",  address: "0x3c4d5e6f7081929394a5b6c7d8e9f0a1b2708192" },
           ],
           "arb-Hyperliquid": [
-            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "0", address: "0x4d5e6f70...8192a3b4" },
+            { account: "Main", balance: "0", address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x4d5e6f7081929394a5b6c7d8e9f0a1b2c38192a3" },
           ],
           "arb-Ethereum": [
-            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "0", address: "0x5e6f7081...92a3b4c5" },
+            { account: "Main", balance: "0", address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x5e6f7081929394a5b6c7d8e9f0a1b2c3d492a3b4" },
           ],
           "link-Ethereum": [
-            { account: "Main", balance: "0.003", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "0.0022", address: "0x6f708192...a3b4c5d6" },
+            { account: "Main", balance: "0.003",  address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "0.0022", address: "0x6f7081929394a5b6c7d8e9f0a1b2c3d4e5a3b4c5" },
           ],
           "link-Arbitrum": [
-            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "0", address: "0x708192a3...b4c5d6e7" },
+            { account: "Main", balance: "0", address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x708192a3b4c5d6e7f8091a2b3c4d5e6f78b4c5d6" },
           ],
           "link-Hyperliquid": [
-            { account: "Main", balance: "0", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "0", address: "0x8192a3b4...c5d6e7f8" },
+            { account: "Main", balance: "0", address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "0", address: "0x8192a3b4c5d6e7f8091a2b3c4d5e6f708195d6e7" },
           ],
           "usdt-Tron": [
-            { account: "Main", balance: "1500", address: "TRx7f3a4B8cDe9F...8b2C1d2E" },
-            { account: "DeFi", balance: "500",  address: "TRx9E8F1a2B3C4D...5E6f7081" },
+            { account: "Main", balance: "1500", address: "TRx7f3a4B8cDe9F2a3b4c5d6E8b2C1d2E3f4A5b6" },
+            { account: "DeFi", balance: "500",  address: "TRx9E8F1a2B3C4D5e6f7081929394A5B6C7D8E9F" },
           ],
           "usdt-Arbitrum": [
-            { account: "Main", balance: "300", address: "0x7f3a4b8c...de9f8b2c" },
-            { account: "DeFi", balance: "200", address: "0x9e8f1a2b...3c4d5e6f" },
+            { account: "Main", balance: "300", address: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0cde9f8b2c" },
+            { account: "DeFi", balance: "200", address: "0x9e8f1a2b3c4d5e6f7081929394a5b6c73c4d5e6f" },
           ],
           "usdt-Ethereum": [
-            { account: "Main", balance: "0", address: "0x9e8f1a2b...3c4d5e6f" },
-            { account: "DeFi", balance: "0", address: "0x2b3c4d5e...6f708192" },
+            { account: "Main", balance: "700", address: "0x9e8f1a2b3c4d5e6f7081929394a5b6c7d8e9f0a1" },
+            { account: "DeFi", balance: "300", address: "0x2b3c4d5e6f7081929394a5b6c7d8e9f0a16f7081" },
           ],
         };
 
@@ -1506,30 +3249,29 @@
         function pickChainOptionHtml(chainName, dataAttr, dataVal) {
           return (
             '<button type="button" class="option-btn option-btn-chain" ' +
-            dataAttr +
-            '="' +
-            dataVal +
-            '">' +
+            dataAttr + '="' + dataVal + '">' +
             '<span class="option-chain-block">' +
             '<span class="option-chain-kind">网络</span>' +
-            '<span style="display:flex;align-items:center;gap:8px">' +
-            chainDotHtml(chainName) +
-            '<span class="option-chain-name">' +
-            chainName +
-            "</span></span>" +
-            "</span>" +
+            '<span style="display:flex;align-items:center;gap:10px">' +
+            chainImgHtml(chainName, 28) +
+            '<span class="option-chain-name">' + chainName + '</span>' +
+            '</span>' +
+            '</span>' +
             '<span class="option-chevron" aria-hidden="true">›</span>' +
-            "</button>"
+            '</button>'
           );
         }
 
+        /** 资产类别数据（Token/DeFi/NFT） */
+        var ASSET_CATEGORIES = [
+          { key: "token", label: "Token",  value: 4318.41, color: "#10b981" },
+          { key: "defi",  label: "DeFi",   value: 1976.75, color: "#60a5fa" },
+          { key: "nft",   label: "NFT",    value: 1199.00, color: "#818cf8" },
+        ];
+        var PORTFOLIO_TOTAL = 7494.16;
+
         function totalBalanceFiat() {
-          var s = 0;
-          Object.keys(TOKENS).forEach(function (k) {
-            var t = TOKENS[k];
-            if (t.fiat != null) s += t.fiat;
-          });
-          return s;
+          return PORTFOLIO_TOTAL;
         }
 
         function formatTxTime(iso) {
@@ -1644,13 +3386,78 @@
           showScreen("txAddress");
         }
 
+        /** 空钱包状态：每条公链的默认收款地址 */
+        var WALLET_ADDRESSES = {
+          Hyperliquid: [
+            { label: "主账户", addr: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a" },
+            { label: "DeFi",   addr: "0xd4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3" },
+          ],
+          Ethereum: [
+            { label: "主账户", addr: "0x9e8f1a2b3c4d5e6f7081929394a5b6c7d8e9f0a1" },
+            { label: "储蓄",   addr: "0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b" },
+          ],
+          Tron: [
+            { label: "主账户", addr: "TRx7f3a4B8cDe9F2a3b4c5d6E8b2C1d2E3f4A5b6" },
+          ],
+          Arbitrum: [
+            { label: "主账户", addr: "0x7f3a4b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a" },
+            { label: "交易",   addr: "0xf1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c7d6e" },
+          ],
+          "BNB Chain": [
+            { label: "主账户", addr: "0xb1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0" },
+          ],
+          Polygon: [
+            { label: "主账户", addr: "0xp1o2l3y4g5o6n7a8b9c0d1e2f3a4b5c6d7e8f9a" },
+          ],
+          Optimism: [
+            { label: "主账户", addr: "0x9e8f1a2b3c4d5e6f7081929394a5b6c7d8e9f0a1" },
+          ],
+          Base: [
+            { label: "主账户", addr: "0x9e8f1a2b3c4d5e6f7081929394a5b6c7d8e9f0a1" },
+          ],
+          Avalanche: [
+            { label: "主账户", addr: "0xav1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9" },
+          ],
+          Solana: [
+            { label: "主账户", addr: "So1ana7f3a4b8cDe9F2a3b4c5d6E8b2C1d2E3f4A5" },
+          ],
+          Bitcoin: [
+            { label: "主账户", addr: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
+          ],
+          Cosmos: [
+            { label: "主账户", addr: "cosmos1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0w" },
+          ],
+          zkSync: [
+            { label: "主账户", addr: "0x9e8f1a2b3c4d5e6f7081929394a5b6c7d8e9f0a1" },
+          ],
+          Linea: [
+            { label: "主账户", addr: "0x9e8f1a2b3c4d5e6f7081929394a5b6c7d8e9f0a1" },
+          ],
+        };
+
+        /** 空状态收款支持的网络列表（Hyperliquid 排首位为默认） */
+        var EMPTY_CHAINS = [
+          "Hyperliquid", "Ethereum", "Tron", "Arbitrum",
+          "BNB Chain", "Polygon", "Optimism", "Base",
+          "Avalanche", "Solana", "Bitcoin", "Cosmos",
+          "zkSync", "Linea",
+        ];
+
         var screens = {
-          home: document.getElementById("screen-home"),
-          txHome: document.getElementById("screen-tx-home"),
-          detail: document.getElementById("screen-detail"),
-          receive: document.getElementById("screen-receive"),
-          send: document.getElementById("screen-send"),
-          txAddress: document.getElementById("screen-tx-address"),
+          home:            document.getElementById("screen-home"),
+          homeEmpty:       document.getElementById("screen-home-empty"),
+          txHome:          document.getElementById("screen-tx-home"),
+          detail:          document.getElementById("screen-detail"),
+          receive:         document.getElementById("screen-receive"),
+          send:            document.getElementById("screen-send"),
+          txAddress:       document.getElementById("screen-tx-address"),
+          hl:              document.getElementById("screen-hl"),
+          hlDeposit:       document.getElementById("screen-hl-deposit"),
+          hlWithdraw:      document.getElementById("screen-hl-withdraw"),
+          assetDetail:     document.getElementById("screen-asset-detail"),
+          activityDetail:  document.getElementById("screen-activity-detail"),
+          stakingDetail:   document.getElementById("screen-staking-detail"),
+          agentTrading:    document.getElementById("screen-agent-trading"),
         };
 
         var el = {
@@ -1672,6 +3479,13 @@
           txAddrTitle: document.getElementById("tx-addr-title"),
           txAddrSub: document.getElementById("tx-addr-sub"),
           txAddrList: document.getElementById("tx-addr-list"),
+          hlBody:          document.getElementById("hl-body"),
+          hlDepositTitle:  document.getElementById("hl-deposit-title"),
+          hlDepositStep:   document.getElementById("hl-deposit-step"),
+          hlDepositBody:   document.getElementById("hl-deposit-body"),
+          hlWithdrawTitle: document.getElementById("hl-withdraw-title"),
+          hlWithdrawStep:  document.getElementById("hl-withdraw-step"),
+          hlWithdrawBody:  document.getElementById("hl-withdraw-body"),
         };
 
         var state = {
@@ -1691,17 +3505,262 @@
             chain: null,
             account: null,
           },
+          hl: {
+            hasAssets: false,
+            fromScreen: "homeEmpty",
+            deposit: { step: "token", tokenId: null, chain: null, srcIndex: 0, amount: "" },
+            withdraw: { step: "amount", amount: "" },
+          },
         };
 
         var CHAIN_COLORS = {
-          Tron:     "#ef4444",
-          Arbitrum: "#28a0f0",
           Hyperliquid: "#a78bfa",
-          Ethereum: "#8b9eb7",
+          Ethereum:    "#627eea",
+          Tron:        "#ef4444",
+          Arbitrum:    "#28a0f0",
+          "BNB Chain": "#f0b90b",
+          Polygon:     "#8247e5",
+          Optimism:    "#ff0420",
+          Base:        "#0052ff",
+          Avalanche:   "#e84142",
+          Solana:      "#9945ff",
+          Bitcoin:     "#f7931a",
+          Cosmos:      "#2e3148",
+          zkSync:      "#1755f4",
+          Linea:       "#121212",
         };
 
+        /* DeFiLlama chain icon CDN — 统一来源，覆盖含 Hyperliquid 在内的新链 */
+        var _ll = "https://icons.llamao.fi/icons/chains/rsz_";
+        var CHAIN_ICONS = {
+          Hyperliquid: _ll + "hyperliquid.jpg",
+          Ethereum:    _ll + "ethereum.jpg",
+          Tron:        _ll + "tron.jpg",
+          Arbitrum:    _ll + "arbitrum.jpg",
+          "BNB Chain": _ll + "binance.jpg",
+          Polygon:     _ll + "polygon.jpg",
+          Optimism:    _ll + "optimism.jpg",
+          Base:        _ll + "base.jpg",
+          Avalanche:   _ll + "avalanche.jpg",
+          Solana:      _ll + "solana.jpg",
+          Bitcoin:     _ll + "bitcoin.jpg",
+          Cosmos:      _ll + "cosmos.jpg",
+          zkSync:      _ll + "zksync era.jpg",
+          Linea:       _ll + "linea.jpg",
+        };
+
+        /**
+         * 返回链图标 img HTML，加载失败时回退为彩色缩写圆圈
+         * size: px 数值（不含单位）
+         */
+        function chainImgHtml(chain, size) {
+          var url     = CHAIN_ICONS[chain];
+          var color   = CHAIN_COLORS[chain] || "#9ba3af";
+          var initials = chain.replace(/\s+/g, "").slice(0, 2).toUpperCase();
+          var s = size + "px";
+          var fallback = (
+            'this.style.display="none";' +
+            'var f=document.createElement("span");' +
+            'f.style.cssText="width:' + s + ';height:' + s + ';border-radius:50%;background:' + color + ';display:inline-flex;align-items:center;justify-content:center;font-size:' + Math.round(size * 0.33) + 'px;font-weight:700;color:#fff;flex-shrink:0";' +
+            'f.textContent="' + initials + '";' +
+            'this.parentNode.insertBefore(f,this)'
+          );
+          if (url) {
+            return (
+              '<img src="' + url + '" alt="' + chain + '" ' +
+              'style="width:' + s + ';height:' + s + ';border-radius:50%;object-fit:cover;flex-shrink:0;display:inline-block" ' +
+              'onerror="' + fallback + '">'
+            );
+          }
+          return (
+            '<span style="width:' + s + ';height:' + s + ';border-radius:50%;background:' + color + ';' +
+            'display:inline-flex;align-items:center;justify-content:center;' +
+            'font-size:' + Math.round(size * 0.33) + 'px;font-weight:700;color:#fff;flex-shrink:0">' +
+            initials + '</span>'
+          );
+        }
+
+        /**
+         * 通用网络网格区块（两种收款页共用）
+         * chainList  : 当前可选的网络数组
+         * activeChain: 当前选中网络
+         * expanded   : 是否展开超出的部分
+         * iconDown/Up: chevron SVG 字符串
+         *
+         * 规则：默认展示前4个，activeChain 始终排在可见区域内；
+         *       超过4个时底部显示「+N 更多」展开按钮；展开后显示全部及「收起」按钮。
+         */
+        function buildChainGridSection(chainList, activeChain, expanded, iconDown, iconUp) {
+          var VISIBLE = 4;
+
+          var sorted = chainList.slice(); /* 保持原始顺序，不因选中状态改变排列 */
+
+          var hasMore   = sorted.length > VISIBLE;
+          var visible   = (!hasMore || expanded) ? sorted : sorted.slice(0, VISIBLE);
+          var hiddenCnt = sorted.length - VISIBLE;
+
+          function chainBtn(c) {
+            var isActive = c === activeChain;
+            return (
+              '<button type="button" data-pick-chain="' + c + '" style="' +
+              'width:72px;height:72px;flex-shrink:0;' +
+              'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;' +
+              'border-radius:12px;cursor:pointer;transition:all .15s;' +
+              'border:1.5px solid ' + (isActive ? 'var(--accent)' : 'transparent') + ';' +
+              'background:' + (isActive ? 'var(--accent-dim)' : 'var(--surface2)') + '">' +
+              chainImgHtml(c, 36) +
+              '<span style="font-size:10px;font-weight:' + (isActive ? '600' : '400') + ';' +
+              'color:' + (isActive ? 'var(--accent)' : 'var(--muted)') + ';' +
+              'line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:68px">' + c + '</span>' +
+              '</button>'
+            );
+          }
+
+          var gridItems = visible.map(chainBtn).join("");
+
+          /* 展开 / 收起 触发行 */
+          var toggleRow = "";
+          if (hasMore) {
+            if (!expanded) {
+              toggleRow =
+                '<button type="button" id="btn-toggle-chains" style="' +
+                'display:flex;align-items:center;justify-content:center;gap:4px;' +
+                'width:100%;padding:8px 0 4px;border:none;background:transparent;' +
+                'font-size:12px;color:var(--muted2);cursor:pointer">' +
+                '更多 +' + hiddenCnt +
+                '<span>' + iconDown + '</span>' +
+                '</button>';
+            } else {
+              toggleRow =
+                '<button type="button" id="btn-toggle-chains" style="' +
+                'display:flex;align-items:center;justify-content:center;gap:4px;' +
+                'width:100%;padding:8px 0 4px;border:none;background:transparent;' +
+                'font-size:12px;color:var(--muted2);cursor:pointer">' +
+                '收起' +
+                '<span>' + iconUp + '</span>' +
+                '</button>';
+            }
+          }
+
+          return (
+            '<div style="' + (hasMore ? 'border:1px solid var(--border);border-radius:14px;padding:8px 8px 4px' : 'padding:4px 0') + '">' +
+            '<div style="' + (hasMore ? 'display:grid;grid-template-columns:repeat(4,1fr)' : 'display:flex;justify-content:center;flex-wrap:wrap') + ';gap:6px">' +
+            gridItems +
+            '</div>' +
+            toggleRow +
+            '</div>'
+          );
+        }
+
+        /** 代币环形图配色（参考品牌色） */
+        var TOKEN_COLORS = {
+          eth:  "#627eea",
+          usdc: "#2775ca",
+          usdt: "#26a17b",
+          arb:  "#28a0f0",
+          link: "#2a5ada",
+        };
+
+        /** 模拟代币单价与 24h 涨跌幅 */
+        var TOKEN_PRICES = {
+          eth:  { price: 2500.30, change: +1.24 },
+          usdc: { price: 0.9998,  change: +0.02 },
+          usdt: { price: 1.0001,  change: +0.01 },
+          arb:  { price: 1.00,    change: -2.15 },
+          link: { price: 13.50,   change: +3.42 },
+        };
+
+        /** Hyperliquid 演示数据 */
+        var HL_POSITIONS = [
+          { pair: "BTC-PERP", side: "long",  size: "0.05 BTC", notional: "$3,425", leverage: "5x", pnl: +127.40, pnlPct: +3.86 },
+          { pair: "ETH-PERP", side: "short", size: "0.8 ETH",  notional: "$2,004", leverage: "3x", pnl: -42.15,  pnlPct: -2.06 },
+          { pair: "SOL-PERP", side: "long",  size: "12 SOL",   notional: "$1,860", leverage: "2x", pnl: +89.30,  pnlPct: +5.04 },
+        ];
+
+        var HL_MOCK = {
+          equity: 6832.50,
+          pnl24h: +174.55,
+          pnlPct: +2.62,
+          availableMargin: 1543.00,
+          usedMargin: 5289.50,
+        };
+
+        /** 充值来源：展示钱包中可充值到 HL 的稳定币 */
+        var HL_DEPOSIT_SOURCES = [
+          {
+            id: "usdt", symbol: "USDT", name: "Tether USD",
+            iconUrl: "https://assets.coingecko.com/coins/images/325/small/Tether.png",
+            chain: "Ethereum", balance: "1,000", fiat: 1000,
+          },
+          {
+            id: "usdc", symbol: "USDC", name: "USD Coin",
+            iconUrl: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png",
+            chain: "Ethereum", balance: "130", fiat: 130,
+          },
+          {
+            id: "usdc", symbol: "USDC", name: "USD Coin",
+            iconUrl: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png",
+            chain: "Arbitrum", balance: "600", fiat: 600,
+          },
+        ];
+
+        var HL_DEPOSIT_STEPS  = ["选择资产", "输入金额", "确认充值"];
+        var HL_WITHDRAW_STEPS = ["提款金额", "确认提款"];
+
+        /* Circle Paymaster：USDC 充值时从转账金额中扣除的 Gas 手续费（单位 USDC） */
+        var CIRCLE_PAYMASTER_GAS_USDC = 0.50;
+
+        /** 生成代币走势图 SVG path（伪随机，基于 tokenId 种子） */
+        function sparklinePath(tokenId, w, h) {
+          var seed = 0;
+          for (var i = 0; i < tokenId.length; i++) seed += tokenId.charCodeAt(i);
+          var pts = [];
+          var n = 28;
+          for (var j = 0; j < n; j++) {
+            seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+            var raw = ((seed >>> 0) % 1000) / 1000;
+            pts.push(raw);
+          }
+          // 平滑
+          var sm = pts.map(function(v, i) {
+            return (pts[Math.max(0,i-1)] + v + pts[Math.min(n-1,i+1)]) / 3;
+          });
+          var mn = Math.min.apply(null, sm), mx = Math.max.apply(null, sm);
+          var range = mx - mn || 1;
+          var coords = sm.map(function(v, i) {
+            var x = (i / (n - 1)) * w;
+            var y = h - ((v - mn) / range) * h * 0.8 - h * 0.1;
+            return x.toFixed(1) + ',' + y.toFixed(1);
+          });
+          return 'M' + coords.join('L');
+        }
+
+        /** 环形图 SVG 渲染（按资产类别：Token/DeFi/NFT） */
+        function renderDonut(totalFiat) {
+          var svgEl = document.getElementById('donut-svg');
+          if (!svgEl) return;
+          var cx = 110, cy = 110, r = 82, sw = 22;
+          var circ = 2 * Math.PI * r;
+          var total = PORTFOLIO_TOTAL || 1;
+          var offset = 0;
+          var html = '';
+          html += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="' + sw + '"/>';
+          ASSET_CATEGORIES.forEach(function(cat) {
+            var frac = cat.value / total;
+            var dash = frac * circ;
+            var gap  = circ - dash;
+            html += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none"' +
+              ' stroke="' + cat.color + '" stroke-width="' + sw + '"' +
+              ' stroke-dasharray="' + dash.toFixed(2) + ' ' + gap.toFixed(2) + '"' +
+              ' stroke-dashoffset="' + (-(offset * circ)).toFixed(2) + '"' +
+              ' stroke-linecap="round"/>';
+            offset += frac;
+          });
+          svgEl.innerHTML = html;
+        }
+
         function chainDotHtml(chain) {
-          var color = CHAIN_COLORS[chain] || "#64748b";
+          var color = CHAIN_COLORS[chain] || "#9ba3af";
           return '<span class="chain-dot" style="background:' + color + '" aria-hidden="true"></span>';
         }
 
@@ -1756,12 +3815,35 @@
         }
 
         function openReceiveFromHome() {
+          /* 默认选余额最大的代币，直接进入 QR 页 */
+          var defaultTid = Object.keys(TOKENS).sort(function(a, b) {
+            return (TOKENS[b].fiat || 0) - (TOKENS[a].fiat || 0);
+          })[0];
+          var avail = CHAINS.filter(function(c) {
+            return getReceiveAddresses(defaultTid, c).length > 0;
+          });
           state.receive = {
             entry: "home",
-            step: "token",
+            step: "qr",
+            tokenId: defaultTid,
+            chain: avail[0] || CHAINS[0],
+            account: null,
+            addrIndex: 0,
+            gridExpanded: false,
+          };
+          renderReceive();
+          showScreen("receive");
+        }
+
+        /** 空钱包状态收款：跳过代币选择，直接进入公链选择 */
+        function openReceiveFromEmpty() {
+          state.receive = {
+            entry: "empty",
+            step: "chain",
             tokenId: null,
             chain: null,
             account: null,
+            addrIndex: 0,
           };
           renderReceive();
           showScreen("receive");
@@ -1770,12 +3852,18 @@
         function openReceiveFromToken() {
           var tid = state.tokenId;
           if (!tid) return;
+          /* 默认选第一条有地址的链 */
+          var avail = CHAINS.filter(function(c) {
+            return getReceiveAddresses(tid, c).length > 0;
+          });
           state.receive = {
             entry: "token",
-            step: "chain",
+            step: "qr",
             tokenId: tid,
-            chain: null,
+            chain: avail[0] || CHAINS[0],
             account: null,
+            addrIndex: 0,
+            gridExpanded: false,
           };
           renderReceive();
           showScreen("receive");
@@ -1808,7 +3896,9 @@
         }
 
         function renderHome() {
-          el.unifiedTotal.textContent = formatUsd(totalBalanceFiat());
+          var total = totalBalanceFiat();
+          el.unifiedTotal.textContent = formatUsd(total);
+          renderDonut(total);
 
           var order = Object.keys(TOKENS).sort(function (a, b) {
             var fa = TOKENS[a].fiat != null ? TOKENS[a].fiat : 0;
@@ -1820,40 +3910,29 @@
             .map(function (id) {
               var t = TOKENS[id];
               var dust = t.dust ? " dust" : "";
-              var fiatHtml =
-                t.fiat != null
-                  ? '<div class="token-fiat">' + formatUsd(t.fiat) + "</div>"
-                  : '<div class="token-fiat muted-strong">—</div>';
+              var fiatVal = t.fiat != null ? t.fiat : 0;
+              var pct = total > 0 ? (fiatVal / total * 100).toFixed(1) : "0.0";
+              var fiatHtml = t.fiat != null
+                ? '<div class="token-fiat">' + formatUsd(t.fiat) + "</div>"
+                : '<div class="token-fiat muted-strong">—</div>';
               var dustBadge = t.dust ? '<span class="dust-badge">Dust</span>' : "";
+              var pctPill = !t.dust
+                ? '<span class="token-pct-pill">' + pct + '%</span>'
+                : "";
               return (
-                '<button type="button" class="token-row' +
-                dust +
-                '" data-token="' +
-                id +
-                '">' +
+                '<button type="button" class="token-row' + dust + '" data-token="' + id + '">' +
                 tokenIconHtml(t) +
                 '<div class="token-main">' +
                 '<div class="token-info">' +
-                '<div class="token-line1">' +
-                '<span class="token-symbol">' +
-                t.symbol +
-                "</span>" +
-                dustBadge +
-                "</div>" +
-                '<span class="token-fullname">' +
-                t.name +
-                "</span>" +
-                "</div>" +
+                '<div class="token-line1"><span class="token-symbol">' + t.symbol + '</span>' + dustBadge + '</div>' +
+                '<span class="token-fullname">' + t.balance + ' ' + t.symbol + '</span>' +
+                '</div>' +
                 '<div class="token-values">' +
-                '<div class="token-balance">' +
-                t.balance +
-                " " +
-                t.symbol +
-                "</div>" +
-                fiatHtml +
-                "</div>" +
-                "</div>" +
-                "</button>"
+                '<div class="token-balance">' + formatUsd(fiatVal) + '</div>' +
+                pctPill +
+                '</div>' +
+                '</div>' +
+                '</button>'
               );
             })
             .join("");
@@ -1862,60 +3941,78 @@
         function renderDetail(tokenId) {
           var t = TOKENS[tokenId];
           var dist = DISTRIBUTION[tokenId];
+          var priceInfo = TOKEN_PRICES[tokenId] || { price: 0, change: 0 };
+          var changeSign = priceInfo.change >= 0 ? "pos" : "neg";
+          var changeStr = (priceInfo.change >= 0 ? "+" : "") + priceInfo.change.toFixed(2) + "%";
 
           el.detailTitle.textContent = t.symbol;
-          var fiatStr = t.fiat != null ? formatUsd(t.fiat) : "—";
+
+          // 走势图 SVG
+          var sw = 452, sh = 80;
+          var path = sparklinePath(tokenId, sw, sh);
+          var sparkColor = TOKEN_COLORS[tokenId] || "#2563eb";
+          var sparkHtml =
+            '<div class="sparkline-wrap">' +
+            '<svg class="sparkline-svg" viewBox="0 0 ' + sw + ' ' + sh + '" preserveAspectRatio="none">' +
+            '<defs><linearGradient id="sg-' + tokenId + '" x1="0" x2="0" y1="0" y2="1">' +
+            '<stop offset="0%" stop-color="' + sparkColor + '" stop-opacity="0.18"/>' +
+            '<stop offset="100%" stop-color="' + sparkColor + '" stop-opacity="0"/>' +
+            '</linearGradient></defs>' +
+            '<path d="' + path + 'L' + sw + ',' + sh + 'L0,' + sh + 'Z" fill="url(#sg-' + tokenId + ')" />' +
+            '<path d="' + path + '" fill="none" stroke="' + sparkColor + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '</svg></div>';
+
           el.detailHero.innerHTML =
-            '<div class="hero-icon-wrap"><img src="' +
-            t.iconUrl +
-            '" alt="" width="64" height="64" loading="lazy" decoding="async" referrerpolicy="no-referrer" /></div>' +
-            '<div class="hero-symbol">' +
-            t.symbol +
-            "</div>" +
-            '<div class="hero-total">合计：' +
-            t.balance +
-            " " +
-            t.symbol +
-            "（" +
-            fiatStr +
-            "）</div>";
+            '<div class="hero-icon-wrap"><img src="' + t.iconUrl + '" alt="" width="68" height="68" loading="lazy" decoding="async" referrerpolicy="no-referrer" /></div>' +
+            '<div class="hero-price-block">' +
+            '<div class="hero-price-value">' + (priceInfo.price >= 1 ? formatUsd(priceInfo.price) : '$' + priceInfo.price.toFixed(4)) + '</div>' +
+            '<div class="hero-price-symbol">' + t.symbol + '</div>' +
+            '<div class="hero-price-meta">Token price · Last 24 hours <span class="price-change-pill ' + changeSign + '">' + changeStr + '</span></div>' +
+            '</div>' +
+            sparkHtml +
+            '<div class="period-tabs">' +
+            '<button class="period-tab" onclick="this.parentNode.querySelectorAll(\'.period-tab\').forEach(function(b){b.classList.remove(\'active\')});this.classList.add(\'active\')">1D</button>' +
+            '<button class="period-tab active" onclick="this.parentNode.querySelectorAll(\'.period-tab\').forEach(function(b){b.classList.remove(\'active\')});this.classList.add(\'active\')">7D</button>' +
+            '<button class="period-tab" onclick="this.parentNode.querySelectorAll(\'.period-tab\').forEach(function(b){b.classList.remove(\'active\')});this.classList.add(\'active\')">1M</button>' +
+            '</div>' +
+            '<div class="balance-split-card">' +
+            '<div class="balance-split-cell"><div class="balance-split-label">' + t.symbol + ' Balance</div><div class="balance-split-value">' + t.balance + '</div></div>' +
+            '<div class="balance-split-cell"><div class="balance-split-label">Value</div><div class="balance-split-value">' + (t.fiat != null ? formatUsd(t.fiat) : '—') + '</div></div>' +
+            '</div>';
 
           if (t.dust) {
             el.dustBanner.classList.remove("hidden");
-            el.dustBanner.innerHTML =
-              "<strong>Dust — 估值低于 $0.10</strong>" + "余额极小，可通过 Send 或 Swap 处理。";
+            el.dustBanner.innerHTML = "<strong>Dust — 估值低于 $0.10</strong>余额极小，可通过 Send 或 Swap 处理。";
           } else {
             el.dustBanner.classList.add("hidden");
           }
 
-          el.chainList.innerHTML = CHAINS.filter(function (chain) {
-            return dist == null || dist[chain] !== undefined;
-          }).map(function (chain) {
+          // 计算各链占比
+          var totalChainAmt = 0;
+          var validChains = CHAINS.filter(function(chain) { return dist == null || dist[chain] !== undefined; });
+          validChains.forEach(function(chain) { totalChainAmt += parseFloat(dist && dist[chain] || "0") || 0; });
+
+          el.chainList.innerHTML = validChains.map(function (chain) {
             var amt = dist[chain] != null ? dist[chain] : "0";
+            var amtNum = parseFloat(amt) || 0;
+            var pct = totalChainAmt > 0 ? (amtNum / totalChainAmt * 100).toFixed(1) : "0.0";
             var symbol = t.symbol;
             var key = tokenId + "-" + chain;
             return (
-              '<div class="chain-row-wrap" data-chain="' +
-              chain +
-              '" data-token="' +
-              tokenId +
-              '">' +
+              '<div class="chain-row-wrap" data-chain="' + chain + '" data-token="' + tokenId + '">' +
               '<button type="button" class="chain-row" aria-expanded="false">' +
-              '<span style="display:flex;align-items:center;gap:6px">' +
+              '<span style="display:flex;align-items:center;gap:8px">' +
               chainDotHtml(chain) +
-              '<span class="chain-name">' +
-              chain +
-              "</span></span>" +
-              '<span><span class="chain-amt">' +
-              amt +
-              " " +
-              symbol +
-              '</span><span class="chain-chev">›</span></span>' +
-              "</button>" +
-              '<div class="l2-panel" id="l2-' +
-              key +
-              '"></div>' +
-              "</div>"
+              '<span class="chain-name">' + chain + '</span>' +
+              '</span>' +
+              '<span style="display:flex;align-items:center;gap:10px">' +
+              '<span class="chain-amt">' + amt + ' ' + symbol + '</span>' +
+              '<span class="chain-pct">' + pct + '%</span>' +
+              '<span class="chain-chev">›</span>' +
+              '</span>' +
+              '</button>' +
+              '<div class="l2-panel" id="l2-' + key + '"></div>' +
+              '</div>'
             );
           }).join("");
 
@@ -2005,6 +4102,7 @@
         }
 
         var RECEIVE_STEP_LABELS = ["代币", "公链", "地址"];
+        var RECEIVE_EMPTY_STEP_LABELS = ["公链", "地址"];
 
         function receiveStepIndex(step) {
           return { token: 1, chain: 2, address: 3, qr: 4 }[step] || 1;
@@ -2012,10 +4110,158 @@
 
         function renderReceive() {
           var r = state.receive;
+          var isEmpty = r.entry === "empty";
 
+          /* ── 空钱包模式：网络选择 + 内联 QR（单页合并，支持多地址） ── */
+          if (isEmpty && (r.step === "chain" || r.step === "qr")) {
+            if (r.chain === null) r.chain = "Hyperliquid";
+            if (r.addrIndex === undefined) r.addrIndex = 0;
+            if (r.gridExpanded === undefined) r.gridExpanded = false;
+
+            el.receiveTitle.textContent = "收款";
+            el.receiveStep.innerHTML = "";
+
+            var COPY_ICON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+            var CHECK_ICON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+            function buildEmptyReceivePage(activeChain, addrIdx, gridExpanded) {
+              var addrList = WALLET_ADDRESSES[activeChain] || WALLET_ADDRESSES["Hyperliquid"];
+              var safeIdx = Math.min(addrIdx || 0, addrList.length - 1);
+              var activeEntry = addrList[safeIdx];
+              var dotColor = CHAIN_COLORS[activeChain] || "#9ba3af";
+
+              /* ══ QR 码 ══ */
+              var qrHtml =
+                '<div class="qr-placeholder" aria-hidden="true" style="width:200px;height:200px;margin:0 auto 20px">' + buildQrSvg() + '</div>';
+
+              /* ══ 地址 tab（下划线式，多地址时显示） ══ */
+              var addrTabsHtml = "";
+              if (addrList.length > 1) {
+                addrTabsHtml =
+                  '<div style="display:flex;justify-content:center;gap:0;border-bottom:1px solid var(--border);margin-bottom:14px">' +
+                  addrList.map(function (entry, i) {
+                    var isActiveTab = i === safeIdx;
+                    return (
+                      '<button type="button" data-pick-addr="' + i + '" style="' +
+                      'padding:6px 18px;border:none;background:transparent;cursor:pointer;transition:all .15s;' +
+                      'font-size:13px;font-weight:' + (isActiveTab ? '600' : '400') + ';' +
+                      'color:' + (isActiveTab ? 'var(--accent)' : 'var(--muted2)') + ';' +
+                      'border-bottom:2px solid ' + (isActiveTab ? 'var(--accent)' : 'transparent') + ';' +
+                      'margin-bottom:-1px">' +
+                      entry.label +
+                      '</button>'
+                    );
+                  }).join("") +
+                  '</div>';
+              }
+
+              /* ══ 地址文字 + 复制 icon ══ */
+              var addrRowHtml =
+                '<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:0 8px">' +
+                '<span id="qr-addr-text" style="font-size:11.5px;color:var(--muted);word-break:break-all;cursor:pointer;text-align:left;line-height:1.6">' + activeEntry.addr + '</span>' +
+                '<button type="button" id="btn-copy-addr" title="复制地址" style="flex-shrink:0;width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s">' +
+                COPY_ICON_SVG +
+                '</button>' +
+                '</div>';
+
+              /* ══ 网络切换区 ══
+                 折叠态：一行可点击行（当前网络 + 展开箭头）
+                 展开态：4列网格 */
+              var chevronDown = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+              var chevronUp   = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+
+              var networkSectionHtml = buildChainGridSection(EMPTY_CHAINS, activeChain, gridExpanded, chevronDown, chevronUp);
+
+              var emptyNetBadge =
+                '<div style="display:inline-flex;align-items:center;gap:8px;' +
+                'padding:6px 14px 6px 8px;background:var(--bg);border:1px solid var(--border);' +
+                'border-radius:24px;margin-bottom:20px;box-shadow:var(--shadow)">' +
+                chainImgHtml(activeChain, 22) +
+                '<span style="font-size:14px;color:var(--text);font-weight:600">' + activeChain + '</span>' +
+                '</div>';
+
+              return (
+                '<div style="padding:4px 0 16px">' +
+                '<div style="text-align:center;padding:0 0 24px">' +
+                emptyNetBadge +
+                qrHtml +
+                addrTabsHtml +
+                addrRowHtml +
+                '</div>' +
+                networkSectionHtml +
+                '</div>'
+              );
+            }
+
+            el.receiveBody.innerHTML = buildEmptyReceivePage(r.chain, r.addrIndex, r.gridExpanded);
+
+            function triggerCopy(text) {
+              if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).catch(function(){});
+              }
+              var toast = document.getElementById("copy-toast");
+              toast.classList.add("show");
+              setTimeout(function() { toast.classList.remove("show"); }, 2000);
+              var copyBtn = document.getElementById("btn-copy-addr");
+              if (copyBtn) {
+                copyBtn.style.color = "var(--accent)";
+                copyBtn.style.borderColor = "var(--accent)";
+                copyBtn.innerHTML = CHECK_ICON_SVG;
+                setTimeout(function() {
+                  if (copyBtn) {
+                    copyBtn.style.color = "";
+                    copyBtn.style.borderColor = "";
+                    copyBtn.innerHTML = COPY_ICON_SVG;
+                  }
+                }, 2000);
+              }
+            }
+
+            function bindEmptyReceiveEvents() {
+              /* 展开 / 收起网络列表 */
+              var toggleBtn = document.getElementById("btn-toggle-chains");
+              if (toggleBtn) {
+                toggleBtn.addEventListener("click", function () {
+                  r.gridExpanded = !r.gridExpanded;
+                  el.receiveBody.innerHTML = buildEmptyReceivePage(r.chain, r.addrIndex, r.gridExpanded);
+                  bindEmptyReceiveEvents();
+                });
+              }
+              /* 切换网络（选完后自动收起） */
+              el.receiveBody.querySelectorAll("[data-pick-chain]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                  r.chain = btn.dataset.pickChain;
+                  r.addrIndex = 0;
+                  el.receiveBody.innerHTML = buildEmptyReceivePage(r.chain, r.addrIndex, r.gridExpanded);
+                  bindEmptyReceiveEvents();
+                });
+              });
+              /* 切换地址 tab */
+              el.receiveBody.querySelectorAll("[data-pick-addr]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                  r.addrIndex = parseInt(btn.dataset.pickAddr, 10);
+                  el.receiveBody.innerHTML = buildEmptyReceivePage(r.chain, r.addrIndex, r.gridExpanded);
+                  bindEmptyReceiveEvents();
+                });
+              });
+              /* 复制地址 */
+              var addrList = WALLET_ADDRESSES[r.chain || "Hyperliquid"];
+              var idx = r.addrIndex || 0;
+              var currentAddr = addrList[Math.min(idx, addrList.length - 1)].addr;
+              var addrEl = document.getElementById("qr-addr-text");
+              if (addrEl) addrEl.addEventListener("click", function() { triggerCopy(currentAddr); });
+              var copyBtn2 = document.getElementById("btn-copy-addr");
+              if (copyBtn2) copyBtn2.addEventListener("click", function() { triggerCopy(currentAddr); });
+            }
+
+            bindEmptyReceiveEvents();
+            return;
+          }
+
+          /* ── 普通模式：token 步骤 ── */
           if (r.step === "token") {
             el.receiveTitle.textContent = "收款";
-            el.receiveStep.innerHTML = stepProgressHtml(1, RECEIVE_STEP_LABELS);
+            el.receiveStep.innerHTML = "";
             el.receiveBody.innerHTML =
               '<div class="option-list">' +
               Object.keys(TOKENS)
@@ -2027,129 +4273,155 @@
             el.receiveBody.querySelectorAll("[data-pick-token]").forEach(function (btn) {
               btn.addEventListener("click", function () {
                 r.tokenId = btn.dataset.pickToken;
-                r.step = "chain";
-                renderReceive();
-              });
-            });
-          } else if (r.step === "chain") {
-            var tid = r.tokenId;
-            var t = TOKENS[tid];
-            el.receiveTitle.textContent = "收款 · " + t.symbol;
-            el.receiveStep.innerHTML = stepProgressHtml(2, RECEIVE_STEP_LABELS);
-            el.receiveBody.innerHTML =
-              '<div class="option-list">' +
-              CHAINS.map(function (c) {
-                return pickChainOptionHtml(c, "data-pick-chain", c);
-              }).join("") +
-              "</div>";
-            el.receiveBody.querySelectorAll("[data-pick-chain]").forEach(function (btn) {
-              btn.addEventListener("click", function () {
-                r.chain = btn.dataset.pickChain;
-                var list = getReceiveAddresses(r.tokenId, r.chain);
-                if (list.length > 1) {
-                  r.step = "address";
-                } else {
-                  r.account = list[0] ? list[0].account : "Main";
-                  r.step = "qr";
-                }
-                renderReceive();
-              });
-            });
-          } else if (r.step === "address") {
-            var tid2 = r.tokenId;
-            var t2 = TOKENS[tid2];
-            var list2 = getReceiveAddresses(tid2, r.chain);
-            el.receiveTitle.textContent = "收款 · " + t2.symbol;
-            el.receiveStep.innerHTML = stepProgressHtml(3, RECEIVE_STEP_LABELS);
-            el.receiveBody.innerHTML =
-              '<p class="recv-meta" style="text-align:left;margin-bottom:12px;color:var(--muted)">链 ' +
-              r.chain +
-              " 上有多个地址，请选择收款账户。</p>" +
-              '<div class="option-list">' +
-              list2
-                .map(function (a) {
-                  return (
-                    '<button type="button" class="option-btn" data-pick-acc="' +
-                    a.account +
-                    '">' +
-                    "<span><div>" +
-                    a.account +
-                    "</div>" +
-                    '<div class="option-sub">' +
-                    a.address +
-                    "</div></span>" +
-                    '<span style="color:var(--muted2)">›</span>' +
-                    "</button>"
-                  );
-                })
-                .join("") +
-              "</div>";
-            el.receiveBody.querySelectorAll("[data-pick-acc]").forEach(function (btn) {
-              btn.addEventListener("click", function () {
-                r.account = btn.dataset.pickAcc;
+                /* 默认选第一条有地址的链 */
+                var availChains = CHAINS.filter(function(c) {
+                  return getReceiveAddresses(r.tokenId, c).length > 0;
+                });
+                r.chain = availChains[0] || CHAINS[0];
+                r.addrIndex = 0;
+                r.gridExpanded = false;
                 r.step = "qr";
                 renderReceive();
               });
             });
-          } else if (r.step === "qr") {
-            var tid3 = r.tokenId;
-            var t3 = TOKENS[tid3];
-            el.receiveTitle.textContent = "收款";
-            el.receiveStep.innerHTML = stepProgressHtml(4, RECEIVE_STEP_LABELS);
 
-            el.receiveBody.innerHTML =
-              '<div class="qr-screen">' +
-              '<p class="recv-meta">' +
-              t3.symbol +
-              " · " +
-              r.chain +
-              (r.account ? " · " + r.account : "") +
-              "</p>" +
-              '<div class="qr-placeholder" aria-hidden="true">' +
-              buildQrSvg() +
-              "</div>" +
-              '<div class="recv-address-full">' +
-              FULL_ADDRESS +
-              "</div>" +
-              '<p class="copy-hint">演示原型：地址与二维码为占位，真实环境由后端生成。</p>' +
-              '<button type="button" class="btn btn-secondary" id="recv-done" style="margin-top:16px;width:100%">完成</button>' +
-              "</div>";
-            document.getElementById("recv-done").onclick = function () {
-              if (state.receive.entry === "token") {
-                openDetail(state.tokenId);
-              } else {
-                openHome();
+          /* ── 普通模式：QR 单页（网络 + 地址合并，与空钱包流程一致） ── */
+          } else if (r.step === "qr") {
+            if (!r.chain) {
+              var avail0 = CHAINS.filter(function(c) {
+                return getReceiveAddresses(r.tokenId, c).length > 0;
+              });
+              r.chain = avail0[0] || CHAINS[0];
+            }
+            if (r.addrIndex === undefined) r.addrIndex = 0;
+            if (r.gridExpanded === undefined) r.gridExpanded = false;
+
+            el.receiveTitle.textContent = "收款";
+            el.receiveStep.innerHTML = "";
+
+            var NRM_COPY_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+            var NRM_CHECK_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            var NRM_CHEVRON_DOWN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+            var NRM_CHEVRON_UP   = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+
+            /* 当前代币支持的网络列表（有地址条目即展示） */
+            var tokenChains = CHAINS.filter(function(c) {
+              return getReceiveAddresses(r.tokenId, c).length > 0;
+            });
+
+            function buildNormalQrPage(activeChain, addrIdx, gridExpanded) {
+              var addrList = getReceiveAddresses(r.tokenId, activeChain);
+              var safeIdx  = Math.min(addrIdx || 0, addrList.length - 1);
+              var entry    = addrList[safeIdx] || { address: FULL_ADDRESS, account: "Main" };
+              var dotColor = CHAIN_COLORS[activeChain] || "#9ba3af";
+
+              /* 网络 badge：链图标 + 链名 */
+              var heroBadge =
+                '<div style="display:inline-flex;align-items:center;gap:8px;' +
+                'padding:6px 14px 6px 8px;background:var(--bg);border:1px solid var(--border);' +
+                'border-radius:24px;margin-bottom:20px;box-shadow:var(--shadow)">' +
+                chainImgHtml(activeChain, 22) +
+                '<span style="font-size:14px;color:var(--text);font-weight:600">' + activeChain + '</span>' +
+                '</div>';
+
+              /* QR */
+              var qrHtml =
+                '<div class="qr-placeholder" aria-hidden="true" style="width:200px;height:200px;margin:0 auto 20px">' + buildQrSvg() + '</div>';
+
+              /* 地址 tab（多地址时显示） */
+              var addrTabsHtml = "";
+              if (addrList.length > 1) {
+                addrTabsHtml =
+                  '<div style="display:flex;justify-content:center;gap:0;border-bottom:1px solid var(--border);margin-bottom:14px">' +
+                  addrList.map(function(a, i) {
+                    var active = i === safeIdx;
+                    return (
+                      '<button type="button" data-pick-addr="' + i + '" style="' +
+                      'padding:6px 18px;border:none;background:transparent;cursor:pointer;transition:all .15s;' +
+                      'font-size:13px;font-weight:' + (active ? '600' : '400') + ';' +
+                      'color:' + (active ? 'var(--accent)' : 'var(--muted2)') + ';' +
+                      'border-bottom:2px solid ' + (active ? 'var(--accent)' : 'transparent') + ';margin-bottom:-1px">' +
+                      a.account +
+                      '</button>'
+                    );
+                  }).join("") +
+                  '</div>';
               }
-            };
+
+              /* 地址文字 + 复制 icon */
+              var addrRowHtml =
+                '<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:0 8px">' +
+                '<span id="qr-addr-text" style="font-size:11.5px;color:var(--muted);word-break:break-all;cursor:pointer;text-align:left;line-height:1.6">' + entry.address + '</span>' +
+                '<button type="button" id="btn-copy-addr" title="复制地址" style="flex-shrink:0;width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s">' +
+                NRM_COPY_ICON + '</button>' +
+                '</div>';
+
+              /* 可折叠网络切换区 */
+              var networkHtml = buildChainGridSection(tokenChains, activeChain, gridExpanded, NRM_CHEVRON_DOWN, NRM_CHEVRON_UP);
+
+              return (
+                '<div style="padding:4px 0 16px">' +
+                '<div style="text-align:center;padding:0 0 24px">' +
+                heroBadge + qrHtml + addrTabsHtml + addrRowHtml +
+                '</div>' +
+                networkHtml +
+                '</div>'
+              );
+            }
+
+            el.receiveBody.innerHTML = buildNormalQrPage(r.chain, r.addrIndex, r.gridExpanded);
+
+            function nrmTriggerCopy(text) {
+              if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function(){});
+              var toast = document.getElementById("copy-toast");
+              toast.classList.add("show");
+              setTimeout(function() { toast.classList.remove("show"); }, 2000);
+              var btn = document.getElementById("btn-copy-addr");
+              if (btn) {
+                btn.style.color = "var(--accent)";
+                btn.style.borderColor = "var(--accent)";
+                btn.innerHTML = NRM_CHECK_ICON;
+                setTimeout(function() {
+                  if (btn) { btn.style.color = ""; btn.style.borderColor = ""; btn.innerHTML = NRM_COPY_ICON; }
+                }, 2000);
+              }
+            }
+
+            function bindNormalQrEvents() {
+              var toggleBtn = document.getElementById("btn-toggle-chains");
+              if (toggleBtn) {
+                toggleBtn.addEventListener("click", function() {
+                  r.gridExpanded = !r.gridExpanded;
+                  el.receiveBody.innerHTML = buildNormalQrPage(r.chain, r.addrIndex, r.gridExpanded);
+                  bindNormalQrEvents();
+                });
+              }
+              el.receiveBody.querySelectorAll("[data-pick-chain]").forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                  r.chain = btn.dataset.pickChain;
+                  r.addrIndex = 0;
+                  el.receiveBody.innerHTML = buildNormalQrPage(r.chain, r.addrIndex, r.gridExpanded);
+                  bindNormalQrEvents();
+                });
+              });
+              el.receiveBody.querySelectorAll("[data-pick-addr]").forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                  r.addrIndex = parseInt(btn.dataset.pickAddr, 10);
+                  el.receiveBody.innerHTML = buildNormalQrPage(r.chain, r.addrIndex, r.gridExpanded);
+                  bindNormalQrEvents();
+                });
+              });
+              var addrs = getReceiveAddresses(r.tokenId, r.chain);
+              var curAddr = (addrs[Math.min(r.addrIndex || 0, addrs.length - 1)] || {}).address || FULL_ADDRESS;
+              var addrEl = document.getElementById("qr-addr-text");
+              if (addrEl) addrEl.addEventListener("click", function() { nrmTriggerCopy(curAddr); });
+              var copyBtn = document.getElementById("btn-copy-addr");
+              if (copyBtn) copyBtn.addEventListener("click", function() { nrmTriggerCopy(curAddr); });
+            }
+
+            bindNormalQrEvents();
           }
 
-          document.getElementById("btn-back-receive").onclick = function () {
-            if (r.step === "token") {
-              openHome();
-            } else if (r.step === "chain") {
-              if (r.entry === "token") {
-                openDetail(r.tokenId);
-              } else {
-                r.step = "token";
-                r.tokenId = null;
-                renderReceive();
-              }
-            } else if (r.step === "address") {
-              r.step = "chain";
-              r.account = null;
-              renderReceive();
-            } else if (r.step === "qr") {
-              var list3 = getReceiveAddresses(r.tokenId, r.chain);
-              if (list3.length > 1) {
-                r.step = "address";
-                r.account = null;
-              } else {
-                r.step = "chain";
-                r.account = null;
-              }
-              renderReceive();
-            }
-          };
         }
 
         var SEND_STEP_LABELS = ["代币", "公链", "地址"];
@@ -2305,6 +4577,7 @@
           }
 
           document.getElementById("btn-back-send").onclick = function () {
+            var s = state.send;
             if (s.step === "token") {
               openHome();
             } else if (s.step === "chain") {
@@ -2333,11 +4606,332 @@
           };
         }
 
+        /* ════════════════════════════════════════
+           Hyperliquid 页面逻辑
+        ════════════════════════════════════════ */
+
+        function openHL(from) {
+          state.hl.fromScreen = from || "homeEmpty";
+          renderHL();
+          showScreen("hl");
+        }
+
+        function renderHL() {
+          var h = state.hl;
+          var html = "";
+
+          html +=
+            '<div class="hl-brand-header">' +
+            '<div class="hl-brand-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>' +
+            '<div><div class="hl-brand-name">Hyperliquid</div><div class="hl-brand-sub">高性能链上永续合约交易</div></div>' +
+            '</div>';
+
+          if (h.hasAssets) {
+            var pSign = HL_MOCK.pnl24h >= 0 ? "+" : "";
+            var pCls  = HL_MOCK.pnl24h > 0 ? "hl-pnl-pos" : HL_MOCK.pnl24h < 0 ? "hl-pnl-neg" : "hl-pnl-zero";
+            html +=
+              '<div class="hl-stats-card">' +
+              '<div class="hl-stats-label">账户总权益</div>' +
+              '<div class="hl-stats-value">' + formatUsd(HL_MOCK.equity) + '</div>' +
+              '<div class="hl-stats-pnl"><span>未实现盈亏</span>' +
+              '<span class="' + pCls + '">' + pSign + formatUsd(HL_MOCK.pnl24h) + ' (' + pSign + HL_MOCK.pnlPct.toFixed(2) + '%)</span>' +
+              '</div></div>';
+
+            html +=
+              '<div class="hl-action-row">' +
+              '<button type="button" class="btn btn-primary"  id="btn-hl-dep">充值</button>' +
+              '<button type="button" class="btn btn-secondary" id="btn-hl-wd">提款</button>' +
+              '</div>';
+          } else {
+            html +=
+              '<div class="hl-stats-card">' +
+              '<div class="hl-stats-label">账户总权益</div>' +
+              '<div class="hl-stats-value">$0.00</div>' +
+              '<div class="hl-stats-pnl"><span class="hl-pnl-zero">尚未充值 · 暂无持仓</span></div>' +
+              '</div>';
+          }
+
+          html +=
+            '<div class="hl-demo-row"><button type="button" id="btn-hl-toggle">' +
+            (h.hasAssets ? '切换到：无持仓状态（演示）' : '切换到：有持仓状态（演示）') +
+            '</button></div>';
+
+          if (h.hasAssets) {
+            html +=
+              '<div class="hl-section-title">账户资金</div>' +
+              '<div class="hl-balance-card">' +
+              '<div class="hl-balance-item"><span class="hl-balance-item-label">可用保证金</span><span class="hl-balance-item-val">' + formatUsd(HL_MOCK.availableMargin) + '</span></div>' +
+              '<div class="hl-balance-item"><span class="hl-balance-item-label">已用保证金</span><span class="hl-balance-item-val">' + formatUsd(HL_MOCK.usedMargin) + '</span></div>' +
+              '<div class="hl-balance-item"><span class="hl-balance-item-label">USDC 余额</span><span class="hl-balance-item-val">' + formatUsd(HL_MOCK.equity) + '</span></div>' +
+              '</div>';
+
+            html += '<div class="hl-section-title" style="margin-top:16px">持仓</div>';
+            html += HL_POSITIONS.map(function(pos) {
+              var posColor = pos.pnl > 0 ? "color:var(--success)" : pos.pnl < 0 ? "color:var(--danger)" : "color:var(--muted)";
+              var posSign  = pos.pnl >= 0 ? "+" : "";
+              var sideCls  = pos.side === "long" ? "hl-side-long" : "hl-side-short";
+              var sideText = pos.side === "long" ? "多" : "空";
+              return (
+                '<div class="hl-position-card">' +
+                '<div class="hl-pos-left">' +
+                '<div class="hl-pos-pair">' + pos.pair + '</div>' +
+                '<div class="hl-pos-meta"><span class="' + sideCls + '">' + sideText + '</span> · ' + pos.leverage + ' 杠杆</div>' +
+                '</div>' +
+                '<div class="hl-pos-right">' +
+                '<div class="hl-pos-pnl" style="' + posColor + '">' + posSign + '$' + Math.abs(pos.pnl).toFixed(2) + ' (' + posSign + pos.pnlPct.toFixed(2) + '%)</div>' +
+                '<div class="hl-pos-size">' + pos.size + ' · ' + pos.notional + '</div>' +
+                '</div></div>'
+              );
+            }).join("");
+          } else {
+            html +=
+              '<div class="hl-empty-wrap">' +
+              '<div class="hl-empty-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>' +
+              '<div class="hl-empty-title">开始链上合约交易</div>' +
+              '<div class="hl-empty-desc">将钱包中的稳定币充值到 Hyperliquid，即可体验 CEX 级别速度的链上永续合约交易，资产始终在链上自托管。</div>' +
+              '<button type="button" class="btn btn-primary hl-empty-cta" id="btn-hl-dep-empty">充值到 Hyperliquid</button>' +
+              '<div class="gasless-note">' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+              '无需持有 ETH · 签名即可完成' +
+              '</div></div>';
+          }
+
+          el.hlBody.innerHTML = html;
+
+          document.getElementById("btn-hl-toggle").addEventListener("click", function() {
+            state.hl.hasAssets = !state.hl.hasAssets;
+            renderHL();
+          });
+          var depEmpty = document.getElementById("btn-hl-dep-empty");
+          if (depEmpty) depEmpty.addEventListener("click", openHLDeposit);
+          var depMain = document.getElementById("btn-hl-dep");
+          if (depMain) depMain.addEventListener("click", openHLDeposit);
+          var wdMain = document.getElementById("btn-hl-wd");
+          if (wdMain) wdMain.addEventListener("click", openHLWithdraw);
+        }
+
+        /* ── 充值流程 ── */
+
+        function openHLDeposit() {
+          state.hl.deposit = { step: "token", tokenId: null, chain: null, srcIndex: 0, amount: "" };
+          renderHLDeposit();
+          showScreen("hlDeposit");
+        }
+
+        function renderHLDeposit() {
+          var d = state.hl.deposit;
+
+          if (d.step === "token") {
+            el.hlDepositTitle.textContent = "充值";
+            el.hlDepositStep.innerHTML = stepProgressHtml(1, HL_DEPOSIT_STEPS);
+            var html = '<p class="recv-meta" style="margin-bottom:12px">选择要充值的资产及来源链</p><div>';
+            html += HL_DEPOSIT_SOURCES.map(function(src, idx) {
+              return (
+                '<button type="button" class="hl-token-pick" data-hl-pick="' + idx + '">' +
+                '<div class="hl-token-pick-icon"><img src="' + src.iconUrl + '" alt="" loading="lazy" referrerpolicy="no-referrer"/></div>' +
+                '<div class="hl-token-pick-info">' +
+                '<div class="hl-token-pick-name">' + src.symbol + '<span class="hl-token-pick-chain">' + src.chain + '</span></div>' +
+                '<div class="hl-token-pick-bal">可用 ' + src.balance + ' ' + src.symbol + ' · 约 ' + formatUsd(src.fiat) + '</div>' +
+                '</div>' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>' +
+                '</button>'
+              );
+            }).join("");
+            html += '</div>';
+            el.hlDepositBody.innerHTML = html;
+            el.hlDepositBody.querySelectorAll("[data-hl-pick]").forEach(function(btn) {
+              btn.addEventListener("click", function() {
+                var idx = parseInt(btn.dataset.hlPick);
+                var src = HL_DEPOSIT_SOURCES[idx];
+                d.tokenId  = src.id;
+                d.chain    = src.chain;
+                d.srcIndex = idx;
+                d.step     = "amount";
+                renderHLDeposit();
+              });
+            });
+
+          } else if (d.step === "amount") {
+            var src = HL_DEPOSIT_SOURCES[d.srcIndex];
+            el.hlDepositTitle.textContent = "充值 · " + src.symbol;
+            el.hlDepositStep.innerHTML = stepProgressHtml(2, HL_DEPOSIT_STEPS);
+            var isUsdc = src.id === "usdc";
+            var badgeClass = isUsdc ? "paymaster-badge" : "gasless-badge";
+            var badgeIcon = isUsdc
+              ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
+              : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            var badgeText = isUsdc
+              ? "Circle Paymaster · Gas 以 USDC 支付，无需持有 ETH"
+              : "元交易中继（Meta-Transaction）· 无需 ETH";
+            var gasRow = isUsdc
+              ? '<div class="hl-fee-row"><span class="hl-fee-label">Gas 费用</span><span class="hl-fee-val">~' + CIRCLE_PAYMASTER_GAS_USDC.toFixed(2) + ' USDC（Circle Paymaster）</span></div>'
+              : '<div class="hl-fee-row"><span class="hl-fee-label">Gas 费用</span><span class="hl-fee-val" style="color:var(--success)">$0.00（平台代付）</span></div>';
+
+            el.hlDepositBody.innerHTML =
+              '<div class="' + badgeClass + '">' +
+              badgeIcon + badgeText + '</div>' +
+              (isUsdc ? '<div class="paymaster-info">由 <strong>Circle Paymaster</strong> 提供支持：从本次转账中扣除少量 USDC 作为链上 Gas，无需钱包持有 ETH。</div>' : '') +
+              '<div class="hl-amount-card">' +
+              '<div class="hl-amount-top"><span>充值金额</span><span>最多可用 <strong>' + src.balance + ' ' + src.symbol + '</strong></span></div>' +
+              '<div class="hl-amount-input-row">' +
+              '<input type="number" class="hl-amount-input" id="hl-dep-amt" placeholder="0" min="1" max="' + src.fiat + '" value="' + (d.amount || "") + '" />' +
+              '<button type="button" class="hl-max-btn" id="hl-dep-max">全部</button>' +
+              '</div></div>' +
+              '<div class="hl-fee-card">' +
+              '<div class="hl-fee-row"><span class="hl-fee-label">充值资产</span><span class="hl-fee-val">' + src.symbol + ' · ' + src.chain + '</span></div>' +
+              gasRow +
+              '<div class="hl-fee-row"><span class="hl-fee-label">预计到账</span><span class="hl-fee-val">约 1–3 分钟</span></div>' +
+              '<hr class="hl-fee-divider"/>' +
+              '<div class="hl-fee-row hl-fee-total"><span class="hl-fee-label">实际到账</span><span class="hl-fee-val" id="hl-dep-total">—</span></div>' +
+              '</div>' +
+              '<button type="button" class="btn btn-primary" id="hl-dep-next" style="width:100%" disabled>下一步</button>';
+
+            var amtEl  = document.getElementById("hl-dep-amt");
+            var nextEl = document.getElementById("hl-dep-next");
+            var totEl  = document.getElementById("hl-dep-total");
+            function syncTotal() {
+              var v = parseFloat(amtEl.value) || 0;
+              var net = isUsdc ? Math.max(0, v - CIRCLE_PAYMASTER_GAS_USDC) : v;
+              totEl.textContent  = v > 0 ? net.toFixed(2) + " " + src.symbol : "—";
+              nextEl.disabled    = !(v > 0 && v <= src.fiat);
+            }
+            amtEl.addEventListener("input", syncTotal);
+            document.getElementById("hl-dep-max").addEventListener("click", function() {
+              amtEl.value = src.fiat; syncTotal();
+            });
+            nextEl.addEventListener("click", function() {
+              d.amount = amtEl.value; d.step = "confirm"; renderHLDeposit();
+            });
+
+          } else if (d.step === "confirm") {
+            var src2 = HL_DEPOSIT_SOURCES[d.srcIndex];
+            el.hlDepositTitle.textContent = "确认充值";
+            el.hlDepositStep.innerHTML = stepProgressHtml(3, HL_DEPOSIT_STEPS);
+            var isUsdc2 = src2.id === "usdc";
+            var netAmount2 = isUsdc2
+              ? Math.max(0, parseFloat(d.amount) - CIRCLE_PAYMASTER_GAS_USDC).toFixed(2)
+              : parseFloat(d.amount).toFixed(2);
+            var sigLabel = isUsdc2
+              ? "EIP-3009 签名 + Circle Paymaster"
+              : "Meta-Transaction 签名";
+            var confirmBadgeClass = isUsdc2 ? "paymaster-badge" : "gasless-badge";
+            var confirmBadgeIcon = isUsdc2
+              ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
+              : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            var confirmBadgeText = isUsdc2
+              ? "Circle Paymaster · Gas 以 USDC 扣除，无需 ETH"
+              : "仅需签名确认，无需支付任何 Gas";
+            var gasConfirmRow = isUsdc2
+              ? '<div class="hl-confirm-row"><span class="hl-confirm-label">Gas 费用</span><span class="hl-confirm-val">' + CIRCLE_PAYMASTER_GAS_USDC.toFixed(2) + ' USDC</span></div>'
+              : '<div class="hl-confirm-row"><span class="hl-confirm-label">Gas 费用</span><span class="hl-confirm-val" style="color:var(--success)">$0.00</span></div>';
+            var netRow = isUsdc2
+              ? '<div class="hl-confirm-row"><span class="hl-confirm-label">实际到账</span><span class="hl-confirm-val">' + netAmount2 + ' USDC</span></div>'
+              : '';
+            var confirmDesc = isUsdc2
+              ? '点击「签名并充值」后，钱包将弹出 EIP-3009 签名请求（无需 ETH）。Circle Paymaster 将从本次转账中扣除 ' + CIRCLE_PAYMASTER_GAS_USDC.toFixed(2) + ' USDC 作为链上 Gas，剩余 ' + netAmount2 + ' USDC 桥接至 Hyperliquid。'
+              : '点击「签名并充值」后，钱包将弹出签名请求（无 Gas），平台中继器将代为完成链上转账并桥接至 Hyperliquid。';
+
+            el.hlDepositBody.innerHTML =
+              '<div class="' + confirmBadgeClass + '">' +
+              confirmBadgeIcon + confirmBadgeText + '</div>' +
+              '<div class="hl-confirm-card">' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">充值金额</span><span class="hl-confirm-val">' + parseFloat(d.amount).toFixed(2) + ' ' + src2.symbol + '</span></div>' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">来源链</span><span class="hl-confirm-val">' + src2.chain + '</span></div>' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">目标账户</span><span class="hl-confirm-val" style="color:var(--accent)">Hyperliquid</span></div>' +
+              gasConfirmRow +
+              netRow +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">授权方式</span><span class="hl-confirm-val">' + sigLabel + '</span></div>' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">预计到账</span><span class="hl-confirm-val">1–3 分钟</span></div>' +
+              '</div>' +
+              '<p class="recv-meta" style="margin-bottom:16px">' + confirmDesc + '</p>' +
+              '<button type="button" class="btn btn-primary" id="hl-dep-confirm" style="width:100%">签名并充值</button>';
+
+            document.getElementById("hl-dep-confirm").addEventListener("click", function() {
+              state.hl.hasAssets = true;
+              if (isUsdc2) {
+                alert("原型：此处将弹出 EIP-3009 钱包签名请求（无需 ETH）。Circle Paymaster 代付链上 Gas，并从 USDC 转账中扣除 " + CIRCLE_PAYMASTER_GAS_USDC.toFixed(2) + " USDC 手续费，剩余 " + netAmount2 + " USDC 桥接至 Hyperliquid。");
+              } else {
+                alert("原型：此处将弹出钱包签名请求（零 Gas），平台中继器提交链上交易并桥接至 Hyperliquid。");
+              }
+              openHL(state.hl.fromScreen);
+            });
+          }
+        }
+
+        /* ── 提款流程 ── */
+
+        function openHLWithdraw() {
+          state.hl.withdraw = { step: "amount", amount: "" };
+          renderHLWithdraw();
+          showScreen("hlWithdraw");
+        }
+
+        function renderHLWithdraw() {
+          var w = state.hl.withdraw;
+          var avail = HL_MOCK.availableMargin;
+
+          if (w.step === "amount") {
+            el.hlWithdrawTitle.textContent = "提款";
+            el.hlWithdrawStep.innerHTML = stepProgressHtml(1, HL_WITHDRAW_STEPS);
+            el.hlWithdrawBody.innerHTML =
+              '<p class="recv-meta" style="margin-bottom:12px">从 Hyperliquid 提款至钱包（USDC · Arbitrum）</p>' +
+              '<div class="hl-amount-card">' +
+              '<div class="hl-amount-top"><span>提款金额</span><span>可用 <strong>' + formatUsd(avail) + '</strong></span></div>' +
+              '<div class="hl-amount-input-row">' +
+              '<input type="number" class="hl-amount-input" id="hl-wd-amt" placeholder="0" min="1" max="' + avail + '" value="' + (w.amount || "") + '" />' +
+              '<button type="button" class="hl-max-btn" id="hl-wd-max">全部</button>' +
+              '</div></div>' +
+              '<div class="hl-fee-card">' +
+              '<div class="hl-fee-row"><span class="hl-fee-label">提款资产</span><span class="hl-fee-val">USDC</span></div>' +
+              '<div class="hl-fee-row"><span class="hl-fee-label">到账网络</span><span class="hl-fee-val">Arbitrum</span></div>' +
+              '<div class="hl-fee-row"><span class="hl-fee-label">预计到账</span><span class="hl-fee-val">约 2–5 分钟</span></div>' +
+              '<hr class="hl-fee-divider"/>' +
+              '<div class="hl-fee-row hl-fee-total"><span class="hl-fee-label">实际到账</span><span class="hl-fee-val" id="hl-wd-total">—</span></div>' +
+              '</div>' +
+              '<button type="button" class="btn btn-primary" id="hl-wd-next" style="width:100%" disabled>下一步</button>';
+
+            var amtEl  = document.getElementById("hl-wd-amt");
+            var nextEl = document.getElementById("hl-wd-next");
+            var totEl  = document.getElementById("hl-wd-total");
+            function syncWdTotal() {
+              var v = parseFloat(amtEl.value) || 0;
+              totEl.textContent = v > 0 ? v.toFixed(2) + " USDC" : "—";
+              nextEl.disabled   = !(v > 0 && v <= avail);
+            }
+            amtEl.addEventListener("input", syncWdTotal);
+            document.getElementById("hl-wd-max").addEventListener("click", function() {
+              amtEl.value = avail.toFixed(2); syncWdTotal();
+            });
+            nextEl.addEventListener("click", function() {
+              w.amount = amtEl.value; w.step = "confirm"; renderHLWithdraw();
+            });
+
+          } else if (w.step === "confirm") {
+            el.hlWithdrawTitle.textContent = "确认提款";
+            el.hlWithdrawStep.innerHTML = stepProgressHtml(2, HL_WITHDRAW_STEPS);
+            el.hlWithdrawBody.innerHTML =
+              '<div class="hl-confirm-card">' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">提款金额</span><span class="hl-confirm-val">' + parseFloat(w.amount).toFixed(2) + ' USDC</span></div>' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">来源账户</span><span class="hl-confirm-val">Hyperliquid</span></div>' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">到账网络</span><span class="hl-confirm-val" style="color:var(--accent)">Arbitrum</span></div>' +
+              '<div class="hl-confirm-row"><span class="hl-confirm-label">预计到账</span><span class="hl-confirm-val">2–5 分钟</span></div>' +
+              '</div>' +
+              '<p class="recv-meta" style="margin-bottom:16px">提款将通过 Hyperliquid 官方桥转出 USDC 至你在 Arbitrum 网络的地址。</p>' +
+              '<button type="button" class="btn btn-primary" id="hl-wd-confirm" style="width:100%">确认提款</button>';
+
+            document.getElementById("hl-wd-confirm").addEventListener("click", function() {
+              alert("原型：此处将通过 Hyperliquid API 发起提款请求。");
+              openHL(state.hl.fromScreen);
+            });
+          }
+        }
+
         function init() {
           document.getElementById("btn-receive-home").addEventListener("click", openReceiveFromHome);
           document.getElementById("btn-send-home").addEventListener("click", openSendFromHome);
 
-          document.getElementById("btn-tx-home").addEventListener("click", openTxHome);
+          var btnTxHome = document.getElementById("btn-tx-home");
+          if (btnTxHome) btnTxHome.addEventListener("click", openTxHome);
 
           document.getElementById("btn-back-tx-home").addEventListener("click", openHome);
 
@@ -2374,10 +4968,170 @@
               "</span></div>"
             );
           }).join("");
+
+          /* ── 演示切换：有资产 ↔ 空钱包（页面内嵌按钮） ── */
+          document.getElementById("btn-demo-to-empty").addEventListener("click", function () {
+            showScreen("homeEmpty");
+          });
+          document.getElementById("btn-demo-to-normal").addEventListener("click", function () {
+            showScreen("home");
+            renderHome();
+          });
+
+          /* ── 空钱包收款入口 ── */
+          document.getElementById("btn-receive-empty").addEventListener("click", openReceiveFromEmpty);
+
+          /* ── Hyperliquid 入口（空钱包功能卡）── */
+          document.querySelector(".feature-card-hl").addEventListener("click", function() {
+            openHL("homeEmpty");
+          });
+
+          /* ── HL 返回按钮 ── */
+          document.getElementById("btn-back-hl").addEventListener("click", function() {
+            showScreen(state.hl.fromScreen);
+          });
+          document.getElementById("btn-back-hl-deposit").addEventListener("click", function() {
+            var d = state.hl.deposit;
+            if (d.step === "token") {
+              showScreen("hl");
+            } else if (d.step === "amount") {
+              d.step = "token"; renderHLDeposit();
+            } else if (d.step === "confirm") {
+              d.step = "amount"; renderHLDeposit();
+            }
+          });
+          document.getElementById("btn-back-hl-withdraw").addEventListener("click", function() {
+            var w = state.hl.withdraw;
+            if (w.step === "amount") {
+              showScreen("hl");
+            } else if (w.step === "confirm") {
+              w.step = "amount"; renderHLWithdraw();
+            }
+          });
+
+          /* ── 收款返回按钮（统一在 init 注册，不依赖 renderReceive 执行顺序） ── */
+          document.getElementById("btn-back-receive").addEventListener("click", function () {
+            var r = state.receive;
+            if (r.entry === "empty") {
+              showScreen("homeEmpty");
+              return;
+            }
+            if (r.step === "token") {
+              if (r.entry === "token") {
+                openDetail(state.tokenId);
+              } else {
+                openHome();
+              }
+            } else if (r.step === "qr") {
+              if (r.entry === "token") {
+                openDetail(state.tokenId);
+              } else {
+                openHome();
+              }
+            }
+          });
+
+          /* ══ 新增页面导航 ══ */
+
+          /* Donut 图点击 → 资产详情 */
+          var donutSection = document.getElementById("donut-section-clickable");
+          if (donutSection) {
+            donutSection.addEventListener("click", function() {
+              showScreen("assetDetail");
+            });
+          }
+
+          /* 质押按钮 */
+          document.getElementById("btn-staking-home").addEventListener("click", function() {
+            showScreen("stakingDetail");
+          });
+
+          /* Agent 交易按钮 */
+          document.getElementById("btn-agent-home").addEventListener("click", function() {
+            showScreen("agentTrading");
+          });
+
+          /* 账户活动卡片 */
+          document.getElementById("btn-activity-card").addEventListener("click", function() {
+            showScreen("activityDetail");
+          });
+
+          /* 资产详情返回 */
+          document.getElementById("btn-back-asset-detail").addEventListener("click", openHome);
+
+          /* 账户活动详情返回 */
+          document.getElementById("btn-back-activity-detail").addEventListener("click", openHome);
+
+          /* 质押详情返回 */
+          document.getElementById("btn-back-staking-detail").addEventListener("click", openHome);
+
+          /* Agent Trading 返回 */
+          document.getElementById("btn-back-agent-trading").addEventListener("click", openHome);
+
+          /* 资产详情 Tab 切换 */
+          initTabBar("asset-detail-tabs", {
+            token: "asset-tab-token",
+            defi:  "asset-tab-defi",
+            nft:   "asset-tab-nft",
+          });
+
+          /* 资产详情内 Token 列表点击 → 代币详情 */
+          var assetTokenList = document.getElementById("asset-token-list");
+          if (assetTokenList) {
+            assetTokenList.addEventListener("click", function(e) {
+              var row = e.target.closest("[data-token]");
+              if (row) openDetail(row.dataset.token);
+            });
+          }
+
+          /* 账户活动 Tab 切换 */
+          initTabBar("activity-detail-tabs", {
+            onchain:  "activity-tab-onchain",
+            offchain: "activity-tab-offchain",
+          });
+
+          /* Agent Trading Tab 切换 */
+          initTabBar("agent-trading-tabs", {
+            global:   "agent-tab-global",
+            protocol: "agent-tab-protocol",
+          });
+
+          /* 协议 Agent 展开/收起 */
+          var protoAgentList = document.querySelector(".new-proto-agent-list");
+          if (protoAgentList) {
+            protoAgentList.addEventListener("click", function(e) {
+              var row = e.target.closest(".new-proto-agent-row");
+              if (!row) return;
+              var proto = row.dataset.proto;
+              var expand = document.getElementById("expand-" + proto);
+              if (expand) {
+                expand.style.display = expand.style.display === "none" ? "block" : "none";
+              }
+            });
+          }
+        }
+
+        /** 通用 Tab 初始化：tabBarId=Tab栏ID，mapping={tabKey:contentId} */
+        function initTabBar(tabBarId, mapping) {
+          var bar = document.getElementById(tabBarId);
+          if (!bar) return;
+          bar.addEventListener("click", function(e) {
+            var btn = e.target.closest(".new-tab-btn");
+            if (!btn) return;
+            var tab = btn.dataset.tab;
+            if (!mapping[tab]) return;
+            bar.querySelectorAll(".new-tab-btn").forEach(function(b) { b.classList.remove("active"); });
+            btn.classList.add("active");
+            Object.keys(mapping).forEach(function(k) {
+              var el = document.getElementById(mapping[k]);
+              if (el) el.style.display = k === tab ? "block" : "none";
+            });
+          });
         }
 
         init();
       })();
     </script>
+    <div class="copy-toast" id="copy-toast">地址已复制 ✓</div>
   </body>
 </html>
