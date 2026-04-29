@@ -5,68 +5,84 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portfolio Dashboard — Web Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --accent: #5b5bd6;
-  --accent-h: #4e4ec0;
-  --accent-light: #eeeeff;
-  --success: #16a34a;
-  --success-light: #dcfce7;
-  --danger: #dc2626;
-  --danger-light: #fee2e2;
-  --warning: #d97706;
-  --warning-light: #fef3c7;
-  --bg: #f1f5f9;
+  /* Primary — Design Token #007fff (Primary Blue) */
+  --accent: #007fff;
+  --accent-h: #0063cc;
+  --accent-light: #f0f7ff;
+
+  /* Semantic */
+  --success: #10b981;
+  --success-light: #ecfdf5;
+  --positive: #00a63e;
+  --danger: #d4183d;
+  --danger-light: rgba(212,24,61,0.10);
+  --warning: #eab308;
+  --warning-light: rgba(234,179,8,0.15);
+
+  /* Surfaces */
+  --bg: #fafaf9;
   --white: #ffffff;
-  --border: #e2e8f0;
-  --border-s: #f1f5f9;
-  --t1: #0f172a;
-  --t2: #475569;
-  --t3: #94a3b8;
-  --tlink: #5b5bd6;
-  --f2: #f8fafc;
-  --f3: #f1f5f9;
+  --border: rgba(17,29,74,0.08);
+  --border-s: rgba(17,29,74,0.04);
+
+  /* Text */
+  --t1: #111d4a;
+  --t2: #717182;
+  --t3: #99a1af;
+  --tlink: #007fff;
+
+  /* Surface helpers */
+  --f2: #f8fafe;
+  --f3: #f0f1f3;
   --f4: #ffffff;
-  --shadow: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+
+  /* Shadows — Design Token values */
+  --shadow: 0 1px 3px rgba(17,29,74,0.04), 0 1px 2px rgba(17,29,74,0.06);
+  --shadow-md: 0 2px 8px rgba(17,29,74,0.06);
+  --shadow-lg: 0 8px 24px rgba(17,29,74,0.05);
+  --shadow-cta: 0 4px 14px rgba(0,127,255,0.18);
+  --shadow-cta-hover: 0 4px 20px rgba(0,127,255,0.28);
+  --shadow-nav: 0 10px 15px rgba(0,127,255,0.25);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5}
+body{font-family:'Noto Sans','Noto Sans SC',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit}
 
 /* ── Layout ── */
 #app{max-width:960px;margin:0 auto;display:flex;min-height:100vh;background:var(--bg)}
-#sidebar{width:180px;min-width:180px;background:var(--white);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;overflow-y:auto;flex-shrink:0}
+#sidebar{width:180px;min-width:180px;background:var(--white);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;overflow-y:auto;flex-shrink:0;box-shadow:var(--shadow)}
 #main{flex:1;min-width:0;padding:24px 28px;overflow-y:auto;min-height:100vh}
 
 /* ── Sidebar ── */
 .sb-logo{padding:16px 16px 10px;display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:var(--t1);border-bottom:1px solid var(--border)}
-.sb-logo-icon{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.sb-logo-icon{width:28px;height:28px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;box-shadow:var(--shadow-cta)}
 .nav-group-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;padding:14px 16px 5px}
-.nav-item{padding:7px 16px;cursor:pointer;font-size:13px;color:var(--t2);border-left:3px solid transparent;transition:all .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-item{padding:7px 12px;margin:2px 8px;cursor:pointer;font-size:13px;color:var(--t2);border-radius:8px;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nav-item:hover{background:var(--f2);color:var(--t1)}
-.nav-item.active{background:#f0f0ff;color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.nav-item.active{background:var(--accent);color:#fff;font-weight:600;box-shadow:var(--shadow-nav)}
 
 /* ── Cards ── */
-.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
-.card-c{cursor:pointer;transition:border-color .15s}
-.card-c:hover{border-color:#c0c0ee}
-.card-sel{border-color:#a5a5e8!important;background:var(--f2)!important}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.card-c{cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.card-c:hover{box-shadow:var(--shadow-md)}
+.card-sel{border-color:rgba(0,127,255,0.3)!important;background:var(--accent-light)!important}
 
 /* ── Buttons ── */
-.btn-accent{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .12s}
-.btn-accent:hover{background:var(--accent-h)}
-.btn-ghost{background:transparent;color:var(--t1);border:1px solid var(--border);border-radius:8px;padding:10px 22px;font-size:14px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .12s}
+.btn-accent{background:var(--accent);color:#fff;border:none;border-radius:9999px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s,box-shadow .15s;box-shadow:var(--shadow-cta)}
+.btn-accent:hover{background:var(--accent-h);box-shadow:var(--shadow-cta-hover)}
+.btn-ghost{background:transparent;color:var(--t1);border:1px solid var(--border);border-radius:9999px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s}
 .btn-ghost:hover{background:var(--f2)}
 
 /* ── Action row (portfolio operations) ── */
 .actions-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.act-btn{display:flex;align-items:center;gap:6px;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;border:1px solid var(--border);background:transparent;color:var(--t1);transition:background .12s;white-space:nowrap}
+.act-btn{display:flex;align-items:center;gap:6px;padding:9px 20px;border-radius:9999px;cursor:pointer;font-size:14px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--t1);transition:background .15s;white-space:nowrap}
 .act-btn:hover{background:var(--f2)}
-.act-btn.accent{background:var(--accent);color:#fff;border-color:var(--accent)}
-.act-btn.accent:hover{background:var(--accent-h)}
+.act-btn.accent{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:var(--shadow-cta)}
+.act-btn.accent:hover{background:var(--accent-h);box-shadow:var(--shadow-cta-hover)}
 .act-divider{width:1px;height:22px;background:var(--border);flex-shrink:0}
 
 /* ── Tabs ── */
@@ -77,8 +93,8 @@ button{font-family:inherit}
 .tab-content.active{display:block}
 
 /* ── Pill / Badge ── */
-.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;line-height:1.4}
-.pill-info{background:#eff6ff;color:#3b82f6}
+.pill{display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600;line-height:1.4}
+.pill-info{background:var(--accent-light);color:var(--accent)}
 .pill-success{background:var(--success-light);color:var(--success)}
 .pill-warning{background:var(--warning-light);color:var(--warning)}
 .pill-neutral{background:var(--f3);color:var(--t2);border:1px solid var(--border)}
@@ -92,7 +108,7 @@ button{font-family:inherit}
 
 /* ── Step bar ── */
 .step-bar{display:flex;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:4px}
-.step-item{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:4px}
+.step-item{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px}
 .step-item.active-step{background:var(--accent)}
 .step-num{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
 .step-connector{width:14px;height:1px;background:var(--border);flex-shrink:0}
@@ -106,10 +122,10 @@ button{font-family:inherit}
 .net-row:hover{background:var(--f2)}
 
 /* ── Staking ── */
-.staking-hero{background:#f5f6ff;border:1px solid #627EEA33;border-radius:10px;padding:20px 24px}
+.staking-hero{background:var(--accent-light);border:1px solid rgba(0,127,255,0.15);border-radius:12px;padding:20px 24px;box-shadow:var(--shadow)}
 
 /* ── Agent ── */
-.agent-card{border:1px solid #5b5bd633;border-radius:10px;overflow:hidden}
+.agent-card{border:1px solid rgba(0,127,255,0.2);border-radius:12px;overflow:hidden}
 
 /* ── Progress bar ── */
 .progress-bar{height:4px;border-radius:2px;background:var(--f3);overflow:hidden}
@@ -122,7 +138,7 @@ button{font-family:inherit}
 .chain-badge{font-size:11px;padding:1px 7px;border-radius:4px;font-weight:600}
 
 /* ── Feature panel ── */
-#feature-panel{position:fixed;bottom:24px;right:24px;width:280px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow-lg);display:none;z-index:100;max-height:400px;overflow-y:auto}
+#feature-panel{position:fixed;bottom:24px;right:24px;width:280px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:0 24px 60px rgba(17,29,74,0.12);display:none;z-index:100;max-height:400px;overflow-y:auto}
 #feature-panel.vis{display:block}
 
 /* ── Grid helpers ── */
@@ -162,10 +178,10 @@ button{font-family:inherit}
 .flex1{flex:1}
 .shrink0{flex-shrink:0}
 .rounded{border-radius:8px}
-.overcard{border-radius:10px;border:1px solid var(--border);overflow:hidden}
+.overcard{border-radius:12px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)}
 .stack{display:flex;flex-direction:column;gap:16px}
-.input-f{background:var(--f3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:inherit;font-size:14px;color:var(--t1);width:100%;outline:none}
-.input-f:focus{border-color:var(--accent)}
+.input-f{background:var(--f3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:inherit;font-size:14px;color:var(--t1);width:100%;outline:none;transition:border-color .15s,box-shadow .15s}
+.input-f:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,127,255,0.12)}
 .w-full{width:100%}
 .ta-right{text-align:right}
 
@@ -470,11 +486,11 @@ function buildLineChartWithLabels(data, cats, w, h, color='#5b5bd6'){
 function sparklineSVG(){
   return `<svg width="160" height="44" viewBox="0 0 160 44" style="flex-shrink:0">
     <defs><linearGradient id="spkGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
     </linearGradient></defs>
     <path d="M0,38 L18,30 L34,34 L52,18 L70,24 L90,10 L110,20 L130,8 L150,4 L160,3 L160,44 L0,44 Z" fill="url(#spkGrad)"/>
-    <path d="M0,38 L18,30 L34,34 L52,18 L70,24 L90,10 L110,20 L130,8 L150,4 L160,3" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M0,38 L18,30 L34,34 L52,18 L70,24 L90,10 L110,20 L130,8 L150,4 L160,3" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`;
 }
 
@@ -874,9 +890,9 @@ function renderActivityDetail(){
   ];
 
   function txIcon(type){
-    if(type==='Receive'||type==='ClaimReward') return {icon:'↓',bg:'#d1fae5',color:'#16a34a'};
-    if(type==='Send'||type==='Borrow') return {icon:'↑',bg:'#fee2e2',color:'#dc2626'};
-    if(type==='Approval') return {icon:'✓',bg:'#fef3c7',color:'#d97706'};
+    if(type==='Receive'||type==='ClaimReward') return {icon:'↓',bg:'#ecfdf5',color:'#10b981'};
+    if(type==='Send'||type==='Borrow') return {icon:'↑',bg:'rgba(212,24,61,0.1)',color:'#d4183d'};
+    if(type==='Approval') return {icon:'✓',bg:'rgba(234,179,8,0.15)',color:'#eab308'};
     if(type==='AddLP') return {icon:'+',bg:'#e0e7ff',color:'#4f46e5'};
     if(type==='Deposit'||type==='Stake') return {icon:'⬇',bg:'#e0e7ff',color:'#4f46e5'};
     return {icon:'↔',bg:'var(--f2)',color:'var(--t2)'};
@@ -932,7 +948,7 @@ function renderAgentTrading(){
     </div>
     <div class="agent-card">
       <div class="row" style="padding:16px 20px;border-bottom:1px solid var(--border);gap:14px">
-        <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#5b5bd6,#818cf8);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#007fff,#0cc5ff);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           ${agentIcon('#fff')}
         </div>
         <div class="flex1">
@@ -1130,9 +1146,9 @@ function renderTokenDetail(){
   const arrowChar=m.changePos===true?'↗':m.changePos===false?'↘':'→';
 
   function txIcon(type){
-    if(type==='Receive') return {icon:'↓',bg:'#d1fae5',color:'#16a34a'};
-    if(type==='Send') return {icon:'↑',bg:'#fee2e2',color:'#dc2626'};
-    if(type==='APPROVAL') return {icon:'✓',bg:'#fef3c7',color:'#d97706'};
+    if(type==='Receive') return {icon:'↓',bg:'#ecfdf5',color:'#10b981'};
+    if(type==='Send') return {icon:'↑',bg:'rgba(212,24,61,0.1)',color:'#d4183d'};
+    if(type==='APPROVAL') return {icon:'✓',bg:'rgba(234,179,8,0.15)',color:'#eab308'};
     return {icon:'↔',bg:'var(--f2)',color:'var(--t2)'};
   }
 
@@ -1230,7 +1246,7 @@ function renderTokenDetail(){
             </div>`).join('')}
         </div>
       </div>
-      <div id="tokenLineChart" style="width:100%;overflow:hidden">${buildLineChartWithLabels(chartData.vals,chartData.cats,560,200,'#5b5bd6')}</div>
+      <div id="tokenLineChart" style="width:100%;overflow:hidden">${buildLineChartWithLabels(chartData.vals,chartData.cats,560,200,'#007fff')}</div>
     </div>
 
     <!-- Holdings + Network Distribution -->
