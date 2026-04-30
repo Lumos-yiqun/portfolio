@@ -314,7 +314,20 @@ const S = {
   networkExpanded: true,
   tokenChartPeriod: '7d',
   expandedProtocol: '',
-  hideReceipts: false
+  hideReceipts: false,
+  chartExpanded: false,
+  chartPeriod: '1y'
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Portfolio Chart Data
+// ─────────────────────────────────────────────────────────────────────────────
+const PORTFOLIO_CHART_DATA = {
+  '1d': { cats: ['00:00','04:00','08:00','12:00','16:00','20:00','24:00'], vals: [6260,6240,6255,6270,6285,6278,6295], label:'今日' },
+  '1w': { cats: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],              vals: [6150,6200,6175,6230,6270,6248,6295], label:'近 7 日' },
+  '1m': { cats: ['1','5','10','15','20','25','30'],                      vals: [5900,6020,5975,6080,6180,6240,6295], label:'近 1 月' },
+  '6m': { cats: ['Nov','Dec','Jan','Feb','Mar','Apr'],                   vals: [5100,5450,5700,5900,6100,6295],     label:'近 6 月' },
+  '1y': { cats: ['5月','7月','9月','11月','1月','3月','4月'],             vals: [3200,3620,3950,4320,4820,5600,6295], label:'近 1 年' }
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -527,6 +540,63 @@ function qrSVG(size=160){
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" style="display:block;background:#fff;border-radius:4px"><rect width="${total}" height="${total}" fill="#fff"/>${sq}</svg>`;
 }
 
+function buildPortfolioChartSVG(vals, cats){
+  const W=680, H=200, padT=28, padR=16, padB=32, padL=44;
+  const ew=W-padL-padR, eh=H-padT-padB;
+  const mn=Math.min(...vals), mx=Math.max(...vals), rng=mx-mn||1;
+  const n=vals.length;
+  const pts=vals.map((v,i)=>[padL+i/(n-1)*ew, padT+(1-(v-mn)/rng)*eh]);
+  const d=pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const area=d+` L${pts[n-1][0].toFixed(1)},${H-padB} L${pts[0][0].toFixed(1)},${H-padB} Z`;
+  const id='pcg'+Math.random().toString(36).slice(2);
+  // Y-axis grid (4 steps)
+  const ySteps=4;
+  let grid='', yLabels='';
+  for(let i=0;i<=ySteps;i++){
+    const pct=i/ySteps, y=(padT+pct*eh).toFixed(1);
+    const val=mx-pct*rng;
+    const lab=val>=1000?`${(val/1000).toFixed(0)}K`:val.toFixed(0);
+    grid+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="rgba(17,29,74,0.06)" stroke-width="1"/>`;
+    yLabels+=`<text x="${padL-8}" y="${(parseFloat(y)+4).toFixed(1)}" text-anchor="end" font-size="11" fill="#99a1af" font-family="Noto Sans,system-ui,sans-serif">${lab}</text>`;
+  }
+  // X-axis labels
+  const xLabels=cats.map((c,i)=>{
+    const x=(padL+i/(n-1)*ew).toFixed(1);
+    return `<text x="${x}" y="${H-6}" text-anchor="middle" font-size="11" fill="#99a1af" font-family="Noto Sans,system-ui,sans-serif">${c}</text>`;
+  }).join('');
+  // Min/max callout labels (top-left=start, top-right=current)
+  const fmtVal=v=>'$'+v.toLocaleString();
+  const startLabel=fmtVal(vals[0]), endLabel=fmtVal(vals[n-1]);
+  return `<div style="position:relative;width:100%">
+    <div style="position:absolute;top:4px;left:${padL}px;font-size:11px;font-weight:500;color:var(--t2)">${startLabel}</div>
+    <div style="position:absolute;top:4px;right:${padR}px;font-size:11px;font-weight:600;color:var(--success)">${endLabel}</div>
+    <svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block;margin-top:2px">
+      <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#10b981" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+      </linearGradient></defs>
+      ${grid}${yLabels}
+      <path d="${area}" fill="url(#${id})"/>
+      <path d="${d}" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      ${xLabels}
+    </svg>
+  </div>`;
+}
+
+function portfolioExpandedChart(){
+  const periods=[{key:'1d',label:'1日'},{key:'1w',label:'1周'},{key:'1m',label:'1月'},{key:'6m',label:'半年'},{key:'1y',label:'1年'}];
+  const data=PORTFOLIO_CHART_DATA[S.chartPeriod]||PORTFOLIO_CHART_DATA['1y'];
+  return `<div class="card" style="padding:20px 20px 16px;margin-bottom:0">
+    ${buildPortfolioChartSVG(data.vals, data.cats)}
+    <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:14px">
+      ${periods.map(p=>`<div style="cursor:pointer;padding:5px 14px;border-radius:9999px;background:${S.chartPeriod===p.key?'var(--t1)':'transparent'};transition:background .15s" onclick="switchChartPeriod('${p.key}')">
+        <span style="font-size:13px;font-weight:${S.chartPeriod===p.key?600:400};color:${S.chartPeriod===p.key?'#fff':'var(--t2)'}">${p.label}</span>
+      </div>`).join('')}
+    </div>
+    <div style="text-align:center;margin-top:10px;cursor:pointer;color:var(--t3);font-size:12px;letter-spacing:.3px;user-select:none" onclick="S.chartExpanded=false;render()">∧ 收起</div>
+  </div>`;
+}
+
 // Chain color
 function chainColor(name){
   const map={Arbitrum:'#28A0F0',Ethereum:'#627EEA',HyperEVM:'#6366f1',Tron:'#ef4444',Optimism:'#ff0420',Polygon:'#8247e5'};
@@ -549,26 +619,32 @@ function agentIcon(stroke='currentColor'){
 // Shared Components
 // ─────────────────────────────────────────────────────────────────────────────
 function portfolioHeader(){
-  return `<div class="row-sb gap-y" style="flex-wrap:wrap;gap:12px;cursor:pointer" onclick="setF('unifiedBalance')">
-    <div style="cursor:pointer">
-      <div class="row mb4" style="gap:6px"><span class="text-xs tc3">总资产估值</span><span class="text-xs tc3">◉</span></div>
-      <div class="row" style="gap:16px;align-items:baseline">
-        <div class="row" style="align-items:baseline;gap:8px">
-          <span style="font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.5px">$6,295.16</span>
-          <span class="text-sm tc2 fw5">USD ▾</span>
+  const expanded = S.chartExpanded;
+  return `<div class="gap-y">
+    <div class="row-sb" style="flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="row mb4" style="gap:6px"><span class="text-xs tc3">总资产估值</span><span class="text-xs tc3">◉</span></div>
+        <div class="row" style="gap:16px;align-items:baseline">
+          <div class="row" style="align-items:baseline;gap:8px">
+            <span style="font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.5px">$6,295.16</span>
+            <span class="text-sm tc2 fw5">USD ▾</span>
+          </div>
+          <div style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:8px;background:transparent;transition:all .15s"
+            onclick="S.chartExpanded=!S.chartExpanded;render()" title="${expanded?'收起图表':'展开图表'}">
+            ${sparklineSVG()}
+          </div>
         </div>
-        ${sparklineSVG()}
+        <div class="row" style="gap:6px;margin-top:6px">
+          <span class="text-xs tc3">今日收益</span>
+          <span style="font-size:13px;color:var(--success);font-weight:500">+$26.17 (+0.4%)</span>
+        </div>
       </div>
-      <div class="row mt4" style="gap:6px;margin-top:6px">
-        <span class="text-xs tc3">今日收益</span>
-        <span style="font-size:13px;color:var(--success);font-weight:500">+$26.17 (+0.4%)</span>
-        <span style="font-size:13px;color:var(--t3)">›</span>
+      <div style="position:relative;cursor:pointer;padding-top:2px" onclick="setF('notifications')">
+        <div style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--f2);display:flex;align-items:center;justify-content:center;color:var(--t2)">${bellIcon()}</div>
+        <div style="position:absolute;top:0;right:0;width:8px;height:8px;border-radius:50%;background:#ef4444;border:2px solid var(--white)"></div>
       </div>
     </div>
-    <div style="position:relative;cursor:pointer;padding-top:2px" onclick="event.stopPropagation();setF('notifications')">
-      <div style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--f2);display:flex;align-items:center;justify-content:center;color:var(--t2)">${bellIcon()}</div>
-      <div style="position:absolute;top:0;right:0;width:8px;height:8px;border-radius:50%;background:#ef4444;border:2px solid var(--white)"></div>
-    </div>
+    ${expanded ? portfolioExpandedChart() : ''}
   </div>`;
 }
 
@@ -1641,8 +1717,8 @@ function toggleHideReceipts(){
   render();
 }
 
-function toggleHideReceipts(){
-  S.hideReceipts=!S.hideReceipts;
+function switchChartPeriod(p){
+  S.chartPeriod=p;
   render();
 }
 
