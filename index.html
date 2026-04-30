@@ -194,6 +194,15 @@ button{font-family:inherit}
 /* ── Scrollable ── */
 .scroll-x{overflow-x:auto}
 
+/* ── Receipt token ── */
+.pill-receipt{background:rgba(139,92,246,0.12);color:#7c3aed}
+.receipt-section-label{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--f2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.receipt-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);opacity:0.85}
+.receipt-row:last-child{border-bottom:none}
+.toggle-sm{display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.toggle-sm-track{width:32px;height:18px;border-radius:9px;position:relative;transition:background .2s;flex-shrink:0}
+.toggle-sm-thumb{position:absolute;top:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 2px rgba(0,0,0,0.2)}
+
 @media(max-width:640px){
   #sidebar{display:none}
   #main{padding:16px}
@@ -259,12 +268,12 @@ button{font-family:inherit}
 const F = {
   dashboardUnauth:{title:"未登录状态",label:"Dashboard",priority:"P0",desc:"用户未连接钱包时的 Dashboard 状态。\n\n· 显示产品简介与价值主张\n· 提供「Connect Wallet」入口\n· 不展示任何资产信息\n· 此状态下功能入口、资产概览、账户活动均不可见"},
   dashboardEmpty:{title:"已登录无资产",label:"Dashboard",priority:"P0",desc:"用户已连接钱包但尚无任何资产时的 Dashboard 状态。\n\n· 资产概览显示空状态（$0.00）\n· 账户活动显示「No transactions yet」\n· 功能入口仍可用（收款是获取首笔资产的起点）"},
-  assetOverview:{title:"资产概览",label:"Dashboard · 已登录有资产",priority:"P0",desc:"Dashboard 核心区块，汇总展示用户在所有链上的资产。\n\n包含三个标签：\n· Token — 加密货币（当前 v2 实现范围）\n· DeFi — DeFi 仓位（v2 暂不实现）\n· NFT — NFT 资产（v2 暂不实现）"},
-  assetTabToken:{title:"Token 标签（Unified Balance）",label:"资产概览",priority:"P0",desc:"资产概览的 Token 标签，核心功能即 Unified Balance。\n\n· Donut 图直观展示各代币占比\n· 汇总所有可见账户在所有 EVM 链上的资产\n· 代币列表按法币价值降序排列，跨链同代币自动合计\n· Dust 标签：有报价且法币 < $0.10"},
-  assetTabDefi:{title:"DeFi 标签",label:"资产概览",priority:"P1",desc:"资产概览的 DeFi 标签，展示 DeFi 协议仓位。\n\n· v2 暂不实现，Out of Scope\n· 预留标签入口，保持 UI 可扩展性"},
-  assetTabNft:{title:"NFT 标签",label:"资产概览",priority:"P1",desc:"资产概览的 NFT 标签，展示用户持有的 NFT 资产。\n\n· v2 暂不实现，Out of Scope"},
-  unifiedBalance:{title:"Unified Balance（Donut 图）",label:"资产概览 · Token",priority:"P0",desc:"以 Donut 图形直观展示各代币占总资产的比例。\n\n· 覆盖 Arbitrum / HyperEVM / Ethereum\n· 排除隐藏账户\n· 无报价代币不计入总额\n· 24h 涨跌幅指示（+0.6%）"},
-  dustToken:{title:"Dust 代币",label:"资产概览 · Token",priority:"P1",desc:"判定条件：余额 > 0 且有有效报价且法币价值 < $0.10。\n\n· 保留在主列表（非零余额）\n· 名称旁显示橙色「Dust」标签，整行视觉弱化\n· 仍计入 Unified Balance"},
+  assetOverview:{title:"资产概览",label:"Dashboard · 已登录有资产",priority:"P0",desc:"Dashboard 核心区块，汇总展示用户在所有链上的资产。\n\n· Donut 图按资产类别展示占比（Token / DeFi）\n· 总资产 = Token 估值 + DeFi 仓位估值\n· NFT 在独立 Tab 中展示但不计入总资产估值\n· 点击进入资产详情页"},
+  assetTabToken:{title:"Token Tab（含凭证代币）",label:"资产概览",priority:"P0",desc:"资产概览的 Token Tab，核心功能即 Unified Balance。\n\n· 显示 Token 持仓总估值，标注 receipts excluded 数量\n· 代币列表按法币价值降序排列，跨链同代币自动合计\n· Dust 标签：有报价且法币 < $0.10\n· Receipt 代币（stETH / aUSDC / LP）：显示但不计入总额，标注「in DeFi」提示\n· 提供「Hide receipts」一键过滤开关"},
+  assetTabDefi:{title:"DeFi Tab",label:"资产概览",priority:"P0",desc:"资产概览的 DeFi Tab，展示 DeFi 协议仓位。\n\n· 包含 ETH 质押（Lido、Native Staking）、Lending（Aave）、LP（Uniswap）、Staking（Hyperliquid）\n· 每个仓位展示：协议名、类型、链、当前净值、APY / APR"},
+  assetTabNft:{title:"NFT Tab（仅查看）",label:"资产概览",priority:"P1",desc:"资产概览的 NFT Tab，展示用户持有的 NFT 资产。\n\n· NFT 参考估值基于地板价，非精确市值\n· NFT 不计入头部总资产估值（仅供查看）\n· Tab 内有醒目提示，避免用户误读头部总额"},
+  unifiedBalance:{title:"Unified Balance（Donut 图）",label:"资产概览 · Token",priority:"P0",desc:"以 Donut 图直观展示资产构成占比。\n\n· 总资产 = Token（68.6%）+ DeFi（31.4%）\n· NFT 不计入总资产\n· 覆盖 Arbitrum / HyperEVM / Ethereum\n· 排除隐藏账户\n· Receipt token 不参与 Token 总额计算"},
+  dustToken:{title:"Dust 代币",label:"资产概览 · Token",priority:"P1",desc:"判定条件：余额 > 0 且有有效报价且法币总价值 < $0.10。\n\n· 保留在主列表（不移入「Previously held」，余额非零）\n· 名称旁显示橙色「Dust」标签\n· 法币价值字段以次要颜色显示实际金额，不隐藏数值\n· 依法币价值降序排序，自然排在正常资产之后\n· 计入 Unified Balance（有有效报价即计入）"},
   accountActivity:{title:"账户活动",label:"Dashboard · 已登录有资产",priority:"P0",desc:"展示近期跨链交易记录的预览（最多 5 条）。\n\n· 每条记录包含：操作类型、代币、时间、金额\n· 点击任意交易行 → 进入交易详情页\n· 「查看详情」链接到完整的 Transaction History 页面"},
   transactionDetail:{title:"交易详情页",label:"账户活动",priority:"P0",desc:"单笔交易的完整详情页，从账户活动点击进入。\n\n包含字段：\n· 交易类型、代币与金额\n· 所在网络、发送方/接收方地址\n· 时间戳、交易状态、Gas 费用、Tx Hash"},
   featureEntry:{title:"功能入口",label:"Dashboard · 已登录有资产",priority:"P0",desc:"Dashboard 顶部的核心操作入口：\n· 收款 — 进入收款三层级流程\n· 转账 — 进入转账三层级流程（主要 CTA）\n· 质押 — 进入质押详情\n· Agent Trading — AI 自动交易"},
@@ -287,6 +296,8 @@ const F = {
   receiveL1:{title:"Receive — L1 选择代币",label:"收款流程",priority:"P0",desc:"列出可收款代币。从 Dashboard 收款入口进入时从此层开始。"},
   receiveL2:{title:"Receive — L2 选择公链",label:"收款流程",priority:"P0",desc:"显示所选代币支持的 EVM 链。选定后：多地址 → 进入 L3；单一地址 → 直接展示 QR Code。"},
   receiveQR:{title:"QR Code / 地址展示",label:"收款流程",priority:"P0",desc:"完成层级选择后展示完整收款地址与 QR Code。地址在此最后一刻才完整揭露，符合「地址最后揭露」原则。"},
+  receiptToken:{title:"Receipt Token（凭证代币）",label:"资产详情 · Token Tab",priority:"P0",desc:"由 DeFi 协议发放的派生凭证（如 stETH、aUSDC、UNI-V3 LP）。\n\n· 在 Token Tab 中正常显示，避免「资产消失」感\n· 不计入 Token 持仓总估值，价值已在 DeFi Tab 计入\n· 法币价值字段显示「$X in DeFi」灰色提示\n· 提供「→ View in DeFi」一键跳转\n· 默认排在普通 Token 之后\n· 通过「Hide receipts」开关可一键过滤"},
+  receiptDedup:{title:"Token / DeFi 去重逻辑",label:"资产估值",priority:"P0",desc:"功能口径：普通 Token 只统计钱包真实可用余额；DeFi 资产按协议仓位净值统计；所有 receipt token / LP token / vault share 默认只展示，不重复计入总资产。\n\n技术实现：以协议 API 为权威数据源做反向去重，凭证代币在 Token Tab 中『显示但不计价』，用一个标签替代一套对照表。\n\n详见 PRD §3.11、§5.7。"},
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -302,7 +313,8 @@ const S = {
   expandedNetworkRow: '',
   networkExpanded: true,
   tokenChartPeriod: '7d',
-  expandedProtocol: ''
+  expandedProtocol: '',
+  hideReceipts: false
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -542,14 +554,14 @@ function portfolioHeader(){
       <div class="row mb4" style="gap:6px"><span class="text-xs tc3">总资产估值</span><span class="text-xs tc3">◉</span></div>
       <div class="row" style="gap:16px;align-items:baseline">
         <div class="row" style="align-items:baseline;gap:8px">
-          <span style="font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.5px">$7,494.16</span>
+          <span style="font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.5px">$6,295.16</span>
           <span class="text-sm tc2 fw5">USD ▾</span>
         </div>
         ${sparklineSVG()}
       </div>
       <div class="row mt4" style="gap:6px;margin-top:6px">
         <span class="text-xs tc3">今日收益</span>
-        <span style="font-size:13px;color:var(--success);font-weight:500">+$26.17 (+0.6%)</span>
+        <span style="font-size:13px;color:var(--success);font-weight:500">+$26.17 (+0.4%)</span>
         <span style="font-size:13px;color:var(--t3)">›</span>
       </div>
     </div>
@@ -670,14 +682,12 @@ function renderDashboard(){
 
   const donut=buildDonutSVG([
     {value:4318.41,color:'#10b981'},
-    {value:1976.75,color:'#60a5fa'},
-    {value:1199,color:'#818cf8'}
+    {value:1976.75,color:'#60a5fa'}
   ]);
 
   const assetItems=[
-    {color:'#10b981',label:'Token',pct:57.6,amount:'$4,318.41'},
-    {color:'#60a5fa',label:'DeFi',pct:26.4,amount:'$1,976.75'},
-    {color:'#818cf8',label:'NFT',pct:16.0,amount:'$1,199.00'}
+    {color:'#10b981',label:'Token',pct:68.6,amount:'$4,318.41'},
+    {color:'#60a5fa',label:'DeFi',pct:31.4,amount:'$1,976.75'}
   ];
 
   return `<div class="stack">
@@ -741,11 +751,14 @@ function renderDashboard(){
 
 function renderAssetDetail(){
   const tokens=[
-    {sym:'ETH',name:'Ethereum',amount:'0.845 ETH',value:'$2,116.78',pct:43.2,dust:false},
-    {sym:'USDC',name:'USD Coin',amount:'1,200 USDC',value:'$1,200.00',pct:24.5,dust:false},
-    {sym:'USDT',name:'Tether',amount:'980 USDT',value:'$980.00',pct:20.0,dust:false},
-    {sym:'ARB',name:'Arbitrum',amount:'22 ARB',value:'$21.56',pct:0.4,dust:false},
-    {sym:'LINK',name:'Chainlink',amount:'0.0052 LINK',value:'$0.07',pct:0.0,dust:true}
+    {sym:'ETH',name:'Ethereum',amount:'0.845 ETH',value:'$2,116.78',pct:49.0,dust:false},
+    {sym:'USDC',name:'USD Coin',amount:'1,200 USDC',value:'$1,200.00',pct:27.8,dust:false},
+    {sym:'USDT',name:'Tether',amount:'980 USDT',value:'$980.00',pct:22.7,dust:false},
+    {sym:'ARB',name:'Arbitrum',amount:'22 ARB',value:'$21.56',pct:0.5,dust:false},
+    {sym:'LINK',name:'Chainlink',amount:'0.0052 LINK',value:'$0.07',pct:0.0,dust:true},
+    {sym:'stETH',name:'Lido Staked ETH',underlying:'ETH',amount:'0.18 stETH',value:'$450.75',receipt:true,protocol:'Lido Finance',protocolIcon:'L',protocolColor:'#00A3FF'},
+    {sym:'aUSDC',name:'Aave Supplied USDC',underlying:'USDC',amount:'500 aUSDC',value:'$500.00',receipt:true,protocol:'Aave V3',protocolIcon:'A',protocolColor:'#B6509E'},
+    {sym:'UNI-V3',name:'Uniswap V3 LP',underlying:'ETH',amount:'ETH/USDC LP NFT',value:'$600.50',receipt:true,protocol:'Uniswap V3',protocolIcon:'U',protocolColor:'#FF007A'}
   ];
 
   const defiPositions=[
@@ -761,19 +774,52 @@ function renderAssetDetail(){
     {collection:'Azuki',id:'#5678',floor:'0.12 ETH',value:'$300',rarity:'Common',color:'#e11d48',ch:'A'}
   ];
 
+  const receiptCount=tokens.filter(t=>t.receipt).length;
+  const visibleTokens=tokens.filter(t=>!(t.receipt&&S.hideReceipts));
+
   const tokenTab=`<div>
     <div class="row-sb" style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--f2)">
-      <span class="text-xs tc3">Token 持仓总估值</span>
+      <div>
+        <span class="text-xs tc3">Token 持仓总估值</span>
+        <span class="text-xs" style="color:#7c3aed;cursor:pointer;margin-left:8px" onclick="event.stopPropagation();setF('receiptDedup')">· ${receiptCount} receipt${receiptCount>1?'s':''} excluded ⓘ</span>
+      </div>
       <span class="text-sm fw6">$4,318.41</span>
     </div>
-    <div style="padding:10px 16px;border-bottom:1px solid var(--border)">
-      <div class="row" style="gap:8px;background:var(--f3);border-radius:6px;padding:7px 12px;border:1px solid var(--border)">
+    <div class="row-sb" style="padding:9px 16px;border-bottom:1px solid var(--border);gap:12px">
+      <div class="row" style="gap:8px;background:var(--f3);border-radius:6px;padding:7px 12px;border:1px solid var(--border);flex:1">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <span class="text-xs tc3">搜索代币…</span>
       </div>
+      <div class="row" style="gap:8px;cursor:pointer;flex-shrink:0;padding:4px 6px" onclick="toggleHideReceipts();setF('receiptToken')">
+        <span class="text-xs tc2">Hide receipts</span>
+        <div style="width:34px;height:20px;border-radius:10px;position:relative;flex-shrink:0;background:${S.hideReceipts?'var(--accent)':'var(--f3)'};border:1px solid ${S.hideReceipts?'var(--accent)':'var(--border)'};transition:background .2s">
+          <div style="position:absolute;top:2px;left:${S.hideReceipts?'16':'2'}px;width:14px;height:14px;border-radius:50%;background:${S.hideReceipts?'#fff':'var(--t3)'};transition:left .15s"></div>
+        </div>
+      </div>
     </div>
-    ${tokens.map((t,i)=>`
-      <div class="list-row" style="opacity:${t.dust?0.8:1}" onclick="S.token='${t.sym}';setF('assetTabToken');goTo('token-detail')">
+    ${visibleTokens.map((t,i)=>{
+      if(t.receipt){
+        return `<div class="list-row" style="background:rgba(124,58,237,0.04);opacity:0.95;border-left:3px solid rgba(124,58,237,0.45);padding-left:13px" onclick="setF('receiptToken')">
+          <div style="margin-right:12px;position:relative">
+            ${tokenIcon(t.underlying||t.sym,36)}
+            <div style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:${t.protocolColor};border:2px solid var(--white);display:flex;align-items:center;justify-content:center">
+              <span style="font-size:9px;color:#fff;font-weight:800">${t.protocolIcon}</span>
+            </div>
+          </div>
+          <div class="flex1">
+            <div class="row mb4" style="gap:6px;flex-wrap:wrap">
+              <span class="text-xs fw6">${t.sym}</span>
+              <span class="pill" style="background:rgba(124,58,237,0.12);color:#7c3aed;font-size:10px">Receipt</span>
+            </div>
+            <div class="text-xs tc3">${t.amount} · ${t.protocol}</div>
+          </div>
+          <div class="ta-right">
+            <div class="text-xs tc3" style="font-style:italic">${t.value} in DeFi</div>
+            <a class="text-xs tca fw5" style="cursor:pointer" onclick="event.stopPropagation();S.assetTab='defi';render();setF('assetTabDefi')">→ View in DeFi</a>
+          </div>
+        </div>`;
+      }
+      return `<div class="list-row" style="opacity:${t.dust?0.8:1}" onclick="S.token='${t.sym}';setF('${t.dust?'dustToken':'assetTabToken'}');goTo('token-detail')">
         <div style="margin-right:12px">${tokenIcon(t.sym,36)}</div>
         <div class="flex1">
           <div class="row mb4" style="gap:6px">
@@ -786,7 +832,8 @@ function renderAssetDetail(){
           <div class="text-xs fw5">${t.value}</div>
           <div class="text-xs tc3">${t.pct}%</div>
         </div>
-      </div>`).join('')}
+      </div>`;
+    }).join('')}
   </div>`;
 
   const defiTab=`<div>
@@ -827,9 +874,13 @@ function renderAssetDetail(){
   </div>`;
 
   const nftTab=`<div>
+    <div style="padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(234,179,8,0.08);display:flex;align-items:center;gap:8px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="text-xs" style="color:#b45309">NFT 参考估值不计入头部总资产，仅供查看</span>
+    </div>
     <div class="row-sb" style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--f2)">
-      <span class="text-xs tc3">NFT 持仓估值（floor price）</span>
-      <span class="text-sm fw6">$1,199.00</span>
+      <span class="text-xs tc3">NFT 参考估值（地板价基准）</span>
+      <span class="text-sm fw6 tc2">~$1,199.00</span>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px">
       ${nfts.map(nft=>`
@@ -1582,6 +1633,16 @@ function toggleNetworkExpanded(){
 
 function toggleProtocol(name){
   S.expandedProtocol=S.expandedProtocol===name?'':name;
+  render();
+}
+
+function toggleHideReceipts(){
+  S.hideReceipts=!S.hideReceipts;
+  render();
+}
+
+function toggleHideReceipts(){
+  S.hideReceipts=!S.hideReceipts;
   render();
 }
 
