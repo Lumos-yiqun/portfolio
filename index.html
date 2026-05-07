@@ -1,1779 +1,2284 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN" class="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio Dashboard — Web Prototype</title>
+<title>alpha.token.im — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&family=Noto+Sans:ital,wdth,wght@0,75..125,100..900;1,75..125,100..900&display=swap" rel="stylesheet">
 <style>
+/* ─── Reset & Base ──────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Design Token: Light (default) ────────────────── */
 :root {
-  /* Primary — Design Token #007fff (Primary Blue) */
-  --accent: #007fff;
-  --accent-h: #0063cc;
-  --accent-light: #f0f7ff;
+  /* Layout */
+  --sidebar-w:  220px;
+  --topbar-h:   56px;
+  --radius:     12px;        /* rounded-xl  per DESIGN.md §4 Card */
+  --radius-sm:  8px;         /* rounded-lg  inputs & small cards  */
+  --radius-pill: 9999px;     /* rounded-full all buttons & chips  */
 
-  /* Semantic */
-  --success: #10b981;
-  --success-light: #ecfdf5;
-  --positive: #00a63e;
-  --danger: #d4183d;
-  --danger-light: rgba(212,24,61,0.10);
-  --warning: #eab308;
-  --warning-light: rgba(234,179,8,0.15);
+  /* Surfaces — Light */
+  --bg:         rgb(250 250 249);      /* --background   warm off-white */
+  --surface:    rgb(250 250 249);      /* --surface-page sidebar/topbar */
+  --card:       rgb(255 255 255);      /* --card          elevated white */
+  --card-hover: rgb(242 246 251);      /* --surface-cool  hover tint    */
 
-  /* Surfaces */
-  --bg: #fafaf9;
-  --white: #ffffff;
-  --border: rgba(17,29,74,0.08);
-  --border-s: rgba(17,29,74,0.04);
+  /* Borders — Light */
+  --border:     rgba(17, 29, 74, 0.08);
+  --border-hi:  rgba(17, 29, 74, 0.15);
 
-  /* Text */
-  --t1: #111d4a;
-  --t2: #717182;
-  --t3: #99a1af;
-  --tlink: #007fff;
+  /* Text — Light */
+  --text-1: rgb(17 29 74);             /* --foreground    deep navy     */
+  --text-2: rgb(113 113 130);          /* --muted-foreground            */
+  --text-3: rgb(153 161 175);          /* --text-tertiary               */
 
-  /* Surface helpers */
-  --f2: #f8fafe;
-  --f3: #f0f1f3;
-  --f4: #ffffff;
+  /* Brand / Interactive */
+  --accent:     rgb(0 127 255);        /* --primary       brand blue    */
+  --accent-dim: rgb(240 247 255);      /* --accent        soft surface  */
 
-  /* Shadows — Design Token values */
-  --shadow: 0 1px 3px rgba(17,29,74,0.04), 0 1px 2px rgba(17,29,74,0.06);
-  --shadow-md: 0 2px 8px rgba(17,29,74,0.06);
-  --shadow-lg: 0 8px 24px rgba(17,29,74,0.05);
-  --shadow-cta: 0 4px 14px rgba(0,127,255,0.18);
-  --shadow-cta-hover: 0 4px 20px rgba(0,127,255,0.28);
-  --shadow-nav: 0 10px 15px rgba(0,127,255,0.25);
+  /* Semantic — Positive (gains) */
+  --up:         rgb(0 166 62);         /* --positive      light mode    */
+  --up-dim:     rgb(240 253 244);      /* --positive-surface            */
+
+  /* Semantic — Destructive (losses) */
+  --down:       rgb(212 24 61);        /* --destructive   light mode    */
+  --down-dim:   rgba(212, 24, 61, 0.10);
+
+  /* Semantic — Warning */
+  --warn:       rgb(234 179 8);        /* --warning                     */
+  --warn-dim:   rgba(234, 179, 8, 0.12);
+
+  /* Semantic — DeFi / secondary (brand cyan) */
+  --defi:       rgb(12 197 255);       /* --brand-secondary             */
+  --defi-dim:   rgba(12, 197, 255, 0.12);
+
+  /* Hero gradient surfaces */
+  --hero-start: rgb(240 247 255);
+  --hero-end:   rgb(248 250 254);
+  --hero-alt:   rgb(232 242 255);
+
+  /* Shadows — DESIGN.md §6 */
+  --shadow-card:       0 1px 3px rgba(17, 29, 74, 0.04), 0 1px 2px rgba(17, 29, 74, 0.06);
+  --shadow-card-md:    0 2px 8px rgba(17, 29, 74, 0.06);
+  --shadow-cta-sm:     0 4px 14px rgba(0, 127, 255, 0.18);
+  --shadow-dialog:     0 24px 60px rgba(17, 29, 74, 0.18);
+  --shadow-nav-active: 0 10px 15px rgba(0, 127, 255, 0.25);
+
+  /* Motion — DESIGN.md §7 */
+  --ease-emphasis: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast:   150ms;
+  --dur-normal: 220ms;
+
+  font-size: 14px;
+  color-scheme: light;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans','Noto Sans SC',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit}
 
-/* ── Layout ── */
-#app{max-width:960px;margin:0 auto;display:flex;min-height:100vh;background:var(--bg)}
-#sidebar{width:180px;min-width:180px;background:var(--white);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;overflow-y:auto;flex-shrink:0;box-shadow:var(--shadow)}
-#main{flex:1;min-width:0;padding:24px 28px;overflow-y:auto;min-height:100vh}
+/* ─── Design Token: Dark ────────────────────────────── */
+.dark {
+  /* Surfaces — Dark */
+  --bg:         rgb(10 11 13);         /* --dark-surface */
+  --surface:    rgb(10 11 13);
+  --card:       rgb(40 43 49);         /* dark --card    */
+  --card-hover: rgb(50 54 62);
 
-/* ── Sidebar ── */
-.sb-logo{padding:16px 16px 10px;display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:var(--t1);border-bottom:1px solid var(--border)}
-.sb-logo-icon{width:28px;height:28px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;box-shadow:var(--shadow-cta)}
-.nav-group-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;padding:14px 16px 5px}
-.nav-item{padding:7px 12px;margin:2px 8px;cursor:pointer;font-size:13px;color:var(--t2);border-radius:8px;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.nav-item:hover{background:var(--f2);color:var(--t1)}
-.nav-item.active{background:var(--accent);color:#fff;font-weight:600;box-shadow:var(--shadow-nav)}
+  /* Borders — Dark */
+  --border:     rgba(255, 255, 255, 0.10);
+  --border-hi:  rgba(255, 255, 255, 0.18);
 
-/* ── Cards ── */
-.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
-.card-c{cursor:pointer;transition:box-shadow .15s,border-color .15s}
-.card-c:hover{box-shadow:var(--shadow-md)}
-.card-sel{border-color:rgba(0,127,255,0.3)!important;background:var(--accent-light)!important}
+  /* Text — Dark */
+  --text-1: rgb(255 255 255);
+  --text-2: rgba(255, 255, 255, 0.60);
+  --text-3: rgba(255, 255, 255, 0.40);
 
-/* ── Buttons ── */
-.btn-accent{background:var(--accent);color:#fff;border:none;border-radius:9999px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s,box-shadow .15s;box-shadow:var(--shadow-cta)}
-.btn-accent:hover{background:var(--accent-h);box-shadow:var(--shadow-cta-hover)}
-.btn-ghost{background:transparent;color:var(--t1);border:1px solid var(--border);border-radius:9999px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s}
-.btn-ghost:hover{background:var(--f2)}
+  /* Brand / Interactive — unchanged across themes */
+  --accent:     rgb(0 127 255);
+  --accent-dim: rgba(0, 127, 255, 0.15);
 
-/* ── Action row (portfolio operations) ── */
-.actions-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.act-btn{display:flex;align-items:center;gap:6px;padding:9px 20px;border-radius:9999px;cursor:pointer;font-size:14px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--t1);transition:background .15s;white-space:nowrap}
-.act-btn:hover{background:var(--f2)}
-.act-btn.accent{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:var(--shadow-cta)}
-.act-btn.accent:hover{background:var(--accent-h);box-shadow:var(--shadow-cta-hover)}
-.act-divider{width:1px;height:22px;background:var(--border);flex-shrink:0}
+  /* Semantic — Positive */
+  --up:         rgb(52 211 153);       /* dark --positive */
+  --up-dim:     rgba(16, 185, 129, 0.15);
 
-/* ── Tabs ── */
-.tabs-row{display:flex;border-bottom:1px solid var(--border);background:var(--f4)}
-.tab-item{padding:10px 22px;cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
-.tab-item.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
-.tab-content{display:none}
-.tab-content.active{display:block}
+  /* Semantic — Destructive */
+  --down:       rgb(251 44 54);        /* dark --destructive */
+  --down-dim:   rgba(251, 44, 54, 0.15);
 
-/* ── Pill / Badge ── */
-.pill{display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600;line-height:1.4}
-.pill-info{background:var(--accent-light);color:var(--accent)}
-.pill-success{background:var(--success-light);color:var(--success)}
-.pill-warning{background:var(--warning-light);color:var(--warning)}
-.pill-neutral{background:var(--f3);color:var(--t2);border:1px solid var(--border)}
-.pill-accent{background:var(--accent-light);color:var(--accent)}
-.pill-danger{background:var(--danger-light);color:var(--danger)}
+  /* Semantic — Warning (unchanged) */
+  --warn:       rgb(234 179 8);
+  --warn-dim:   rgba(234, 179, 8, 0.15);
 
-/* ── Tables / Rows ── */
-.list-row{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
-.list-row:hover{background:var(--f2)}
-.list-row:last-child{border-bottom:none}
+  /* Semantic — DeFi / secondary (unchanged) */
+  --defi:       rgb(12 197 255);
+  --defi-dim:   rgba(12, 197, 255, 0.15);
 
-/* ── Step bar ── */
-.step-bar{display:flex;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:4px}
-.step-item{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px}
-.step-item.active-step{background:var(--accent)}
-.step-num{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
-.step-connector{width:14px;height:1px;background:var(--border);flex-shrink:0}
+  /* Hero gradient surfaces — Dark */
+  --hero-start: rgb(19 26 46);
+  --hero-end:   rgb(15 20 32);
+  --hero-alt:   rgb(26 16 64);
 
-/* ── Toggle ── */
-.toggle{width:40px;height:22px;border-radius:11px;position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
-.toggle-thumb{position:absolute;top:3px;width:16px;height:16px;border-radius:50%;transition:left .15s}
+  color-scheme: dark;
+}
 
-/* ── Network row ── */
-.net-row{display:flex;align-items:center;padding:12px 20px;cursor:pointer;transition:background .1s;border-bottom:1px solid var(--border)}
-.net-row:hover{background:var(--f2)}
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: "Noto Sans", "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background var(--dur-normal), color var(--dur-normal);
+}
 
-/* ── Staking ── */
-.staking-hero{background:var(--accent-light);border:1px solid rgba(0,127,255,0.15);border-radius:12px;padding:20px 24px;box-shadow:var(--shadow)}
+button { cursor: pointer; font-family: inherit; }
+input  { font-family: inherit; }
+a      { text-decoration: none; color: inherit; }
+svg    { display: block; }
 
-/* ── Agent ── */
-.agent-card{border:1px solid rgba(0,127,255,0.2);border-radius:12px;overflow:hidden}
+/* ─── Layout Shell ──────────────────────────────────── */
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-rows: var(--topbar-h) 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
 
-/* ── Progress bar ── */
-.progress-bar{height:4px;border-radius:2px;background:var(--f3);overflow:hidden}
-.progress-fill{height:100%;border-radius:2px;transition:width .3s}
+/* ─── Topbar ────────────────────────────────────────── */
+.topbar {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  z-index: 10;
+}
+.logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+.logo span { color: var(--accent); }
+.topbar-spacer { flex: 1; }
+.topbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  width: 240px;
+}
+.topbar-search input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-1);
+  font-size: 13px;
+  width: 100%;
+}
+.topbar-search input::placeholder { color: var(--text-3); }
+.topbar-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), rgb(0 56 173));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
 
-/* ── Section label ── */
-.sec-label{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.4px;text-transform:uppercase}
+/* ─── Sidebar ───────────────────────────────────────── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar { display: none; }
 
-/* ── Chain badge ── */
-.chain-badge{font-size:11px;padding:1px 7px;border-radius:4px;font-weight:600}
+.nav-section { margin-bottom: 24px; }
+.nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  padding: 0 8px;
+  margin-bottom: 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all .15s;
+  white-space: nowrap;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { background: var(--card); color: var(--text-1); }
+.nav-item.active { background: var(--accent); color: #fff; font-weight: 600; box-shadow: var(--shadow-nav-active); }
+.nav-icon { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--down);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  padding: 1px 6px;
+}
 
-/* ── Feature panel ── */
-#feature-panel{position:fixed;bottom:24px;right:24px;width:280px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:0 24px 60px rgba(17,29,74,0.12);display:none;z-index:100;max-height:400px;overflow-y:auto}
-#feature-panel.vis{display:block}
+/* ─── Main Content ──────────────────────────────────── */
+.main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  position: relative;
+}
 
-/* ── Grid helpers ── */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.g32{display:grid;grid-template-columns:3fr 2fr;gap:16px}
-.g22s{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* Views */
+.view {
+  display: none;
+  min-height: 100%;
+  animation: fadeIn .18s ease;
+}
+.view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── Misc ── */
-.mono{font-family:'Courier New',monospace;font-size:12px}
-.gap-y{margin-bottom:16px}
-.gap-y-sm{margin-bottom:8px}
-.row{display:flex;align-items:center}
-.row-sb{display:flex;align-items:center;justify-content:space-between}
-.col{display:flex;flex-direction:column}
-.text-sm{font-size:13px}
-.text-xs{font-size:12px}
-.text-lg{font-size:18px}
-.text-xl{font-size:22px}
-.text-2xl{font-size:28px}
-.fw5{font-weight:500}
-.fw6{font-weight:600}
-.fw7{font-weight:700}
-.tc2{color:var(--t2)}
-.tc3{color:var(--t3)}
-.tca{color:var(--accent)}
-.tcs{color:var(--success)}
-.tcd{color:var(--danger)}
-.tcw{color:var(--warning)}
-.mb4{margin-bottom:4px}
-.mb8{margin-bottom:8px}
-.mb12{margin-bottom:12px}
-.mb16{margin-bottom:16px}
-.mb20{margin-bottom:20px}
-.mb24{margin-bottom:24px}
-.pt8{padding-top:8px}
-.flex1{flex:1}
-.shrink0{flex-shrink:0}
-.rounded{border-radius:8px}
-.overcard{border-radius:12px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)}
-.stack{display:flex;flex-direction:column;gap:16px}
-.input-f{background:var(--f3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:inherit;font-size:14px;color:var(--t1);width:100%;outline:none;transition:border-color .15s,box-shadow .15s}
-.input-f:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,127,255,0.12)}
-.w-full{width:100%}
-.ta-right{text-align:right}
+/* ─── Page Container ────────────────────────────────── */
+.page-wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+}
+.page-wrap-narrow {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+}
 
-/* ── SVG icons inline ── */
-.icon-bell,.icon-agent{stroke:currentColor;fill:none}
+/* ─── Page Header ───────────────────────────────────── */
+.page-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.back-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: var(--text-2);
+  cursor: pointer;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.back-btn:hover { color: var(--text-1); border-color: var(--border-hi); }
+.page-title { font-size: 20px; font-weight: 700; color: var(--text-1); }
+.page-sub { font-size: 13px; color: var(--text-2); margin-top: 2px; }
 
-/* ── QR placeholder ── */
-.qr-wrap{width:160px;height:160px;background:var(--f3);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+/* ─── Dashboard ─────────────────────────────────────── */
+.dash-hero {
+  background: linear-gradient(135deg, var(--hero-start) 0%, var(--hero-end) 60%, var(--bg) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+.hero-left {}
+.hero-label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 6px; }
+.hero-amount { font-size: 48px; font-weight: 700; color: var(--text-1); letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
+.hero-change { font-size: 14px; font-weight: 600; }
+.hero-change.up { color: var(--up); }
+.hero-change.down { color: var(--down); }
+.hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+.sparkline-wrap { width: 100%; max-width: 280px; }
+.action-bar {
+  display: flex;
+  gap: 10px;
+}
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-1);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.action-btn:hover { background: var(--card-hover); border-color: var(--border-hi); }
+.action-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: var(--shadow-cta-sm); }
+.action-btn.primary:hover { opacity: .9; }
+.action-btn-icon { font-size: 14px; }
 
-/* ── Scrollable ── */
-.scroll-x{overflow-x:auto}
+/* Dashboard Grid */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.card-title { font-size: 12px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .6px; }
+.card-link { font-size: 12px; font-weight: 600; color: var(--accent); cursor: pointer; }
+.card-link:hover { opacity: .8; }
+.card-body { padding: 16px 20px; }
 
-/* ── Receipt token ── */
-.pill-receipt{background:rgba(139,92,246,0.12);color:#7c3aed}
-.receipt-section-label{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--f2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.receipt-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);opacity:0.85}
-.receipt-row:last-child{border-bottom:none}
-.toggle-sm{display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
-.toggle-sm-track{width:32px;height:18px;border-radius:9px;position:relative;transition:background .2s;flex-shrink:0}
-.toggle-sm-thumb{position:absolute;top:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 2px rgba(0,0,0,0.2)}
+/* Donut Chart */
+.donut-layout { display: flex; align-items: center; gap: 20px; }
+.donut-svg { flex-shrink: 0; }
+.donut-legend { display: flex; flex-direction: column; gap: 10px; }
+.donut-item { display: flex; align-items: center; gap: 8px; }
+.donut-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.donut-label { font-size: 13px; color: var(--text-2); }
+.donut-pct { font-size: 14px; font-weight: 700; color: var(--text-1); }
+.donut-val { font-size: 12px; color: var(--text-3); }
 
-@media(max-width:640px){
-  #sidebar{display:none}
-  #main{padding:16px}
+/* Activity Preview */
+.activity-list { display: flex; flex-direction: column; }
+.activity-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.activity-row:last-child { border: none; }
+.activity-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+.activity-icon.recv { background: var(--up-dim); color: var(--up); }
+.activity-icon.send { background: var(--down-dim); color: var(--down); }
+.activity-info { flex: 1; min-width: 0; }
+.activity-desc { font-size: 13px; font-weight: 600; color: var(--text-1); }
+.activity-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.activity-amount { font-size: 13px; font-weight: 700; text-align: right; }
+.activity-amount.pos { color: var(--up); }
+.activity-amount.neg { color: var(--down); }
+
+/* ─── Asset Detail ──────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+.tab-item {
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all .15s;
+}
+.tab-item:hover { color: var(--text-2); }
+.tab-item.active { color: var(--text-1); border-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Token Table */
+.token-table { width: 100%; border-collapse: collapse; }
+.token-table th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  text-align: right;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.token-table th:first-child { text-align: left; }
+.token-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.token-table tr:last-child td { border-bottom: none; }
+.token-table tr { cursor: pointer; transition: background .12s; }
+.token-table tr:hover td { background: var(--card-hover); }
+.token-table td:not(:first-child) { text-align: right; }
+
+.token-cell { display: flex; align-items: center; gap: 12px; }
+.token-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.token-name { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.token-sub  { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.td-fiat    { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.td-amount  { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+.tag {
+  display: inline-block;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  margin-left: 6px;
+}
+.tag-dust    { background: var(--warn-dim);  color: var(--warn); }
+.tag-receipt { background: var(--defi-dim);  color: var(--defi); }
+
+.receipt-fiat { color: var(--text-3) !important; }
+.receipt-link { font-size: 11px; color: var(--accent); cursor: pointer; margin-left: 6px; }
+
+/* Asset summary bar */
+.asset-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.summary-value { font-size: 22px; font-weight: 700; color: var(--text-1); }
+.summary-sub   { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+.summary-actions { display: flex; gap: 8px; }
+.filter-btn {
+  font-size: 11px; font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  margin-bottom: 12px;
+}
+.search-field input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-1);
+  font-size: 13px;
+  flex: 1;
+}
+.search-field input::placeholder { color: var(--text-3); }
+
+/* DeFi Table */
+.protocol-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background .12s;
+}
+.protocol-row:last-child { border: none; }
+.protocol-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  flex-shrink: 0;
+}
+.protocol-name { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.protocol-meta { font-size: 12px; color: var(--text-3); margin-top: 3px; display: flex; align-items: center; gap: 6px; }
+.chain-badge {
+  font-size: 10px; font-weight: 700;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 2px 7px;
+  color: var(--text-2);
+}
+.protocol-fiat { font-size: 15px; font-weight: 700; color: var(--text-1); text-align: right; }
+.apy-text { font-size: 12px; font-weight: 600; color: var(--up); text-align: right; margin-top: 3px; }
+
+/* NFT Grid */
+.nft-notice {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.nft-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+.nft-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.nft-card:hover { border-color: var(--border-hi); }
+.nft-thumb {
+  width: 100%; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+}
+.nft-info { padding: 12px; }
+.nft-name  { font-size: 12px; font-weight: 700; color: var(--text-1); }
+.nft-floor { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+
+/* ─── Token Detail ──────────────────────────────────── */
+.td-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+}
+.td-main {}
+.td-sidebar-col {}
+
+.td-hero {
+  background: linear-gradient(135deg, var(--hero-start) 0%, var(--hero-end) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px 20px;
+  margin-bottom: 16px;
+}
+.td-token-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.td-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700;
+}
+.td-name { font-size: 22px; font-weight: 700; color: var(--text-1); }
+.td-fullname { font-size: 13px; color: var(--text-2); margin-top: 3px; }
+.td-price { font-size: 36px; font-weight: 700; color: var(--text-1); letter-spacing: -1px; margin-bottom: 4px; }
+.td-change { font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+.td-change.up { color: var(--up); }
+.td-change.down { color: var(--down); }
+.period-bar { display: flex; gap: 6px; margin-bottom: 12px; }
+.period-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px; font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+}
+.period-btn:hover  { border-color: var(--border-hi); color: var(--text-1); }
+.period-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.chart-wrap {
+  width: 100%;
+  height: 120px;
+  position: relative;
+}
+
+/* Holdings card */
+.holdings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.holding-cell {
+  background: var(--card);
+  padding: 16px 20px;
+}
+.holding-label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+.holding-value { font-size: 20px; font-weight: 700; color: var(--text-1); }
+.holding-sub   { font-size: 12px; color: var(--text-3); margin-top: 4px; }
+
+/* Dust banner */
+.dust-banner {
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--warn-dim);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+.dust-banner-icon { font-size: 18px; flex-shrink: 0; }
+.dust-banner-text { font-size: 13px; color: var(--text-1); line-height: 1.5; }
+.dust-banner-text strong { color: var(--warn); }
+
+/* Network distribution */
+.net-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.net-section-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+}
+.net-section-title { font-size: 12px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .6px; }
+.net-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background .12s;
+}
+.net-row:last-child { border: none; }
+.net-row:hover { background: var(--card-hover); }
+.net-badge {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+  flex-shrink: 0;
+}
+.net-name { font-size: 13px; font-weight: 600; color: var(--text-1); flex: 1; }
+.addr-badge {
+  font-size: 10px; font-weight: 700;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+}
+.net-amount { font-size: 13px; font-weight: 600; color: var(--text-2); text-align: right; min-width: 90px; }
+.net-pct    { font-size: 11px; color: var(--text-3); text-align: right; margin-top: 2px; }
+.chevron    { font-size: 11px; color: var(--text-3); transition: transform .2s; margin-left: 4px; }
+.chevron.open { transform: rotate(180deg); }
+
+/* L2 address rows */
+.addr-rows { display: none; }
+.addr-rows.open { display: block; }
+.addr-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 36px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.addr-row:last-child { border: none; }
+.addr-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+  flex-shrink: 0;
+}
+.addr-nick { font-size: 12px; font-weight: 600; color: var(--text-1); }
+.addr-hex  { font-size: 10px; color: var(--text-3); font-family: 'SF Mono', 'Menlo', monospace; margin-top: 1px; }
+.addr-amount { margin-left: auto; text-align: right; font-size: 12px; font-weight: 600; color: var(--text-2); }
+
+/* Token Actions */
+.td-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.td-action {
+  flex: 1;
+  padding: 11px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-1);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+}
+.td-action:hover { background: var(--card-hover); }
+.td-action.primary { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: var(--shadow-cta-sm); }
+.td-action.primary:hover { opacity: .9; }
+
+/* Sidebar stats */
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.stat-card-title {
+  font-size: 11px; font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.stat-row:last-child { border: none; }
+.stat-key   { font-size: 12px; color: var(--text-2); }
+.stat-val   { font-size: 13px; font-weight: 700; color: var(--text-1); }
+.stat-val.up   { color: var(--up); }
+.stat-val.down { color: var(--down); }
+
+/* Txn list */
+.txn-list { }
+.txn-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.txn-row:last-child { border: none; }
+.txn-icon {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.txn-type { font-size: 13px; font-weight: 600; color: var(--text-1); }
+.txn-time { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.txn-amount { font-size: 14px; font-weight: 700; text-align: right; }
+.txn-usd { font-size: 11px; color: var(--text-3); text-align: right; margin-top: 2px; }
+
+/* ─── Send / Receive Modal ──────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 11, 13, 0.50);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  animation: slideUp .2s var(--ease-emphasis);
+  box-shadow: var(--shadow-dialog);
+}
+@keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text-1); }
+.modal-close {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--text-2);
+  cursor: pointer;
+}
+.modal-close:hover { color: var(--text-1); }
+.step-indicator {
+  padding: 10px 20px;
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.step-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+  color: var(--text-3);
+}
+.step-dot.done   { background: var(--accent); border-color: var(--accent); color: #fff; }
+.step-dot.active { background: var(--card-hover); border-color: var(--accent); color: var(--accent); }
+.step-line { flex: 1; height: 1px; background: var(--border); }
+
+.flow-list { padding: 8px 0; }
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background .12s;
+  border-bottom: 1px solid var(--border);
+}
+.flow-row:last-child { border: none; }
+.flow-row:hover { background: var(--card-hover); }
+.flow-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.flow-name { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.flow-sub  { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.flow-chevron { margin-left: auto; font-size: 14px; color: var(--text-3); }
+
+/* Transfer Form */
+.transfer-form { padding: 20px; }
+.breadcrumb {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.breadcrumb-chip {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.form-label { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+.form-input {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--text-1);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+  margin-bottom: 16px;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-input::placeholder { color: var(--text-3); }
+.amount-wrap { position: relative; margin-bottom: 6px; }
+.amount-max {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px; font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+}
+.form-hint { font-size: 11px; color: var(--text-3); margin-bottom: 16px; }
+.gas-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.confirm-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  transition: opacity var(--dur-fast);
+  box-shadow: var(--shadow-cta-sm);
+}
+.confirm-btn:hover { opacity: .9; }
+
+/* QR Screen */
+.qr-panel { padding: 28px 20px; text-align: center; }
+.qr-box {
+  width: 200px; height: 200px;
+  background: #fff;
+  border-radius: 16px;
+  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 40px rgba(0,0,0,.4);
+}
+.qr-address {
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 12px;
+  color: var(--text-2);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  word-break: break-all;
+  margin-bottom: 16px;
+}
+.copy-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+}
+.copy-btn:hover { border-color: var(--border-hi); }
+
+/* ─── Staking ───────────────────────────────────────── */
+.staking-hero {
+  background: linear-gradient(135deg, var(--hero-start) 0%, var(--hero-alt) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.staking-stats { display: flex; gap: 32px; }
+.staking-stat {}
+.staking-stat .label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+.staking-stat .value { font-size: 22px; font-weight: 700; color: var(--text-1); }
+.staking-stat .sub   { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+.stake-btns { display: flex; gap: 8px; }
+.stake-btn {
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .15s;
+}
+.stake-btn.primary { background: var(--accent); border: none; color: #fff; box-shadow: var(--shadow-cta-sm); }
+.stake-btn.outline { background: none; border: 1px solid var(--border); color: var(--text-1); }
+.stake-btn:hover { opacity: .85; }
+
+.rewards-list {}
+.reward-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.reward-row:last-child { border: none; }
+.reward-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--up); flex-shrink: 0; }
+.reward-date { font-size: 13px; color: var(--text-2); flex: 1; }
+.reward-eth  { font-size: 13px; font-weight: 700; color: var(--up); }
+.reward-usd  { font-size: 11px; color: var(--text-3); text-align: right; margin-top: 2px; }
+
+/* ─── Agent Trading ─────────────────────────────────── */
+.agent-mode-bar {
+  display: inline-flex;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin-bottom: 20px;
+}
+.agent-tab {
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: all .15s;
+  white-space: nowrap;
+  border: none;
+  background: none;
+}
+.agent-tab.active { background: var(--accent); color: #fff; }
+
+.agent-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+.agent-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+.agent-name   { font-size: 17px; font-weight: 700; color: var(--text-1); }
+.agent-meta   { font-size: 12px; color: var(--text-3); margin-top: 4px; }
+.agent-status { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); }
+.agent-status.running { background: var(--up-dim); color: var(--up); }
+.caps-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.cap-chip {
+  font-size: 11px; font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  color: var(--text-2);
+}
+.agent-protocol-list { font-size: 12px; color: var(--text-3); margin-bottom: 16px; }
+.agent-btns { display: flex; gap: 8px; }
+.agent-btn {
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all .15s;
+}
+.agent-btn.pause { background: var(--down-dim); border: 1px solid var(--down); color: var(--down); }
+.agent-btn.config { background: var(--accent-dim); border: 1px solid var(--accent); color: var(--accent); }
+.agent-btn:hover { opacity: .8; }
+
+.protocol-agent-table { width: 100%; border-collapse: collapse; }
+.protocol-agent-table th {
+  font-size: 11px; font-weight: 600; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: .6px;
+  text-align: left; padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.protocol-agent-table th:last-child { text-align: right; }
+.protocol-agent-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.protocol-agent-table tr:last-child td { border: none; }
+
+.toggle {
+  position: relative;
+  width: 42px; height: 24px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background .2s;
+  margin-left: auto;
+  display: block;
+}
+.toggle.on  { background: var(--up); }
+.toggle.off { background: var(--border); }
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  width: 20px; height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: left .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+.toggle.on  .toggle-thumb { left: 20px; }
+.toggle.off .toggle-thumb { left: 2px; }
+
+/* ─── Token colors ──────────────────────────────────── */
+.c-eth   { background: linear-gradient(135deg, #627EEA, #4A5FBF); color: #fff; }
+.c-usdc  { background: linear-gradient(135deg, #2775CA, #1B5B9C); color: #fff; }
+.c-usdt  { background: linear-gradient(135deg, #26A17B, #1A7A5C); color: #fff; }
+.c-arb   { background: linear-gradient(135deg, #28A0F0, #1A7ABF); color: #fff; }
+.c-link  { background: linear-gradient(135deg, #2A5ADA, #1A3FA8); color: #fff; }
+.c-steth { background: linear-gradient(135deg, #627EEA55, #4A5FBF55); color: #aaa; }
+.c-lido  { background: linear-gradient(135deg, #F6B22C, #D49720); color: #fff; }
+.c-aave  { background: linear-gradient(135deg, #B6509E, #8B3D7A); color: #fff; }
+.c-uni   { background: linear-gradient(135deg, #FF007A, #CC0062); color: #fff; }
+.c-hl    { background: linear-gradient(135deg, #23D18B, #1BAA6E); color: #fff; }
+.c-native{ background: linear-gradient(135deg, #627EEA, #4A5FBF); color: #fff; }
+.bg-arb  { background: #1A3FA0; color: #fff; }
+.bg-eth  { background: #2E3B6B; color: #fff; }
+.bg-hyp  { background: #1A5A3A; color: #fff; }
+
+/* ─── Theme Toggle ──────────────────────────────────── */
+.theme-toggle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: all var(--dur-fast);
+  flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--text-1); border-color: var(--border-hi); }
+
+/* ─── Surface transition ────────────────────────────── */
+.topbar, .sidebar, .main, .modal, .card,
+.dash-hero, .td-hero, .staking-hero,
+.nav-item, .net-section, .stat-card, .agent-card {
+  transition: background var(--dur-normal), border-color var(--dur-normal), color var(--dur-normal);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 56px 1fr; }
+  .nav-item .nav-label-text { display: none; }
+  .logo { display: none; }
+  .dash-hero { grid-template-columns: 1fr; }
+  .hero-right { align-items: flex-start; }
+  .td-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .shell { grid-template-columns: 1fr; grid-template-rows: var(--topbar-h) 1fr 52px; }
+  .sidebar { display: none; }
+  .page-wrap, .page-wrap-narrow { padding: 16px; }
+  .dash-grid { grid-template-columns: 1fr; }
+  .nft-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
 <body>
-<div id="app">
-  <!-- ── Sidebar ── -->
-  <nav id="sidebar">
-    <div class="sb-logo">
-      <div class="sb-logo-icon">V</div>
-      Portfolio
+
+<div class="shell">
+
+  <!-- ── Topbar ─────────────────────────────────────── -->
+  <header class="topbar">
+    <div class="logo">alpha.<span>token</span>.im</div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-search">
+      <span style="color:var(--text-3);font-size:13px">⌕</span>
+      <input placeholder="Search tokens, transactions…" />
     </div>
-    <div class="nav-group-label">Dashboard</div>
-    <div class="nav-item" onclick="goTo('dashboard-unauth')" id="nav-dashboard-unauth">未登录</div>
-    <div class="nav-item" onclick="goTo('dashboard-empty')" id="nav-dashboard-empty">无资产</div>
-    <div class="nav-item active" onclick="goTo('dashboard')" id="nav-dashboard">有资产</div>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <span id="theme-icon">☀</span>
+    </button>
+    <div class="topbar-avatar">Y</div>
+  </header>
 
-    <div class="nav-group-label">Detail</div>
-    <div class="nav-item" onclick="goTo('asset-detail')" id="nav-asset-detail">资产详情</div>
-    <div class="nav-item" onclick="goTo('activity-detail')" id="nav-activity-detail">账户活动</div>
-    <div class="nav-item" onclick="goTo('agent-trading')" id="nav-agent-trading">Agent Trading</div>
-    <div class="nav-item" onclick="goTo('staking-detail')" id="nav-staking-detail">质押详情</div>
-    <div class="nav-item" onclick="goTo('token-detail')" id="nav-token-detail">Token Detail</div>
-    <div class="nav-item" onclick="goTo('transaction-detail')" id="nav-transaction-detail">交易详情</div>
-
-    <div class="nav-group-label">转账</div>
-    <div class="nav-item" onclick="goTo('send-l1')" id="nav-send-l1">L1</div>
-    <div class="nav-item" onclick="goTo('send-l2')" id="nav-send-l2">L2</div>
-    <div class="nav-item" onclick="goTo('send-l3')" id="nav-send-l3">L3</div>
-    <div class="nav-item" onclick="goTo('send-form')" id="nav-send-form">表单</div>
-
-    <div class="nav-group-label">收款</div>
-    <div class="nav-item" onclick="goTo('receive-l1')" id="nav-receive-l1">L1</div>
-    <div class="nav-item" onclick="goTo('receive-l2')" id="nav-receive-l2">L2</div>
-    <div class="nav-item" onclick="goTo('receive-qr')" id="nav-receive-qr">QR</div>
+  <!-- ── Sidebar ────────────────────────────────────── -->
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-label">Portfolio</div>
+      <button class="nav-item active" onclick="showView('v-dashboard', this)">
+        <span class="nav-icon">◈</span><span class="nav-label-text">Dashboard</span>
+      </button>
+      <button class="nav-item" onclick="showView('v-assets', this)">
+        <span class="nav-icon">◫</span><span class="nav-label-text">Assets</span>
+      </button>
+      <button class="nav-item" onclick="showView('v-activity', this)">
+        <span class="nav-icon">↕</span><span class="nav-label-text">Activity</span>
+      </button>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Earn</div>
+      <button class="nav-item" onclick="showView('v-staking', this)">
+        <span class="nav-icon">⬡</span><span class="nav-label-text">Staking</span>
+      </button>
+      <button class="nav-item" onclick="showView('v-agent', this)">
+        <span class="nav-icon">✦</span><span class="nav-label-text">Agent</span>
+      </button>
+    </div>
+    <div style="margin-top:auto">
+      <button class="nav-item">
+        <span class="nav-icon">⚙</span><span class="nav-label-text">Settings</span>
+      </button>
+    </div>
   </nav>
 
-  <!-- ── Main content ── -->
-  <main id="main"></main>
-</div>
+  <!-- ── Main ───────────────────────────────────────── -->
+  <main class="main" id="main">
 
-<!-- ── Feature Info Panel ── -->
-<div id="feature-panel">
-  <div class="row-sb mb8">
-    <div>
-      <div id="fp-label" class="text-xs tc3 mb4"></div>
-      <div class="row" style="gap:8px;align-items:center">
-        <div id="fp-title" class="fw6" style="font-size:14px"></div>
-        <span id="fp-priority" class="pill pill-accent"></span>
+    <!-- ══ VIEW: Dashboard ══════════════════════════════ -->
+    <div class="view active" id="v-dashboard">
+      <div class="page-wrap">
+
+        <!-- Hero -->
+        <div class="dash-hero">
+          <div class="hero-left">
+            <div class="hero-label">Total Portfolio</div>
+            <div class="hero-amount">$6,295.16</div>
+            <div class="hero-change up">▲ $141.26 &nbsp; +2.30% &nbsp; Today</div>
+            <div style="margin-top:16px">
+              <div class="action-bar">
+                <button class="action-btn primary" onclick="openModal('modal-send','send-l1')">
+                  <span class="action-btn-icon">↑</span> Send
+                </button>
+                <button class="action-btn" onclick="openModal('modal-receive','recv-l1')">
+                  <span class="action-btn-icon">↓</span> Receive
+                </button>
+                <button class="action-btn" onclick="showView('v-staking', null)">
+                  <span class="action-btn-icon">⬡</span> Stake
+                </button>
+                <button class="action-btn" onclick="showView('v-agent', null)">
+                  <span class="action-btn-icon">✦</span> Agent
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="hero-right">
+            <div class="sparkline-wrap">
+              <svg width="100%" height="72" viewBox="0 0 300 72" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#007fff" stop-opacity=".25"/>
+                    <stop offset="100%" stop-color="#007fff" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,56 C25,52 50,44 80,40 C110,36 130,46 160,38 C190,30 210,28 240,20 C265,14 280,16 300,8 L300,72 L0,72 Z" fill="url(#hg)"/>
+                <path d="M0,56 C25,52 50,44 80,40 C110,36 130,46 160,38 C190,30 210,28 240,20 C265,14 280,16 300,8" stroke="#007fff" fill="none" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards Row -->
+        <div class="dash-grid">
+          <!-- Asset Overview -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Asset Overview</span>
+              <span class="card-link" onclick="showView('v-assets', null)">View details →</span>
+            </div>
+            <div class="card-body">
+              <div class="donut-layout">
+                <svg class="donut-svg" width="100" height="100" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#1f2b3e" stroke-width="18"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#0cc5ff" stroke-width="18"
+                    stroke-dasharray="31.4 68.6" stroke-dashoffset="25"
+                    transform="rotate(-90 50 50)"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#007fff" stroke-width="18"
+                    stroke-dasharray="68.6 31.4" stroke-dashoffset="-6.3"
+                    transform="rotate(-90 50 50)"/>
+                </svg>
+                <div class="donut-legend">
+                  <div class="donut-item">
+                    <div class="donut-dot" style="background:#007fff"></div>
+                    <div>
+                      <div class="donut-label">Token</div>
+                      <div class="donut-pct">68.6% <span class="donut-val">$4,318.41</span></div>
+                    </div>
+                  </div>
+                  <div class="donut-item">
+                    <div class="donut-dot" style="background:#0cc5ff"></div>
+                    <div>
+                      <div class="donut-label">DeFi</div>
+                      <div class="donut-pct">31.4% <span class="donut-val">$1,976.75</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Activity -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Recent Activity</span>
+              <span class="card-link" onclick="showView('v-activity', null)">All activity →</span>
+            </div>
+            <div class="card-body">
+              <div class="activity-list">
+                <div class="activity-row">
+                  <div class="activity-icon recv">↓</div>
+                  <div class="activity-info"><div class="activity-desc">Received ETH</div><div class="activity-meta">2 days ago · Arbitrum</div></div>
+                  <div class="activity-amount pos">+0.5 ETH</div>
+                </div>
+                <div class="activity-row">
+                  <div class="activity-icon send">↑</div>
+                  <div class="activity-info"><div class="activity-desc">Sent USDC</div><div class="activity-meta">3 days ago · Ethereum</div></div>
+                  <div class="activity-amount neg">-200 USDC</div>
+                </div>
+                <div class="activity-row">
+                  <div class="activity-icon recv">↓</div>
+                  <div class="activity-info"><div class="activity-desc">Received USDC</div><div class="activity-meta">5 days ago · Arbitrum</div></div>
+                  <div class="activity-amount pos">+500 USDC</div>
+                </div>
+                <div class="activity-row">
+                  <div class="activity-icon send">↑</div>
+                  <div class="activity-info"><div class="activity-desc">Sent ETH</div><div class="activity-meta">2 weeks ago · HyperEVM</div></div>
+                  <div class="activity-amount neg">-0.05 ETH</div>
+                </div>
+                <div class="activity-row">
+                  <div class="activity-icon recv">↓</div>
+                  <div class="activity-info"><div class="activity-desc">Received USDT</div><div class="activity-meta">2 weeks ago · Arbitrum</div></div>
+                  <div class="activity-amount pos">+500 USDT</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <button onclick="hideFeaturePanel()" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--t3);line-height:1;padding:2px 6px;">×</button>
+
+    <!-- ══ VIEW: Assets (Unified Balance) ══════════════ -->
+    <div class="view" id="v-assets">
+      <div class="page-wrap">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Assets</div>
+            <div class="page-sub">Unified balance across all chains and addresses</div>
+          </div>
+        </div>
+
+        <div class="tab-bar" id="asset-tabs">
+          <div class="tab-item active" onclick="switchTab('asset','token')">Token</div>
+          <div class="tab-item" onclick="switchTab('asset','defi')">DeFi</div>
+          <div class="tab-item" onclick="switchTab('asset','nft')">NFT</div>
+        </div>
+
+        <!-- Token Tab -->
+        <div class="tab-panel active" id="asset-token" style="padding-top:16px">
+          <div class="asset-summary-bar">
+            <div>
+              <div class="summary-value">$4,318.41</div>
+              <div class="summary-sub" id="token-summary-sub">Token holdings &nbsp;·&nbsp; 1 receipt hidden</div>
+            </div>
+            <div class="summary-actions">
+              <button class="filter-btn" id="receipt-toggle-btn" onclick="toggleReceiptTokens()">Show receipts</button>
+              <div class="search-field" style="width:220px;margin:0">
+                <span style="color:var(--text-3)">⌕</span>
+                <input placeholder="Search…" />
+              </div>
+            </div>
+          </div>
+          <table class="token-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Holdings</th>
+                <th>Value (USD)</th>
+                <th>24h</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr onclick="showView('v-token-eth', null)">
+                <td><div class="token-cell"><div class="token-icon c-eth" style="font-size:18px">Ξ</div><div><div class="token-name">ETH</div><div class="token-sub">Ethereum · 3 networks</div></div></div></td>
+                <td><div class="td-fiat">0.845 ETH</div></td>
+                <td><div class="td-fiat">$2,116.78</div></td>
+                <td><span style="color:var(--up);font-weight:700;font-size:13px">+0.8%</span></td>
+                <td><span style="color:var(--text-3)">›</span></td>
+              </tr>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-usdc" style="font-size:10px;font-weight:900">USDC</div><div><div class="token-name">USDC</div><div class="token-sub">USD Coin · 2 networks</div></div></div></td>
+                <td><div class="td-fiat">1,200 USDC</div></td>
+                <td><div class="td-fiat">$1,200.00</div></td>
+                <td><span style="color:var(--text-3);font-weight:700;font-size:13px">0.0%</span></td>
+                <td><span style="color:var(--text-3)">›</span></td>
+              </tr>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-usdt" style="font-size:10px;font-weight:900">USDT</div><div><div class="token-name">USDT</div><div class="token-sub">Tether · Arbitrum</div></div></div></td>
+                <td><div class="td-fiat">980 USDT</div></td>
+                <td><div class="td-fiat">$980.00</div></td>
+                <td><span style="color:var(--text-3);font-weight:700;font-size:13px">0.0%</span></td>
+                <td><span style="color:var(--text-3)">›</span></td>
+              </tr>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-arb" style="font-size:11px;font-weight:900">ARB</div><div><div class="token-name">ARB</div><div class="token-sub">Arbitrum · Arbitrum</div></div></div></td>
+                <td><div class="td-fiat">22 ARB</div></td>
+                <td><div class="td-fiat">$21.56</div></td>
+                <td><span style="color:var(--down);font-weight:700;font-size:13px">-1.2%</span></td>
+                <td><span style="color:var(--text-3)">›</span></td>
+              </tr>
+              <!-- Receipt token row -->
+              <tr data-receipt="true" style="opacity:.65;display:none">
+                <td><div class="token-cell"><div class="token-icon c-steth" style="font-size:9px;font-weight:900">stETH</div><div><div class="token-name">stETH <span class="tag tag-receipt">In DeFi</span></div><div class="receipt-link">→ View in DeFi</div></div></div></td>
+                <td><div class="td-fiat">0.5 stETH</div></td>
+                <td><div class="td-fiat receipt-fiat">($450.75 in DeFi)</div></td>
+                <td>—</td>
+                <td></td>
+              </tr>
+              <!-- Dust token row -->
+              <tr onclick="showView('v-token-dust', null)" style="opacity:.7">
+                <td><div class="token-cell"><div class="token-icon c-link" style="font-size:14px">⬡</div><div><div class="token-name">LINK <span class="tag tag-dust">Dust</span></div><div class="token-sub">Chainlink · Ethereum</div></div></div></td>
+                <td><div class="td-fiat">0.0052 LINK</div></td>
+                <td><div class="td-fiat" style="color:var(--warn)">$0.07</div></td>
+                <td><span style="color:var(--up);font-weight:700;font-size:13px">+1.2%</span></td>
+                <td><span style="color:var(--text-3)">›</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- DeFi Tab -->
+        <div class="tab-panel" id="asset-defi" style="padding-top:16px">
+          <div class="asset-summary-bar">
+            <div><div class="summary-value">$1,976.75</div><div class="summary-sub">DeFi positions</div></div>
+          </div>
+          <div class="protocol-row">
+            <div class="protocol-icon c-lido">L</div>
+            <div style="flex:1"><div class="protocol-name">Lido Finance</div><div class="protocol-meta">ETH Staking <span class="chain-badge">Ethereum</span></div></div>
+            <div style="text-align:right"><div class="protocol-fiat">$450.75</div><div class="apy-text">3.9% APY</div></div>
+          </div>
+          <div class="protocol-row">
+            <div class="protocol-icon c-native">N</div>
+            <div style="flex:1"><div class="protocol-name">Native Staking</div><div class="protocol-meta">ETH Staking <span class="chain-badge">Arbitrum</span></div></div>
+            <div style="text-align:right"><div class="protocol-fiat">$350.59</div><div class="apy-text">3.6% APY</div></div>
+          </div>
+          <div class="protocol-row">
+            <div class="protocol-icon c-aave">A</div>
+            <div style="flex:1"><div class="protocol-name">Aave V3</div><div class="protocol-meta">Lending <span class="chain-badge">Arbitrum</span></div></div>
+            <div style="text-align:right"><div class="protocol-fiat">$374.91</div><div class="apy-text">4.2% APY</div></div>
+          </div>
+          <div class="protocol-row">
+            <div class="protocol-icon c-uni">U</div>
+            <div style="flex:1"><div class="protocol-name">Uniswap V3</div><div class="protocol-meta">LP Pool <span class="chain-badge">Ethereum</span></div></div>
+            <div style="text-align:right"><div class="protocol-fiat">$600.50</div><div class="apy-text">6.1% APY</div></div>
+          </div>
+          <div class="protocol-row">
+            <div class="protocol-icon c-hl">H</div>
+            <div style="flex:1"><div class="protocol-name">Hyperliquid</div><div class="protocol-meta">Staking <span class="chain-badge">HyperEVM</span></div></div>
+            <div style="text-align:right"><div class="protocol-fiat">$200.00</div><div class="apy-text">8.0% APY</div></div>
+          </div>
+        </div>
+
+        <!-- NFT Tab -->
+        <div class="tab-panel" id="asset-nft" style="padding-top:16px">
+          <div class="nft-notice">🖼 NFT values shown are floor-price estimates and are <strong>not included</strong> in Total Portfolio value.</div>
+          <div class="asset-summary-bar" style="margin-bottom:16px">
+            <div><div class="summary-value">~$1,199.00</div><div class="summary-sub">Floor price reference · 2 NFTs</div></div>
+          </div>
+          <div class="nft-grid">
+            <div class="nft-card">
+              <div class="nft-thumb" style="background:linear-gradient(135deg,#1a2a5e,#2a3a8e)">🐧</div>
+              <div class="nft-info"><div class="nft-name">Pudgy Penguins #1234</div><div class="nft-floor">~$899.00 floor</div></div>
+            </div>
+            <div class="nft-card">
+              <div class="nft-thumb" style="background:linear-gradient(135deg,#3a1a2e,#6a2a4e)">🌸</div>
+              <div class="nft-info"><div class="nft-name">Azuki #5678</div><div class="nft-floor">~$300.00 floor</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VIEW: Token Detail — ETH ═════════════════════ -->
+    <div class="view" id="v-token-eth">
+      <div class="page-wrap">
+        <div class="page-head">
+          <button class="back-btn" onclick="goBack()">←</button>
+          <div>
+            <div class="page-title">ETH &nbsp;<span style="font-size:15px;color:var(--text-2);font-weight:500">Ethereum</span></div>
+          </div>
+        </div>
+
+        <div class="td-layout">
+          <div class="td-main">
+            <!-- Price hero -->
+            <div class="td-hero">
+              <div class="td-token-row">
+                <div class="td-icon c-eth" style="font-size:22px">Ξ</div>
+                <div><div class="td-name">Ethereum</div><div class="td-fullname">ETH</div></div>
+              </div>
+              <div class="td-price">$2,504.18</div>
+              <div class="td-change up" id="eth-price-change">Token price · Last 7d &nbsp; ↗ +0.6%</div>
+              <div class="period-bar">
+                <button class="period-btn" onclick="setPeriod(this,'24h','+0.8%',true,'eth-price-change')">24h</button>
+                <button class="period-btn active" onclick="setPeriod(this,'7d','+0.6%',true,'eth-price-change')">7d</button>
+                <button class="period-btn" onclick="setPeriod(this,'30d','-3.2%',false,'eth-price-change')">30d</button>
+                <button class="period-btn" onclick="setPeriod(this,'1y','+28.4%',true,'eth-price-change')">1y</button>
+              </div>
+              <div class="chart-wrap">
+                <svg width="100%" height="120" viewBox="0 0 600 120" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="cg-eth" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#25d07a" stop-opacity=".2"/>
+                      <stop offset="100%" stop-color="#25d07a" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,95 C40,88 80,75 130,68 C180,61 220,75 270,60 C320,45 360,55 410,40 C450,28 500,35 550,20 L600,14 L600,120 L0,120 Z" fill="url(#cg-eth)"/>
+                  <path d="M0,95 C40,88 80,75 130,68 C180,61 220,75 270,60 C320,45 360,55 410,40 C450,28 500,35 550,20 L600,14" stroke="#25d07a" fill="none" stroke-width="2.5"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Holdings -->
+            <div class="holdings-grid">
+              <div class="holding-cell">
+                <div class="holding-label">Holdings</div>
+                <div class="holding-value">0.845 ETH</div>
+                <div class="holding-sub">Across 3 networks</div>
+              </div>
+              <div class="holding-cell">
+                <div class="holding-label">Value</div>
+                <div class="holding-value">$2,116.78</div>
+                <div class="holding-sub">at $2,504.18</div>
+              </div>
+            </div>
+
+            <!-- Network Distribution -->
+            <div class="net-section">
+              <div class="net-section-hdr" onclick="toggleNetSection('eth-net', this)">
+                <span class="net-section-title">By Network</span>
+                <span class="chevron open" id="eth-net-arrow">▲</span>
+              </div>
+              <div id="eth-net">
+                <!-- Arbitrum (2 addresses) -->
+                <div class="net-row" onclick="toggleAddrs('arb-addrs', 'arb-chevron')">
+                  <div class="net-badge bg-arb" style="font-size:9px;font-weight:900">ARB</div>
+                  <div class="net-name">Arbitrum</div>
+                  <span class="addr-badge">2 addrs</span>
+                  <div style="margin-left:8px;text-align:right">
+                    <div class="net-amount">0.3 ETH</div>
+                    <div class="net-pct">35.5%</div>
+                  </div>
+                  <span class="chevron" id="arb-chevron" style="margin-left:6px">▼</span>
+                </div>
+                <div class="addr-rows" id="arb-addrs">
+                  <div class="addr-row">
+                    <div class="addr-avatar" style="background:var(--accent-dim);color:var(--accent)">M</div>
+                    <div><div class="addr-nick">Main Wallet</div><div class="addr-hex">0x7f3a…9f</div></div>
+                    <div class="addr-amount">0.18 ETH<br><span style="color:var(--text-3);font-size:10px">$450.72</span></div>
+                  </div>
+                  <div class="addr-row">
+                    <div class="addr-avatar" style="background:var(--defi-dim);color:var(--defi)">T</div>
+                    <div><div class="addr-nick">Trading Wallet</div><div class="addr-hex">0x9e8f…6f</div></div>
+                    <div class="addr-amount">0.12 ETH<br><span style="color:var(--text-3);font-size:10px">$299.28</span></div>
+                  </div>
+                </div>
+                <!-- HyperEVM -->
+                <div class="net-row">
+                  <div class="net-badge bg-hyp" style="font-size:8px;font-weight:900">HYP</div>
+                  <div class="net-name">HyperEVM</div>
+                  <div style="text-align:right;margin-left:auto">
+                    <div class="net-amount">0.295 ETH</div>
+                    <div class="net-pct">34.9%</div>
+                  </div>
+                </div>
+                <!-- Ethereum -->
+                <div class="net-row">
+                  <div class="net-badge bg-eth" style="font-size:9px;font-weight:900">ETH</div>
+                  <div class="net-name">Ethereum</div>
+                  <div style="text-align:right;margin-left:auto">
+                    <div class="net-amount">0.25 ETH</div>
+                    <div class="net-pct">29.6%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="td-actions">
+              <button class="td-action primary" onclick="openModal('modal-send','send-l2')">Send</button>
+              <button class="td-action" onclick="openModal('modal-receive','recv-l2')">Receive</button>
+              <button class="td-action">Swap</button>
+            </div>
+          </div>
+
+          <!-- Sidebar col -->
+          <div class="td-sidebar-col">
+            <div class="stat-card">
+              <div class="stat-card-title">Market Data</div>
+              <div class="stat-row"><span class="stat-key">Market Cap</span><span class="stat-val">$302B</span></div>
+              <div class="stat-row"><span class="stat-key">24h Volume</span><span class="stat-val">$18.2B</span></div>
+              <div class="stat-row"><span class="stat-key">Circulating</span><span class="stat-val">120M ETH</span></div>
+              <div class="stat-row"><span class="stat-key">ATH</span><span class="stat-val">$4,878</span></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-title">Recent Transactions</div>
+              <div style="padding:4px 12px">
+                <div class="txn-row">
+                  <div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div>
+                  <div><div class="txn-type">Received ETH</div><div class="txn-time">2 days ago · Arbitrum</div></div>
+                  <div><div class="txn-amount" style="color:var(--up)">+0.5 ETH</div><div class="txn-usd">$1,252.09</div></div>
+                </div>
+                <div class="txn-row">
+                  <div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div>
+                  <div><div class="txn-type">Sent ETH</div><div class="txn-time">3 days ago · HyperEVM</div></div>
+                  <div><div class="txn-amount" style="color:var(--down)">-0.05 ETH</div><div class="txn-usd">$125.21</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-title">About Ethereum</div>
+              <div style="padding:14px 16px;font-size:13px;color:var(--text-2);line-height:1.6">
+                Ethereum is the leading programmable blockchain platform, enabling smart contracts and decentralized applications across DeFi, NFTs, and more.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VIEW: Token Detail — LINK (Dust) ═════════════ -->
+    <div class="view" id="v-token-dust">
+      <div class="page-wrap">
+        <div class="page-head">
+          <button class="back-btn" onclick="goBack()">←</button>
+          <div>
+            <div class="page-title">LINK &nbsp;<span class="tag tag-dust" style="font-size:11px">Dust</span></div>
+            <div class="page-sub">Chainlink</div>
+          </div>
+        </div>
+
+        <div class="dust-banner">
+          <div class="dust-banner-icon">⚠</div>
+          <div class="dust-banner-text"><strong>Dust balance</strong> — Holdings value is below $0.10. Consider sending or swapping this balance to consolidate assets.</div>
+        </div>
+
+        <div class="td-layout">
+          <div class="td-main">
+            <div class="td-hero">
+              <div class="td-token-row">
+                <div class="td-icon c-link" style="font-size:16px">⬡</div>
+                <div><div class="td-name">Chainlink</div><div class="td-fullname">LINK</div></div>
+              </div>
+              <div class="td-price">$13.50</div>
+              <div class="td-change up" id="link-price-change">Token price · Last 7d &nbsp; ↗ +1.2%</div>
+              <div class="period-bar">
+                <button class="period-btn">24h</button>
+                <button class="period-btn active">7d</button>
+                <button class="period-btn">30d</button>
+                <button class="period-btn">1y</button>
+              </div>
+              <div class="chart-wrap">
+                <svg width="100%" height="120" viewBox="0 0 600 120" preserveAspectRatio="none">
+                  <path d="M0,80 C60,75 120,65 180,58 C240,51 300,70 360,55 C420,40 480,52 560,38 L600,34" stroke="#007fff" fill="none" stroke-width="2.5"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="holdings-grid">
+              <div class="holding-cell"><div class="holding-label">Holdings</div><div class="holding-value">0.0052 LINK</div></div>
+              <div class="holding-cell"><div class="holding-label">Value</div><div class="holding-value" style="color:var(--warn)">$0.07</div></div>
+            </div>
+
+            <div class="net-section" style="margin-bottom:16px">
+              <div class="net-section-hdr"><span class="net-section-title">By Network</span></div>
+              <div class="net-row">
+                <div class="net-badge bg-eth" style="font-size:9px;font-weight:900">ETH</div>
+                <div class="net-name">Ethereum</div>
+                <div style="text-align:right;margin-left:auto"><div class="net-amount">0.0052 LINK</div></div>
+              </div>
+            </div>
+
+            <div class="td-actions">
+              <button class="td-action primary" onclick="openModal('modal-send','send-l2')">Send</button>
+              <button class="td-action">Receive</button>
+              <button class="td-action">Swap</button>
+            </div>
+          </div>
+
+          <div class="td-sidebar-col">
+            <div class="stat-card">
+              <div class="stat-card-title">Market Data</div>
+              <div class="stat-row"><span class="stat-key">Market Cap</span><span class="stat-val">$8.4B</span></div>
+              <div class="stat-row"><span class="stat-key">24h Volume</span><span class="stat-val">$420M</span></div>
+              <div class="stat-row"><span class="stat-key">ATH</span><span class="stat-val">$52.88</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VIEW: Activity ════════════════════════════════ -->
+    <div class="view" id="v-activity">
+      <div class="page-wrap-narrow">
+        <div class="page-head"><div class="page-title">Activity</div></div>
+        <div class="tab-bar" id="activity-tabs">
+          <div class="tab-item active" onclick="switchTab('activity','onchain')">On-Chain</div>
+          <div class="tab-item" onclick="switchTab('activity','offchain')">Off-Chain</div>
+        </div>
+        <div class="tab-panel active" id="activity-onchain" style="padding-top:8px">
+          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received ETH</div><div class="txn-time">2 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.5 ETH</div><div class="txn-usd">$1,252.09</div></div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDC</div><div class="txn-time">3 days ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-200 USDC</div><div class="txn-usd">$200.00</div></div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDC</div><div class="txn-time">5 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDC</div><div class="txn-usd">$500.00</div></div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDT</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDT</div><div class="txn-usd">$500.00</div></div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent ETH</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">HyperEVM</span></div></div><div><div class="txn-amount" style="color:var(--down)">-0.05 ETH</div><div class="txn-usd">$125.21</div></div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDT</div><div class="txn-time">3 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-80 USDT</div><div class="txn-usd">$80.00</div></div></div>
+        </div>
+        <div class="tab-panel" id="activity-offchain" style="padding-top:8px">
+          <div class="txn-row"><div class="txn-icon" style="background:var(--defi-dim);color:var(--defi)">+</div><div style="flex:1"><div class="txn-type">Deposit — Aave V3</div><div class="txn-time">1 week ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--defi)">+USDC</div><div class="txn-usd">$374.91</div></div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">⬡</div><div style="flex:1"><div class="txn-type">Stake — Lido Finance</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.18 ETH</div><div class="txn-usd">$450.75</div></div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--accent-dim);color:var(--accent)">◈</div><div style="flex:1"><div class="txn-type">Claim Rewards — Lido</div><div class="txn-time">3 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.00054 ETH</div><div class="txn-usd">$1.35</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VIEW: Staking ════════════════════════════════ -->
+    <div class="view" id="v-staking">
+      <div class="page-wrap">
+        <div class="page-head"><div class="page-title">ETH Staking</div></div>
+        <div class="staking-hero">
+          <div class="staking-stats">
+            <div class="staking-stat"><div class="label">Total Staked</div><div class="value">0.32 ETH</div><div class="sub">$801.34</div></div>
+            <div class="staking-stat"><div class="label">Total Rewards</div><div class="value" style="color:var(--up)">+0.0048 ETH</div><div class="sub">$12.02 earned</div></div>
+            <div class="staking-stat"><div class="label">Current APY</div><div class="value" style="color:var(--up)">3.8%</div><div class="sub">Avg. across positions</div></div>
+          </div>
+          <div class="stake-btns">
+            <button class="stake-btn primary">Stake More</button>
+            <button class="stake-btn outline">Unstake</button>
+          </div>
+        </div>
+
+        <div class="page-title" style="font-size:15px;margin-bottom:12px">Positions</div>
+        <table class="token-table" style="margin-bottom:24px">
+          <thead>
+            <tr><th>Protocol</th><th>Chain</th><th>Amount</th><th>Value</th><th>APY</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="token-cell"><div class="token-icon c-lido" style="border-radius:10px">L</div><div><div class="token-name">Lido Finance</div></div></div></td>
+              <td><span class="chain-badge">Ethereum</span></td>
+              <td>0.18 ETH</td>
+              <td class="td-fiat">$450.75</td>
+              <td style="color:var(--up);font-weight:700">3.9%</td>
+              <td><span style="color:var(--up);font-size:11px;font-weight:700">● Active</span></td>
+            </tr>
+            <tr>
+              <td><div class="token-cell"><div class="token-icon c-native" style="border-radius:10px">N</div><div><div class="token-name">Native Staking</div></div></div></td>
+              <td><span class="chain-badge">Arbitrum</span></td>
+              <td>0.14 ETH</td>
+              <td class="td-fiat">$350.59</td>
+              <td style="color:var(--up);font-weight:700">3.6%</td>
+              <td><span style="color:var(--up);font-size:11px;font-weight:700">● Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="page-title" style="font-size:15px;margin-bottom:12px">Rewards History</div>
+        <div class="rewards-list">
+          <div class="reward-row"><div class="reward-dot"></div><div class="reward-date">Apr 27</div><div class="reward-eth">+0.00018 ETH</div><div class="reward-usd" style="margin-left:auto;text-align:right">+$0.45</div></div>
+          <div class="reward-row"><div class="reward-dot"></div><div class="reward-date">Apr 26</div><div class="reward-eth">+0.00018 ETH</div><div class="reward-usd" style="margin-left:auto;text-align:right">+$0.45</div></div>
+          <div class="reward-row"><div class="reward-dot"></div><div class="reward-date">Apr 25</div><div class="reward-eth">+0.00017 ETH</div><div class="reward-usd" style="margin-left:auto;text-align:right">+$0.43</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VIEW: Agent Trading ═══════════════════════════ -->
+    <div class="view" id="v-agent">
+      <div class="page-wrap">
+        <div class="page-head"><div class="page-title">Agent Trading</div></div>
+
+        <div class="agent-mode-bar" id="agent-bar">
+          <button class="agent-tab active" onclick="switchAgentMode('global')">Global Agent</button>
+          <button class="agent-tab" onclick="switchAgentMode('protocol')">Protocol Agent</button>
+        </div>
+
+        <!-- Global Agent -->
+        <div id="agent-global">
+          <div class="agent-card">
+            <div class="agent-header">
+              <div>
+                <div class="agent-name">Omni DeFi Agent</div>
+                <div class="agent-meta">Last executed: 15 minutes ago &nbsp;·&nbsp; Authorized: 5 protocols</div>
+              </div>
+              <span class="agent-status running">● Running</span>
+            </div>
+            <div class="caps-wrap">
+              <span class="cap-chip">Swap</span>
+              <span class="cap-chip">Lending Optimization</span>
+              <span class="cap-chip">ETH Restake</span>
+              <span class="cap-chip">LP Rebalance</span>
+              <span class="cap-chip">Yield Collection</span>
+              <span class="cap-chip">Liquidation Guard</span>
+            </div>
+            <div class="agent-protocol-list">Authorized protocols: Lido · Native Staking · Aave V3 · Uniswap V3 · Hyperliquid</div>
+            <div class="agent-btns">
+              <button class="agent-btn pause">⏸ Pause Agent</button>
+              <button class="agent-btn config">⚙ Configure</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Protocol Agent -->
+        <div id="agent-protocol" style="display:none">
+          <table class="protocol-agent-table">
+            <thead><tr><th>Protocol</th><th>Type</th><th>Status</th><th>Last Run</th><th style="text-align:right">Enabled</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-lido" style="border-radius:10px;width:34px;height:34px;font-size:12px">L</div><div class="token-name">Lido Finance</div></div></td>
+                <td><span style="font-size:12px;color:var(--text-2)">ETH Staking</span></td>
+                <td><span style="color:var(--up);font-size:12px;font-weight:600">● Active</span></td>
+                <td><span style="font-size:12px;color:var(--text-3)">2h ago</span></td>
+                <td style="text-align:right"><div class="toggle on" onclick="toggleProtoAgent(this)"><div class="toggle-thumb"></div></div></td>
+              </tr>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-native" style="border-radius:10px;width:34px;height:34px;font-size:12px">N</div><div class="token-name">Native Staking</div></div></td>
+                <td><span style="font-size:12px;color:var(--text-2)">ETH Staking</span></td>
+                <td><span style="color:var(--up);font-size:12px;font-weight:600">● Active</span></td>
+                <td><span style="font-size:12px;color:var(--text-3)">5h ago</span></td>
+                <td style="text-align:right"><div class="toggle on" onclick="toggleProtoAgent(this)"><div class="toggle-thumb"></div></div></td>
+              </tr>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-aave" style="border-radius:10px;width:34px;height:34px;font-size:12px">A</div><div class="token-name">Aave V3</div></div></td>
+                <td><span style="font-size:12px;color:var(--text-2)">Lending</span></td>
+                <td><span style="color:var(--up);font-size:12px;font-weight:600">● Active</span></td>
+                <td><span style="font-size:12px;color:var(--text-3)">1h ago</span></td>
+                <td style="text-align:right"><div class="toggle on" onclick="toggleProtoAgent(this)"><div class="toggle-thumb"></div></div></td>
+              </tr>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-uni" style="border-radius:10px;width:34px;height:34px;font-size:12px">U</div><div class="token-name">Uniswap V3</div></div></td>
+                <td><span style="font-size:12px;color:var(--text-2)">LP Pool</span></td>
+                <td><span style="color:var(--text-3);font-size:12px;font-weight:600">○ Disabled</span></td>
+                <td><span style="font-size:12px;color:var(--text-3)">—</span></td>
+                <td style="text-align:right"><div class="toggle off" onclick="toggleProtoAgent(this)"><div class="toggle-thumb"></div></div></td>
+              </tr>
+              <tr>
+                <td><div class="token-cell"><div class="token-icon c-hl" style="border-radius:10px;width:34px;height:34px;font-size:12px">H</div><div class="token-name">Hyperliquid</div></div></td>
+                <td><span style="font-size:12px;color:var(--text-2)">Staking</span></td>
+                <td><span style="color:var(--text-3);font-size:12px;font-weight:600">○ Disabled</span></td>
+                <td><span style="font-size:12px;color:var(--text-3)">—</span></td>
+                <td style="text-align:right"><div class="toggle off" onclick="toggleProtoAgent(this)"><div class="toggle-thumb"></div></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ MODAL: Send ═════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-send" onclick="closeModalOutside(event,'modal-send')">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="send-modal-title">Send</span>
+      <button class="modal-close" onclick="closeModal('modal-send')">✕</button>
+    </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="send-steps">
+      <div class="step-dot active" id="s1">1</div>
+      <div class="step-line"></div>
+      <div class="step-dot" id="s2">2</div>
+      <div class="step-line"></div>
+      <div class="step-dot" id="s3">3</div>
+      <div class="step-line"></div>
+      <div class="step-dot" id="s4">Form</div>
+    </div>
+
+    <!-- L1: Select Token -->
+    <div id="send-l1">
+      <div style="padding:12px 20px 4px;font-size:11px;color:var(--text-3);font-weight:600">SELECT TOKEN TO SEND</div>
+      <div class="flow-list">
+        <div class="flow-row" onclick="gotoSendStep('send-l2', 1)">
+          <div class="flow-icon c-eth" style="font-size:18px">Ξ</div>
+          <div><div class="flow-name">ETH</div><div class="flow-sub">0.845 ETH &nbsp;·&nbsp; $2,116.78</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoSendStep('send-l2', 1)">
+          <div class="flow-icon c-usdc" style="font-size:10px;font-weight:900">USDC</div>
+          <div><div class="flow-name">USDC</div><div class="flow-sub">1,200 USDC &nbsp;·&nbsp; $1,200.00</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoSendStep('send-l2', 1)">
+          <div class="flow-icon c-usdt" style="font-size:10px;font-weight:900">USDT</div>
+          <div><div class="flow-name">USDT</div><div class="flow-sub">980 USDT &nbsp;·&nbsp; $980.00</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- L2: Select Chain -->
+    <div id="send-l2" style="display:none">
+      <div style="padding:12px 20px 4px;font-size:11px;color:var(--text-3);font-weight:600">SELECT SOURCE NETWORK</div>
+      <div class="flow-list">
+        <div class="flow-row" onclick="gotoSendStep('send-l3', 2)">
+          <div class="flow-icon bg-arb" style="border-radius:12px;font-size:9px;font-weight:900">ARB</div>
+          <div><div class="flow-name">Arbitrum</div><div class="flow-sub">0.3 ETH &nbsp;·&nbsp; 2 addresses</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoSendStep('send-form', 2)">
+          <div class="flow-icon bg-hyp" style="border-radius:12px;font-size:8px;font-weight:900">HYP</div>
+          <div><div class="flow-name">HyperEVM</div><div class="flow-sub">0.295 ETH &nbsp;·&nbsp; 1 address</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoSendStep('send-form', 2)">
+          <div class="flow-icon bg-eth" style="border-radius:12px;font-size:9px;font-weight:900">ETH</div>
+          <div><div class="flow-name">Ethereum</div><div class="flow-sub">0.25 ETH &nbsp;·&nbsp; 1 address</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- L3: Select Address -->
+    <div id="send-l3" style="display:none">
+      <div style="padding:12px 20px 4px;font-size:11px;color:var(--text-3);font-weight:600">SELECT SOURCE ADDRESS · ARBITRUM</div>
+      <div class="flow-list">
+        <div class="flow-row" onclick="gotoSendStep('send-form', 3)">
+          <div class="addr-avatar" style="width:40px;height:40px;background:var(--accent-dim);color:var(--accent);font-size:15px;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center">M</div>
+          <div><div class="flow-name">Main Wallet</div><div class="flow-sub">0x7f3a…9f &nbsp;·&nbsp; 0.18 ETH</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoSendStep('send-form', 3)">
+          <div class="addr-avatar" style="width:40px;height:40px;background:var(--defi-dim);color:var(--defi);font-size:15px;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center">T</div>
+          <div><div class="flow-name">Trading Wallet</div><div class="flow-sub">0x9e8f…6f &nbsp;·&nbsp; 0.12 ETH</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div id="send-form" style="display:none">
+      <div class="transfer-form">
+        <div class="breadcrumb">
+          <span class="breadcrumb-chip">ETH</span>
+          <span>→</span>
+          <span class="breadcrumb-chip">Arbitrum</span>
+          <span>→</span>
+          <span class="breadcrumb-chip">Main Wallet</span>
+        </div>
+        <div class="form-label">Recipient Address</div>
+        <input class="form-input" placeholder="0x… or ENS name" />
+        <div class="form-label">Amount</div>
+        <div class="amount-wrap">
+          <input class="form-input" placeholder="0.00 ETH" style="padding-right:52px;margin-bottom:0" />
+          <span class="amount-max">MAX</span>
+        </div>
+        <div class="form-hint" style="margin-bottom:16px">Available: 0.18 ETH · ~$450.72</div>
+        <div class="gas-row"><span>Network fee</span><span>~$0.82 (est.)</span></div>
+        <button class="confirm-btn">Review Transaction</button>
+      </div>
+    </div>
   </div>
-  <div id="fp-desc" class="text-xs tc2" style="line-height:1.7;white-space:pre-line"></div>
+</div>
+
+<!-- ══ MODAL: Receive ══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-receive" onclick="closeModalOutside(event,'modal-receive')">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Receive</span>
+      <button class="modal-close" onclick="closeModal('modal-receive')">✕</button>
+    </div>
+
+    <!-- L1 -->
+    <div id="recv-l1">
+      <div style="padding:12px 20px 4px;font-size:11px;color:var(--text-3);font-weight:600">SELECT TOKEN TO RECEIVE</div>
+      <div class="flow-list">
+        <div class="flow-row" onclick="gotoRecvStep('recv-l2')">
+          <div class="flow-icon c-eth" style="font-size:18px">Ξ</div>
+          <div><div class="flow-name">ETH</div><div class="flow-sub">Ethereum native token</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoRecvStep('recv-qr')">
+          <div class="flow-icon c-usdc" style="font-size:10px;font-weight:900">USDC</div>
+          <div><div class="flow-name">USDC</div><div class="flow-sub">USD Coin</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- L2 -->
+    <div id="recv-l2" style="display:none">
+      <div style="padding:12px 20px 4px;font-size:11px;color:var(--text-3);font-weight:600">SELECT RECEIVING NETWORK</div>
+      <div class="flow-list">
+        <div class="flow-row" onclick="gotoRecvStep('recv-qr')">
+          <div class="flow-icon bg-arb" style="border-radius:12px;font-size:9px;font-weight:900">ARB</div>
+          <div><div class="flow-name">Arbitrum</div><div class="flow-sub">EVM · Low fees</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoRecvStep('recv-qr')">
+          <div class="flow-icon bg-hyp" style="border-radius:12px;font-size:8px;font-weight:900">HYP</div>
+          <div><div class="flow-name">HyperEVM</div><div class="flow-sub">EVM · Ultra-fast</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+        <div class="flow-row" onclick="gotoRecvStep('recv-qr')">
+          <div class="flow-icon bg-eth" style="border-radius:12px;font-size:9px;font-weight:900">ETH</div>
+          <div><div class="flow-name">Ethereum</div><div class="flow-sub">EVM · L1</div></div>
+          <span class="flow-chevron">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR -->
+    <div id="recv-qr" style="display:none">
+      <div class="qr-panel">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px">
+          <div class="flow-icon c-eth" style="width:28px;height:28px;font-size:13px">Ξ</div>
+          <span style="font-size:14px;font-weight:700">ETH on Arbitrum</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-3);margin-bottom:20px">Scan or copy the address below</div>
+        <div class="qr-box">
+          <svg width="170" height="170" viewBox="0 0 21 21">
+            <rect width="21" height="21" fill="white"/>
+            <rect x="1" y="1" width="7" height="7" fill="black" rx=".5"/>
+            <rect x="2" y="2" width="5" height="5" fill="white" rx=".3"/>
+            <rect x="3" y="3" width="3" height="3" fill="black"/>
+            <rect x="13" y="1" width="7" height="7" fill="black" rx=".5"/>
+            <rect x="14" y="2" width="5" height="5" fill="white" rx=".3"/>
+            <rect x="15" y="3" width="3" height="3" fill="black"/>
+            <rect x="1" y="13" width="7" height="7" fill="black" rx=".5"/>
+            <rect x="2" y="14" width="5" height="5" fill="white" rx=".3"/>
+            <rect x="3" y="15" width="3" height="3" fill="black"/>
+            <rect x="9" y="1" width="1" height="3" fill="black"/><rect x="11" y="1" width="1" height="1" fill="black"/>
+            <rect x="9" y="5" width="3" height="1" fill="black"/><rect x="9" y="9" width="3" height="3" fill="black"/>
+            <rect x="13" y="9" width="1" height="5" fill="black"/><rect x="15" y="9" width="3" height="1" fill="black"/>
+            <rect x="9" y="13" width="5" height="1" fill="black"/><rect x="9" y="15" width="1" height="5" fill="black"/>
+            <rect x="11" y="17" width="5" height="1" fill="black"/><rect x="17" y="13" width="3" height="3" fill="black"/>
+          </svg>
+        </div>
+        <div class="qr-address">0x7f3a8b2c4d1e9f0a3b5c7d2e4f6a8b0c1d3e5f7a9f</div>
+        <button class="copy-btn" onclick="this.textContent='✓ Copied!'">📋 &nbsp;Copy Address</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
-// Feature Registry
-// ─────────────────────────────────────────────────────────────────────────────
-const F = {
-  dashboardUnauth:{title:"未登录状态",label:"Dashboard",priority:"P0",desc:"用户未连接钱包时的 Dashboard 状态。\n\n· 显示产品简介与价值主张\n· 提供「Connect Wallet」入口\n· 不展示任何资产信息\n· 此状态下功能入口、资产概览、账户活动均不可见"},
-  dashboardEmpty:{title:"已登录无资产",label:"Dashboard",priority:"P0",desc:"用户已连接钱包但尚无任何资产时的 Dashboard 状态。\n\n· 资产概览显示空状态（$0.00）\n· 账户活动显示「No transactions yet」\n· 功能入口仍可用（收款是获取首笔资产的起点）"},
-  assetOverview:{title:"资产概览",label:"Dashboard · 已登录有资产",priority:"P0",desc:"Dashboard 核心区块，汇总展示用户在所有链上的资产。\n\n· Donut 图按资产类别展示占比（Token / DeFi）\n· 总资产 = Token 估值 + DeFi 仓位估值\n· NFT 在独立 Tab 中展示但不计入总资产估值\n· 点击进入资产详情页"},
-  assetTabToken:{title:"Token Tab（含凭证代币）",label:"资产概览",priority:"P0",desc:"资产概览的 Token Tab，核心功能即 Unified Balance。\n\n· 显示 Token 持仓总估值，标注 receipts excluded 数量\n· 代币列表按法币价值降序排列，跨链同代币自动合计\n· Dust 标签：有报价且法币 < $0.10\n· Receipt 代币（stETH / aUSDC / LP）：显示但不计入总额，标注「in DeFi」提示\n· 提供「Hide receipts」一键过滤开关"},
-  assetTabDefi:{title:"DeFi Tab",label:"资产概览",priority:"P0",desc:"资产概览的 DeFi Tab，展示 DeFi 协议仓位。\n\n· 包含 ETH 质押（Lido、Native Staking）、Lending（Aave）、LP（Uniswap）、Staking（Hyperliquid）\n· 每个仓位展示：协议名、类型、链、当前净值、APY / APR"},
-  assetTabNft:{title:"NFT Tab（仅查看）",label:"资产概览",priority:"P1",desc:"资产概览的 NFT Tab，展示用户持有的 NFT 资产。\n\n· NFT 参考估值基于地板价，非精确市值\n· NFT 不计入头部总资产估值（仅供查看）\n· Tab 内有醒目提示，避免用户误读头部总额"},
-  unifiedBalance:{title:"Unified Balance（Donut 图）",label:"资产概览 · Token",priority:"P0",desc:"以 Donut 图直观展示资产构成占比。\n\n· 总资产 = Token（68.6%）+ DeFi（31.4%）\n· NFT 不计入总资产\n· 覆盖 Arbitrum / HyperEVM / Ethereum\n· 排除隐藏账户\n· Receipt token 不参与 Token 总额计算"},
-  dustToken:{title:"Dust 代币",label:"资产概览 · Token",priority:"P1",desc:"判定条件：余额 > 0 且有有效报价且法币总价值 < $0.10。\n\n· 保留在主列表（不移入「Previously held」，余额非零）\n· 名称旁显示橙色「Dust」标签\n· 法币价值字段以次要颜色显示实际金额，不隐藏数值\n· 依法币价值降序排序，自然排在正常资产之后\n· 计入 Unified Balance（有有效报价即计入）"},
-  accountActivity:{title:"账户活动",label:"Dashboard · 已登录有资产",priority:"P0",desc:"展示近期跨链交易记录的预览（最多 5 条）。\n\n· 每条记录包含：操作类型、代币、时间、金额\n· 点击任意交易行 → 进入交易详情页\n· 「查看详情」链接到完整的 Transaction History 页面"},
-  transactionDetail:{title:"交易详情页",label:"账户活动",priority:"P0",desc:"单笔交易的完整详情页，从账户活动点击进入。\n\n包含字段：\n· 交易类型、代币与金额\n· 所在网络、发送方/接收方地址\n· 时间戳、交易状态、Gas 费用、Tx Hash"},
-  featureEntry:{title:"功能入口",label:"Dashboard · 已登录有资产",priority:"P0",desc:"Dashboard 顶部的核心操作入口：\n· 收款 — 进入收款三层级流程\n· 转账 — 进入转账三层级流程（主要 CTA）\n· 质押 — 进入质押详情\n· Agent Trading — AI 自动交易"},
-  receiveEntry:{title:"收款入口",label:"功能入口",priority:"P0",desc:"点击后进入收款三层级流程：\n① L1 选择代币\n② L2 选择公链\n③ QR Code 展示完整地址\n\n地址最后一刻才揭露。"},
-  sendEntry:{title:"转账入口",label:"功能入口",priority:"P0",desc:"点击后进入转账三层级流程：\n① L1 选择代币\n② L2 选择公链\n③ L3 选择转出地址（条件式）\n\n完成层级选择后才进入转账表单，不得绕过。"},
-  stakingEntry:{title:"质押服务入口",label:"Dashboard · 已登录有资产",priority:"P0",desc:"Dashboard 底部的质押服务卡片。\n\n· 展示 ETH 质押当前 APY\n· 显示用户已质押总额\n· 点击进入质押详情页"},
-  stakingDetail:{title:"质押详情页",label:"质押服务",priority:"P0",desc:"ETH 质押详情页。\n\n· 质押总额与累计收益、当前 APY\n· 质押仓位列表\n· 收益记录\n· 质押 / 赎回 操作按钮"},
-  agentTrading:{title:"Agent Trading 入口",label:"Dashboard · 已登录有资产",priority:"P0",desc:"AI 驱动的 DeFi 自动化交易入口，提供两种模式：\n· 全局 Agent — 单一 Agent 授权操作所有 DeFi 协议\n· 协议 Agent — 每个 DeFi 协议绑定专属 Agent"},
-  agentUniversal:{title:"全局 Agent",label:"Agent Trading",priority:"P0",desc:"一个 Agent 授权操作所有已接入的 DeFi 协议，包括 Swap、Lending、Staking、LP 管理等。适合希望统一管理的用户。"},
-  agentProtocol:{title:"协议 Agent",label:"Agent Trading",priority:"P0",desc:"为每个 DeFi 协议单独配置专属 Agent，各协议授权相互隔离，风险更可控。"},
-  tokenDetailHero:{title:"Token Detail — Hero",label:"Token Detail",priority:"P0",desc:"展示所选代币的名称、跨链汇总余额与法币价值。是进入 L1 后的核心信息区域。"},
-  dustBanner:{title:"Dust 提示（L1）",label:"Token Detail",priority:"P1",desc:"进入 Dust 代币详情时，在 Hero 下方显示非阻断式提示：\n「Dust — value below $0.10. You can swap or send this balance.」\n\n橙色弱色系，不阻断操作。"},
-  distributionByNetwork:{title:"Distribution by Network",label:"Token Detail",priority:"P0",desc:"列出所选代币在每条 EVM 链上的余额。\n\n· 点击某条链行 → inline 展开地址分布\n· 再次点击同一链可收起"},
-  l2Addresses:{title:"L2 — 地址分布（Inline 展开）",label:"Token Detail",priority:"P0",desc:"点击链名称行，直接在该行下方 inline 展开地址分布：\n\n· 账户昵称 + 余额\n· 截断格式地址（0x7f3a…de9f）"},
-  tokenDetailSR:{title:"Token Detail — Send / Receive",label:"Token Detail",priority:"P0",desc:"代币已确定，从「选择公链」（L2）开始流程，跳过「选择代币」（L1）。"},
-  sendL1:{title:"Send — L1 选择代币",label:"转账流程",priority:"P0",desc:"列出有可用余额的代币供选择。从 Dashboard 转账入口进入时从此层开始；从 Token Detail 进入时跳过此层。"},
-  sendL2:{title:"Send — L2 选择公链",label:"转账流程",priority:"P0",desc:"显示所选代币有可用余额的 EVM 链。选定后：多地址 → 进入 L3；单一地址 → 直接进入转账表单。"},
-  sendL3:{title:"Send — L3 选择转出地址（条件式）",label:"转账流程",priority:"P0",desc:"仅当该链存在多个可转出地址时显示此步。单一地址时跳过，直接进入转账表单。"},
-  sendForm:{title:"转账表单",label:"转账流程",priority:"P0",desc:"完成三层级选择（代币 / 公链 / 地址）后才进入此表单。填写收款方地址、金额、Gas 费。"},
-  receiveL1:{title:"Receive — L1 选择代币",label:"收款流程",priority:"P0",desc:"列出可收款代币。从 Dashboard 收款入口进入时从此层开始。"},
-  receiveL2:{title:"Receive — L2 选择公链",label:"收款流程",priority:"P0",desc:"显示所选代币支持的 EVM 链。选定后：多地址 → 进入 L3；单一地址 → 直接展示 QR Code。"},
-  receiveQR:{title:"QR Code / 地址展示",label:"收款流程",priority:"P0",desc:"完成层级选择后展示完整收款地址与 QR Code。地址在此最后一刻才完整揭露，符合「地址最后揭露」原则。"},
-  receiptToken:{title:"Receipt Token（凭证代币）",label:"资产详情 · Token Tab",priority:"P0",desc:"由 DeFi 协议发放的派生凭证（如 stETH、aUSDC、UNI-V3 LP）。\n\n· 在 Token Tab 中正常显示，避免「资产消失」感\n· 不计入 Token 持仓总估值，价值已在 DeFi Tab 计入\n· 法币价值字段显示「$X in DeFi」灰色提示\n· 提供「→ View in DeFi」一键跳转\n· 默认排在普通 Token 之后\n· 通过「Hide receipts」开关可一键过滤"},
-  receiptDedup:{title:"Token / DeFi 去重逻辑",label:"资产估值",priority:"P0",desc:"功能口径：普通 Token 只统计钱包真实可用余额；DeFi 资产按协议仓位净值统计；所有 receipt token / LP token / vault share 默认只展示，不重复计入总资产。\n\n技术实现：以协议 API 为权威数据源做反向去重，凭证代币在 Token Tab 中『显示但不计价』，用一个标签替代一套对照表。\n\n详见 PRD §3.11、§5.7。"},
-};
+// ── Theme Toggle ────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.classList.toggle('dark');
+  document.getElementById('theme-icon').textContent = isDark ? '☀' : '☾';
+}
 
-// ─────────────────────────────────────────────────────────────────────────────
-// State
-// ─────────────────────────────────────────────────────────────────────────────
-const S = {
-  screen: 'dashboard',
-  fKey: '',
-  token: 'ETH',
-  assetTab: 'token',
-  activityTab: 'onchain',
-  agentMode: 'universal',
-  expandedNetworkRow: '',
-  networkExpanded: true,
-  tokenChartPeriod: '7d',
-  expandedProtocol: '',
-  hideReceipts: false,
-  chartExpanded: false,
-  chartPeriod: '1y'
-};
+// ── Receipt Token Toggle ────────────────────────────────
+let receiptsVisible = false;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Portfolio Chart Data
-// ─────────────────────────────────────────────────────────────────────────────
-const PORTFOLIO_CHART_DATA = {
-  '1d': { cats: ['00:00','04:00','08:00','12:00','16:00','20:00','24:00'], vals: [6260,6240,6255,6270,6285,6278,6295], label:'今日' },
-  '1w': { cats: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],              vals: [6150,6200,6175,6230,6270,6248,6295], label:'近 7 日' },
-  '1m': { cats: ['1','5','10','15','20','25','30'],                      vals: [5900,6020,5975,6080,6180,6240,6295], label:'近 1 月' },
-  '6m': { cats: ['Nov','Dec','Jan','Feb','Mar','Apr'],                   vals: [5100,5450,5700,5900,6100,6295],     label:'近 6 月' },
-  '1y': { cats: ['5月','7月','9月','11月','1月','3月','4月'],             vals: [3200,3620,3950,4320,4820,5600,6295], label:'近 1 年' }
-};
+function toggleReceiptTokens() {
+  receiptsVisible = !receiptsVisible;
+  const btn = document.getElementById('receipt-toggle-btn');
+  const sub = document.getElementById('token-summary-sub');
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Token Data
-// ─────────────────────────────────────────────────────────────────────────────
-const TOKEN_META = {
-  ETH:{name:"Ethereum",color:"#60a5fa",price:"$2,504.18",priceNum:2504.18,change:"+0.6%",changePos:true,balance:"0.845 ETH",value:"$2,116.78",dust:false,
-    networks:[
-      {name:"Arbitrum",amount:"0.3 ETH",usd:"$750.00",pct:35.5,addresses:[
-        {addr:"0x7f3a…9f",label:"Main Wallet",amount:"0.18 ETH",usd:"$450.72"},
-        {addr:"0x9e8f…6f",label:"Trading Wallet",amount:"0.12 ETH",usd:"$299.28"}
-      ]},
-      {name:"HyperEVM",amount:"0.295 ETH",usd:"$738.73",pct:34.9},
-      {name:"Ethereum",amount:"0.25 ETH",usd:"$626.05",pct:29.6}
-    ],
-    about:"Ethereum is the leading programmable blockchain, enabling smart contracts and decentralized applications across DeFi, NFTs, and beyond.",
-    stats:[{label:"MARKET CAP",value:"$302B"},{label:"24H VOLUME",value:"$18.2B"},{label:"CIRCULATING",value:"120M ETH"},{label:"ALL-TIME HIGH",value:"$4,878"}],
-    txs:[
-      {type:"Receive",time:"2 days ago",amount:"+0.5 ETH",addr:"0x9e8f…6f",pos:true},
-      {type:"Send",time:"3 days ago",amount:"-0.05 ETH",addr:"0x8776…58",pos:false},
-      {type:"Receive",time:"1 week ago",amount:"+0.3 ETH",addr:"0x9e8f…6f",pos:true}
-    ],
-    chartData:{
-      "24h":{cats:["00","03","06","09","12","15","18","21","24"],vals:[2480,2470,2460,2490,2520,2510,2530,2504,2504]},
-      "7d":{cats:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],vals:[2380,2420,2350,2500,2550,2530,2504]},
-      "30d":{cats:["1","5","10","15","20","25","30"],vals:[2100,2250,2180,2400,2480,2530,2504]},
-      "1y":{cats:["May","Jul","Sep","Nov","Jan","Mar","Now"],vals:[1800,2100,1950,2300,2450,2530,2504]}
-    }
-  },
-  USDC:{name:"USD Coin",color:"#3b82f6",price:"$0.9998",priceNum:0.9998,change:"+0%",changePos:null,balance:"1,200 USDC",value:"$1,200.00",dust:false,
-    networks:[
-      {name:"Arbitrum",amount:"800 USDC",usd:"$800.00",pct:66.7},
-      {name:"Ethereum",amount:"400 USDC",usd:"$400.00",pct:33.3}
-    ],
-    about:"USD Coin is a fully reserved stablecoin redeemable 1:1 for US dollars, issued by Circle.",
-    stats:[{label:"MARKET CAP",value:"$60B"},{label:"24H VOLUME",value:"$8.5B"},{label:"CIRCULATING",value:"60B USDC"},{label:"ALL-TIME HIGH",value:"$1.17"}],
-    txs:[
-      {type:"Receive",time:"5 days ago",amount:"+500 USDC",addr:"0xa0a0…73",pos:true},
-      {type:"Send",time:"3 days ago",amount:"-200 USDC",addr:"0x8776…58",pos:false},
-      {type:"Receive",time:"1 week ago",amount:"+900 USDC",addr:"0xa0a0…73",pos:true}
-    ],
-    chartData:{
-      "24h":{cats:["00","03","06","09","12","15","18","21","24"],vals:[1.0001,0.9999,1.0000,0.9998,1.0002,0.9999,1.0000,0.9998,0.9998]},
-      "7d":{cats:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],vals:[1.0002,0.9999,1.0001,0.9998,1.0000,0.9999,0.9998]},
-      "30d":{cats:["1","5","10","15","20","25","30"],vals:[1.001,1.0005,0.9998,1.0002,0.9999,1.0001,0.9998]},
-      "1y":{cats:["May","Jul","Sep","Nov","Jan","Mar","Now"],vals:[1.002,1.001,0.9995,1.0008,1.0003,0.9999,0.9998]}
-    }
-  },
-  USDT:{name:"Tether",color:"#f59e0b",price:"$1.00",priceNum:1.00,change:"0%",changePos:null,balance:"980 USDT",value:"$980.00",dust:false,
-    networks:[
-      {name:"Tron",amount:"500 USDT",usd:"$500.00",pct:51.0},
-      {name:"Arbitrum",amount:"200 USDT",usd:"$200.00",pct:20.4},
-      {name:"Ethereum",amount:"280 USDT",usd:"$280.00",pct:28.6}
-    ],
-    about:"Tether (USDT) is the largest stablecoin by market cap, pegged to the US dollar and widely used for trading and transfers.",
-    stats:[{label:"MARKET CAP",value:"$108B"},{label:"24H VOLUME",value:"$55B"},{label:"CIRCULATING",value:"108B USDT"},{label:"ALL-TIME HIGH",value:"$1.32"}],
-    txs:[
-      {type:"Receive",time:"2 weeks ago",amount:"+500 USDT",addr:"TRKF…9F",pos:true},
-      {type:"Send",time:"3 weeks ago",amount:"-80 USDT",addr:"0x7f3a…9f",pos:false}
-    ],
-    chartData:{
-      "24h":{cats:["00","03","06","09","12","15","18","21","24"],vals:[1.001,0.999,1.000,1.001,1.000,0.999,1.000,1.000,1.000]},
-      "7d":{cats:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],vals:[1.001,1.000,0.999,1.000,1.001,1.000,1.000]},
-      "30d":{cats:["1","5","10","15","20","25","30"],vals:[1.002,1.001,0.999,1.000,1.001,1.000,1.000]},
-      "1y":{cats:["May","Jul","Sep","Nov","Jan","Mar","Now"],vals:[1.005,1.002,0.998,1.001,1.000,1.000,1.000]}
-    }
-  },
-  ARB:{name:"Arbitrum",color:"#818cf8",price:"$0.98",priceNum:0.98,change:"-1.2%",changePos:false,balance:"22 ARB",value:"$21.56",dust:false,
-    networks:[
-      {name:"Arbitrum",amount:"16 ARB",usd:"$15.68",pct:72.7},
-      {name:"Ethereum",amount:"6 ARB",usd:"$5.88",pct:27.3}
-    ],
-    about:"Arbitrum is a leading Ethereum Layer 2 scaling solution using optimistic rollups to provide fast, low-cost transactions.",
-    stats:[{label:"MARKET CAP",value:"$1.2B"},{label:"24H VOLUME",value:"$420M"},{label:"CIRCULATING",value:"3.7B ARB"},{label:"ALL-TIME HIGH",value:"$2.39"}],
-    txs:[
-      {type:"Receive",time:"1 week ago",amount:"+6 ARB",addr:"0x9e8f…6f",pos:true},
-      {type:"Move",time:"1 week ago",amount:"16 ARB",addr:"0x7f3a…9f",pos:null}
-    ],
-    chartData:{
-      "24h":{cats:["00","03","06","09","12","15","18","21","24"],vals:[1.00,0.99,0.97,0.98,1.01,1.00,0.99,0.98,0.98]},
-      "7d":{cats:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],vals:[1.05,1.02,0.95,1.03,1.08,1.01,0.98]},
-      "30d":{cats:["1","5","10","15","20","25","30"],vals:[0.85,0.92,0.88,1.05,1.10,1.02,0.98]},
-      "1y":{cats:["May","Jul","Sep","Nov","Jan","Mar","Now"],vals:[0.65,0.85,0.78,1.10,1.25,1.05,0.98]}
-    }
-  },
-  LINK:{name:"Chainlink",color:"#f97316",price:"$13.50",priceNum:13.50,change:"+2.1%",changePos:true,balance:"0.0052 LINK",value:"$0.07",dust:true,
-    networks:[
-      {name:"Ethereum",amount:"0.0052 LINK",usd:"$0.07",pct:100}
-    ],
-    about:"Chainlink is a decentralized oracle network providing tamper-proof data feeds and off-chain computation to smart contracts.",
-    stats:[{label:"MARKET CAP",value:"$8.1B"},{label:"24H VOLUME",value:"$580M"},{label:"CIRCULATING",value:"587M LINK"},{label:"ALL-TIME HIGH",value:"$52.70"}],
-    txs:[
-      {type:"Receive",time:"1 week ago",amount:"+0.0052 LINK",addr:"0x9e8f…6f",pos:true}
-    ],
-    chartData:{
-      "24h":{cats:["00","03","06","09","12","15","18","21","24"],vals:[13.2,13.1,13.3,13.5,13.8,13.6,13.7,13.5,13.5]},
-      "7d":{cats:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],vals:[12.8,13.0,12.5,13.2,13.8,13.6,13.5]},
-      "30d":{cats:["1","5","10","15","20","25","30"],vals:[11.5,12.2,11.8,13.0,13.5,13.3,13.5]},
-      "1y":{cats:["May","Jul","Sep","Nov","Jan","Mar","Now"],vals:[8.5,10.2,9.8,12.5,13.2,13.0,13.5]}
-    }
+  // 找到所有凭证代币行（data-receipt="true"）
+  document.querySelectorAll('tr[data-receipt]').forEach(row => {
+    row.style.display = receiptsVisible ? '' : 'none';
+  });
+
+  if (receiptsVisible) {
+    btn.textContent = 'Hide receipts';
+    btn.style.background = 'var(--down-dim)';
+    btn.style.borderColor = 'var(--down)';
+    btn.style.color = 'var(--down)';
+    if (sub) sub.textContent = 'Token holdings \u00a0·\u00a0 1 receipt shown';
+  } else {
+    btn.textContent = 'Show receipts';
+    btn.style.background = '';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    if (sub) sub.textContent = 'Token holdings \u00a0·\u00a0 1 receipt hidden';
   }
-};
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SVG Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-function tokenIcon(sym, size=36) {
-  const s=size;
-  if(sym==='ETH') return `<svg width="${s}" height="${s}" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#f5f7fb"/><polygon points="18,4 10.2,18 18,14.2 25.8,18" fill="#627EEA"/><polygon points="18,31.5 10.2,19.6 18,23.8 25.8,19.6" fill="#627EEA" opacity=".85"/><polygon points="18,14.2 10.2,18 18,22.1" fill="#627EEA" opacity=".55"/><polygon points="18,14.2 25.8,18 18,22.1" fill="#627EEA" opacity=".7"/></svg>`;
-  if(sym==='USDC') return `<svg width="${s}" height="${s}" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#2775CA"/><circle cx="18" cy="18" r="10.8" fill="none" stroke="#fff" stroke-width="2"/><path d="M20.8 13.6c-.8-.7-1.8-1-3-1-2 0-3.4 1-3.4 2.5 0 1.5 1.1 2.1 2.9 2.6 1.7.5 2.2.8 2.2 1.6 0 .8-.8 1.3-2 1.3-1 0-2-.3-2.8-1l-1 1.4c1 .8 2.2 1.2 3.5 1.3v1.4h1.3v-1.4c2.2-.2 3.6-1.3 3.6-3 0-1.8-1.2-2.4-3.2-3-1.4-.4-2-.7-2-1.4 0-.7.6-1.2 1.7-1.2.9 0 1.7.3 2.3.8l.9-1.3Z" fill="#fff"/></svg>`;
-  if(sym==='USDT') return `<svg width="${s}" height="${s}" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#26A17B"/><path d="M9.5 10.5h17v3h-7v2.2c2.7.1 4.8.6 4.8 1.2 0 .8-2.8 1.4-6.3 1.4s-6.3-.6-6.3-1.4c0-.6 2.1-1.1 4.8-1.2v-2.2h-7v-3Z" fill="#fff"/><path d="M17 13.5h2v11.5h-2z" fill="#fff"/></svg>`;
-  if(sym==='ARB') return `<svg width="${s}" height="${s}" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#2D374B"/><polygon points="18,7.5 26,12.2 26,23.8 18,28.5 10,23.8 10,12.2" fill="#fff"/><polygon points="18,10.7 23.3,13.8 23.3,22.2 18,25.3 12.7,22.2 12.7,13.8" fill="#1F2937"/><path d="M13.8 21.7 16.7 22.9 22.2 14.2 19.3 13z" fill="#28A0F0"/><path d="M17.1 23.1 20 24.3 25.6 15.4 22.7 14.2z" fill="#96BEDC"/></svg>`;
-  if(sym==='LINK') return `<svg width="${s}" height="${s}" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#fff"/><polygon points="18,8.5 26.3,13.3 26.3,22.7 18,27.5 9.7,22.7 9.7,13.3" fill="none" stroke="#2A5ADA" stroke-width="3"/></svg>`;
-  const c=Math.abs(sym.charCodeAt(0)*31+sym.charCodeAt(sym.length-1)*7)%360;
-  return `<div style="width:${s}px;height:${s}px;border-radius:50%;background:hsl(${c},60%,45%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:${Math.round(s/2.6)}px;font-weight:700;flex-shrink:0">${sym.slice(0,1)}</div>`;
 }
 
-function polarPt(cx,cy,r,deg){const rad=(deg-90)*Math.PI/180;return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}}
-function donutPath(cx,cy,ri,ro,s,e){
-  const S1=polarPt(cx,cy,ro,s),E1=polarPt(cx,cy,ro,e),S2=polarPt(cx,cy,ri,e),E2=polarPt(cx,cy,ri,s);
-  const lg=(e-s)>180?1:0;
-  return `M${S1.x.toFixed(2)},${S1.y.toFixed(2)} A${ro},${ro} 0 ${lg} 1 ${E1.x.toFixed(2)},${E1.y.toFixed(2)} L${S2.x.toFixed(2)},${S2.y.toFixed(2)} A${ri},${ri} 0 ${lg} 0 ${E2.x.toFixed(2)},${E2.y.toFixed(2)} Z`
-}
-function buildDonutSVG(segments, cx=90, cy=90, ri=54, ro=80, size=180){
-  const total=segments.reduce((s,d)=>s+d.value,0);
-  let start=0, paths='';
-  for(const d of segments){
-    const angle=(d.value/total)*360;
-    const end=start+angle;
-    if(angle<360){
-      paths+=`<path d="${donutPath(cx,cy,ri,ro,start,end)}" fill="${d.color}" opacity="${d.opacity||1}"/>`;
-    }
-    start=end;
-  }
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="flex-shrink:0">${paths}</svg>`;
-}
+// ── View Navigation ─────────────────────────────────────
+let viewHistory = ['v-dashboard'];
 
-function linePts(vals,w,h,pad=10){
-  const n=vals.length, mn=Math.min(...vals), mx=Math.max(...vals), rng=mx-mn||1;
-  return vals.map((v,i)=>[pad+i/(n-1)*(w-2*pad),pad+(1-(v-mn)/rng)*(h-2*pad)]);
-}
-function buildLineSVG(vals, w, h, color='#22c55e', fill=true, id='lg'+Math.random().toString(36).slice(2)){
-  const pts=linePts(vals,w,h);
-  const d=pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
-  const area=d+` L${pts[pts.length-1][0].toFixed(1)},${h} L${pts[0][0].toFixed(1)},${h} Z`;
-  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible">
-    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${color}" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
-    </linearGradient></defs>
-    ${fill?`<path d="${area}" fill="url(#${id})"/>`:''}
-    <path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-}
+function showView(id, navItem) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  document.getElementById('main').scrollTo(0, 0);
 
-function buildLineChartWithLabels(data, cats, w, h, color='#5b5bd6'){
-  const pad={t:10,r:10,b:28,l:10};
-  const ew=w-pad.l-pad.r, eh=h-pad.t-pad.b;
-  const vals=data;
-  const pts=linePts(vals,ew,eh).map(p=>[p[0]+pad.l,p[1]+pad.t]);
-  const d=pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
-  const area=d+` L${pts[pts.length-1][0].toFixed(1)},${h-pad.b} L${pts[0][0].toFixed(1)},${h-pad.b} Z`;
-  const id='lc'+Math.random().toString(36).slice(2);
-  // x-axis labels
-  const n=cats.length;
-  const labels=cats.map((c,i)=>{
-    const x=pad.l+i/(n-1)*ew;
-    return `<text x="${x.toFixed(1)}" y="${h-8}" text-anchor="middle" font-size="10" fill="#94a3b8">${c}</text>`;
-  }).join('');
-  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible;display:block">
-    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${color}" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
-    </linearGradient></defs>
-    <path d="${area}" fill="url(#${id})"/>
-    <path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    ${labels}
-  </svg>`;
-}
-
-function sparklineSVG(){
-  return `<svg width="160" height="44" viewBox="0 0 160 44" style="flex-shrink:0">
-    <defs><linearGradient id="spkGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
-    </linearGradient></defs>
-    <path d="M0,38 L18,30 L34,34 L52,18 L70,24 L90,10 L110,20 L130,8 L150,4 L160,3 L160,44 L0,44 Z" fill="url(#spkGrad)"/>
-    <path d="M0,38 L18,30 L34,34 L52,18 L70,24 L90,10 L110,20 L130,8 L150,4 L160,3" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-}
-
-function qrSVG(size=160){
-  let sq='';
-  const cell=7, pad=7;
-  function finder(ox,oy){
-    for(let r=0;r<7;r++) for(let c=0;c<7;c++){
-      const outer=r===0||r===6||c===0||c===6;
-      const inner=r>=2&&r<=4&&c>=2&&c<=4;
-      if(outer||inner) sq+=`<rect x="${ox+c*cell+pad}" y="${oy+r*cell+pad}" width="${cell}" height="${cell}" fill="#000"/>`;
-    }
-  }
-  finder(0,0); finder(14*cell,0); finder(0,14*cell);
-  for(let r=0;r<21;r++) for(let c=0;c<21;c++){
-    const tl=(r<7&&c<7), tr=(r<7&&c>13), bl=(r>13&&c<7);
-    if(!tl&&!tr&&!bl){
-      if(((r*13+c*7)^(r+c*3))%3!==0) sq+=`<rect x="${c*cell+pad}" y="${r*cell+pad}" width="${cell}" height="${cell}" fill="#000"/>`;
-    }
-  }
-  const total=21*cell+2*pad;
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" style="display:block;background:#fff;border-radius:4px"><rect width="${total}" height="${total}" fill="#fff"/>${sq}</svg>`;
-}
-
-function buildPortfolioChartSVG(vals, cats){
-  const W=680, H=200, padT=28, padR=16, padB=32, padL=44;
-  const ew=W-padL-padR, eh=H-padT-padB;
-  const mn=Math.min(...vals), mx=Math.max(...vals), rng=mx-mn||1;
-  const n=vals.length;
-  const pts=vals.map((v,i)=>[padL+i/(n-1)*ew, padT+(1-(v-mn)/rng)*eh]);
-  const d=pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
-  const area=d+` L${pts[n-1][0].toFixed(1)},${H-padB} L${pts[0][0].toFixed(1)},${H-padB} Z`;
-  const id='pcg'+Math.random().toString(36).slice(2);
-  // Y-axis grid (4 steps)
-  const ySteps=4;
-  let grid='', yLabels='';
-  for(let i=0;i<=ySteps;i++){
-    const pct=i/ySteps, y=(padT+pct*eh).toFixed(1);
-    const val=mx-pct*rng;
-    const lab=val>=1000?`${(val/1000).toFixed(0)}K`:val.toFixed(0);
-    grid+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="rgba(17,29,74,0.06)" stroke-width="1"/>`;
-    yLabels+=`<text x="${padL-8}" y="${(parseFloat(y)+4).toFixed(1)}" text-anchor="end" font-size="11" fill="#99a1af" font-family="Noto Sans,system-ui,sans-serif">${lab}</text>`;
-  }
-  // X-axis labels
-  const xLabels=cats.map((c,i)=>{
-    const x=(padL+i/(n-1)*ew).toFixed(1);
-    return `<text x="${x}" y="${H-6}" text-anchor="middle" font-size="11" fill="#99a1af" font-family="Noto Sans,system-ui,sans-serif">${c}</text>`;
-  }).join('');
-  // Min/max callout labels (top-left=start, top-right=current)
-  const fmtVal=v=>'$'+v.toLocaleString();
-  const startLabel=fmtVal(vals[0]), endLabel=fmtVal(vals[n-1]);
-  return `<div style="position:relative;width:100%">
-    <div style="position:absolute;top:4px;left:${padL}px;font-size:11px;font-weight:500;color:var(--t2)">${startLabel}</div>
-    <div style="position:absolute;top:4px;right:${padR}px;font-size:11px;font-weight:600;color:var(--success)">${endLabel}</div>
-    <svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block;margin-top:2px">
-      <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#10b981" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
-      </linearGradient></defs>
-      ${grid}${yLabels}
-      <path d="${area}" fill="url(#${id})"/>
-      <path d="${d}" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      ${xLabels}
-    </svg>
-  </div>`;
-}
-
-function portfolioExpandedChart(){
-  const periods=[{key:'1d',label:'1日'},{key:'1w',label:'1周'},{key:'1m',label:'1月'},{key:'6m',label:'半年'},{key:'1y',label:'1年'}];
-  const data=PORTFOLIO_CHART_DATA[S.chartPeriod]||PORTFOLIO_CHART_DATA['1y'];
-  return `<div class="card" style="padding:20px 20px 16px;margin-bottom:0">
-    ${buildPortfolioChartSVG(data.vals, data.cats)}
-    <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:14px">
-      ${periods.map(p=>`<div style="cursor:pointer;padding:5px 14px;border-radius:9999px;background:${S.chartPeriod===p.key?'var(--t1)':'transparent'};transition:background .15s" onclick="switchChartPeriod('${p.key}')">
-        <span style="font-size:13px;font-weight:${S.chartPeriod===p.key?600:400};color:${S.chartPeriod===p.key?'#fff':'var(--t2)'}">${p.label}</span>
-      </div>`).join('')}
-    </div>
-    <div style="text-align:center;margin-top:10px;cursor:pointer;color:var(--t3);font-size:12px;letter-spacing:.3px;user-select:none" onclick="S.chartExpanded=false;render()">∧ 收起</div>
-  </div>`;
-}
-
-// Chain color
-function chainColor(name){
-  const map={Arbitrum:'#28A0F0',Ethereum:'#627EEA',HyperEVM:'#6366f1',Tron:'#ef4444',Optimism:'#ff0420',Polygon:'#8247e5'};
-  return map[name]||'#64748b';
-}
-function chainBadge(name){
-  const c=chainColor(name);
-  return `<span class="chain-badge" style="background:${c}22;color:${c}">${name}</span>`;
-}
-
-// Bell icon SVG
-function bellIcon(){
-  return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`;
-}
-function agentIcon(stroke='currentColor'){
-  return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>`;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Shared Components
-// ─────────────────────────────────────────────────────────────────────────────
-function portfolioHeader(){
-  const expanded = S.chartExpanded;
-  return `<div class="gap-y">
-    <div class="row-sb" style="flex-wrap:wrap;gap:12px">
-      <div>
-        <div class="row mb4" style="gap:6px"><span class="text-xs tc3">总资产估值</span><span class="text-xs tc3">◉</span></div>
-        <div class="row" style="gap:16px;align-items:baseline">
-          <div class="row" style="align-items:baseline;gap:8px">
-            <span style="font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.5px">$6,295.16</span>
-            <span class="text-sm tc2 fw5">USD ▾</span>
-          </div>
-          <div style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:8px;background:transparent;transition:all .15s"
-            onclick="S.chartExpanded=!S.chartExpanded;render()" title="${expanded?'收起图表':'展开图表'}">
-            ${sparklineSVG()}
-          </div>
-        </div>
-        <div class="row" style="gap:6px;margin-top:6px">
-          <span class="text-xs tc3">今日收益</span>
-          <span style="font-size:13px;color:var(--success);font-weight:500">+$26.17 (+0.4%)</span>
-        </div>
-      </div>
-      <div style="position:relative;cursor:pointer;padding-top:2px" onclick="setF('notifications')">
-        <div style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--f2);display:flex;align-items:center;justify-content:center;color:var(--t2)">${bellIcon()}</div>
-        <div style="position:absolute;top:0;right:0;width:8px;height:8px;border-radius:50%;background:#ef4444;border:2px solid var(--white)"></div>
-      </div>
-    </div>
-    ${expanded ? portfolioExpandedChart() : ''}
-  </div>`;
-}
-
-function portfolioActions(){
-  return `<div class="actions-row gap-y">
-    <div class="act-btn" onclick="setF('receiveEntry');goTo('receive-l1')">
-      <span style="font-size:13px;color:var(--t2)">↓</span><span class="fw6">收款</span>
-    </div>
-    <div class="act-btn accent" onclick="setF('sendEntry');goTo('send-l1')">
-      <span style="font-size:13px">↑</span><span class="fw6">转账</span>
-    </div>
-    <div class="act-btn" onclick="setF('stakingEntry');goTo('staking-detail')">
-      <span style="font-size:13px;color:var(--t2)">⬡</span><span class="fw6">质押</span>
-    </div>
-    <div class="act-divider"></div>
-    <div class="act-btn" onclick="setF('agentTrading');goTo('agent-trading')">
-      ${agentIcon('var(--t2)')}
-      <span class="fw6">Agent Trading</span>
-      <span class="pill pill-accent" style="font-size:10px;padding:1px 6px">Beta</span>
-    </div>
-  </div>`;
-}
-
-function stepBar(steps, current){
-  return `<div class="step-bar">${steps.map((s,i)=>{
-    const done=i<current, active=i===current;
-    return `<div class="step-item${active?' active-step':''}">
-      <div class="step-num" style="background:${active?'#fff':done?'var(--success-light)':'var(--f3)'};color:${active?'var(--accent)':done?'var(--success)':'var(--t3)'}">
-        ${done?'✓':i+1}
-      </div>
-      <span style="font-size:12px;font-weight:500;color:${active?'#fff':'var(--t2)'};">${s}</span>
-    </div>${i<steps.length-1?'<div class="step-connector"></div>':''}`;
-  }).join('')}</div>`;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Screen Renderers
-// ─────────────────────────────────────────────────────────────────────────────
-
-function renderDashboardUnauth(){
-  return `<div class="stack" onclick="setF('dashboardUnauth')">
-    <div>
-      <div style="font-size:22px;font-weight:700;color:var(--t1);margin-bottom:4px">Dashboard</div>
-      <div class="text-xs tc3">当前状态：未登录</div>
-    </div>
-    <div class="card" style="text-align:center;padding:72px 40px;cursor:pointer">
-      <div style="width:64px;height:64px;border-radius:50%;background:var(--f3);margin:0 auto 20px;display:flex;align-items:center;justify-content:center">
-        <div class="sb-logo-icon" style="width:36px;height:36px;font-size:18px">V</div>
-      </div>
-      <div style="font-size:22px;font-weight:700;margin-bottom:10px">Welcome to Vibe Wallet</div>
-      <div class="text-sm tc2 mb24" style="max-width:400px;margin:0 auto 28px;line-height:1.6">
-        Connect your wallet to view your portfolio, track assets across Arbitrum, HyperEVM, and Ethereum.
-      </div>
-      <button class="btn-accent" style="font-size:15px;padding:12px 32px">Connect Wallet</button>
-    </div>
-  </div>`;
-}
-
-function renderDashboardEmpty(){
-  return `<div class="stack">
-    ${portfolioHeaderEmpty()}
-    ${portfolioActions()}
-    <div class="g32">
-      <div class="card card-c" onclick="setF('dashboardEmpty')">
-        <div class="row-sb mb16">
-          <span class="text-xs tc3">资产概览</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 0;gap:10px">
-          <div style="width:56px;height:56px;border-radius:50%;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center">
-            <span style="font-size:22px;color:var(--t3)">◎</span>
-          </div>
-          <div class="text-sm fw5 tc2">暂无资产</div>
-          <div class="text-xs tc3">通过收款地址充入资产开始使用</div>
-        </div>
-      </div>
-      <div class="card card-c" onclick="setF('accountActivity')">
-        <div class="fw6 mb12 text-sm">账户活动</div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 0;gap:8px">
-          <span style="font-size:24px;color:var(--t3)">○</span>
-          <span class="text-xs tc3">No transactions yet</span>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-function portfolioHeaderEmpty(){
-  return `<div class="row-sb gap-y" style="flex-wrap:wrap;gap:12px">
-    <div>
-      <div class="row mb4" style="gap:6px"><span class="text-xs tc3">总资产估值</span></div>
-      <div class="row" style="align-items:baseline;gap:8px">
-        <span style="font-size:34px;font-weight:700;color:var(--t3);letter-spacing:-0.5px">$0.00</span>
-        <span class="text-sm tc3 fw5">USD ▾</span>
-      </div>
-      <div class="text-xs tc3" style="margin-top:6px">充入资产后开始追踪</div>
-    </div>
-    <div style="position:relative;cursor:pointer;padding-top:2px">
-      <div style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--f2);display:flex;align-items:center;justify-content:center;color:var(--t2)">${bellIcon()}</div>
-    </div>
-  </div>`;
-}
-
-function renderDashboard(){
-  const activities=[
-    {label:"Received ETH",time:"2 days ago",amount:"+0.5 ETH",pos:true},
-    {label:"Sent USDC",time:"3 days ago",amount:"-200 USDC",pos:false},
-    {label:"Received USDC",time:"5 days ago",amount:"+500 USDC",pos:true},
-    {label:"Move ARB",time:"1 week ago",amount:"16 ARB",pos:null},
-    {label:"Received LINK",time:"1 week ago",amount:"+0.0052 LINK",pos:true}
-  ];
-
-  const donut=buildDonutSVG([
-    {value:4318.41,color:'#10b981'},
-    {value:1976.75,color:'#60a5fa'}
-  ]);
-
-  const assetItems=[
-    {color:'#10b981',label:'Token',pct:68.6,amount:'$4,318.41'},
-    {color:'#60a5fa',label:'DeFi',pct:31.4,amount:'$1,976.75'}
-  ];
-
-  return `<div class="stack">
-    ${portfolioHeader()}
-    ${portfolioActions()}
-
-    <div class="g32">
-      <!-- Asset Overview -->
-      <div class="card card-c" onclick="setF('assetOverview');goTo('asset-detail')">
-        <div class="row-sb mb16">
-          <span class="text-xs tc3">资产概览</span>
-          <a class="text-xs tca fw5" style="cursor:pointer" onclick="event.stopPropagation();setF('assetTabToken');goTo('asset-detail')">查看详情 ›</a>
-        </div>
-        <div style="display:flex;gap:20px;align-items:center" onclick="event.stopPropagation();setF('unifiedBalance')">
-          ${donut}
-          <div style="flex:1">
-            ${assetItems.map((item,i)=>`
-              <div style="padding-bottom:${i<2?'12px':'0'};margin-bottom:${i<2?'12px':'0'};border-bottom:${i<2?'1px solid var(--border)':'none'};cursor:pointer" onclick="event.stopPropagation();setF('assetTabToken');goTo('asset-detail')">
-                <div class="row-sb mb4">
-                  <div class="row" style="gap:6px">
-                    <div style="width:8px;height:8px;border-radius:2px;background:${item.color};flex-shrink:0"></div>
-                    <span class="text-sm fw6">${item.label}</span>
-                    <span style="font-size:11px;color:var(--tlink)">›</span>
-                  </div>
-                  <div class="row" style="gap:8px">
-                    <span class="text-xs fw5">${item.amount}</span>
-                    <span class="text-xs tc3" style="min-width:32px;text-align:right">${item.pct}%</span>
-                  </div>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width:${item.pct}%;background:${item.color}"></div>
-                </div>
-              </div>`).join('')}
-          </div>
-        </div>
-      </div>
-
-      <!-- Account Activity -->
-      <div class="card card-c" onclick="setF('accountActivity');goTo('activity-detail')">
-        <div class="row-sb mb12">
-          <span class="text-xs tc3">账户活动</span>
-          <a class="text-xs tca fw5" style="cursor:pointer" onclick="event.stopPropagation();setF('accountActivity');goTo('activity-detail')">查看详情 ›</a>
-        </div>
-        ${activities.map((tx,i)=>`
-          <div class="row-sb" style="padding:9px 0;border-bottom:${i<activities.length-1?'1px solid var(--border)':'none'};cursor:pointer" onclick="event.stopPropagation();setF('accountActivity');goTo('activity-detail')">
-            <div class="row" style="gap:10px">
-              <div style="width:30px;height:30px;border-radius:50%;background:var(--f2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <span class="text-xs tc2">${tx.label.startsWith('Received')?'↓':tx.label.startsWith('Sent')?'↑':'↔'}</span>
-              </div>
-              <div>
-                <div class="text-xs fw5">${tx.label}</div>
-                <div class="text-xs tc3">${tx.time}</div>
-              </div>
-            </div>
-            <span class="text-xs ${tx.pos===true?'tcs':tx.pos===false?'tcd':''} ${tx.pos===true?'fw5':''}">${tx.amount}</span>
-          </div>`).join('')}
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderAssetDetail(){
-  const tokens=[
-    {sym:'ETH',name:'Ethereum',amount:'0.845 ETH',value:'$2,116.78',pct:49.0,dust:false},
-    {sym:'USDC',name:'USD Coin',amount:'1,200 USDC',value:'$1,200.00',pct:27.8,dust:false},
-    {sym:'USDT',name:'Tether',amount:'980 USDT',value:'$980.00',pct:22.7,dust:false},
-    {sym:'ARB',name:'Arbitrum',amount:'22 ARB',value:'$21.56',pct:0.5,dust:false},
-    {sym:'LINK',name:'Chainlink',amount:'0.0052 LINK',value:'$0.07',pct:0.0,dust:true},
-    {sym:'stETH',name:'Lido Staked ETH',underlying:'ETH',amount:'0.18 stETH',value:'$450.75',receipt:true,protocol:'Lido Finance',protocolIcon:'L',protocolColor:'#00A3FF'},
-    {sym:'aUSDC',name:'Aave Supplied USDC',underlying:'USDC',amount:'500 aUSDC',value:'$500.00',receipt:true,protocol:'Aave V3',protocolIcon:'A',protocolColor:'#B6509E'},
-    {sym:'UNI-V3',name:'Uniswap V3 LP',underlying:'ETH',amount:'ETH/USDC LP NFT',value:'$600.50',receipt:true,protocol:'Uniswap V3',protocolIcon:'U',protocolColor:'#FF007A'}
-  ];
-
-  const defiPositions=[
-    {protocol:'Lido Finance',type:'ETH 质押',chain:'Ethereum',icon:'L',color:'#00A3FF',items:[{label:'Staked',sym:'ETH',amount:'0.18 ETH',value:'$450.75',apy:'+3.9% APY',apyPos:true}],netValue:'$450.75'},
-    {protocol:'Native Staking',type:'ETH 质押',chain:'Arbitrum',icon:'N',color:'#28A0F0',items:[{label:'Staked',sym:'ETH',amount:'0.14 ETH',value:'$350.59',apy:'+3.6% APY',apyPos:true}],netValue:'$350.59'},
-    {protocol:'Aave V3',type:'Lending',chain:'Arbitrum',icon:'A',color:'#B6509E',items:[{label:'Supplied',sym:'USDC',amount:'500 USDC',value:'$500.00',apy:'+3.2% APY',apyPos:true},{label:'Borrowed',sym:'ETH',amount:'0.05 ETH',value:'$125.09',apy:'-2.1% APR',apyPos:false}],netValue:'$374.91'},
-    {protocol:'Uniswap V3',type:'LP Position',chain:'Ethereum',icon:'U',color:'#FF007A',items:[{label:'ETH',sym:'ETH',amount:'0.12 ETH',value:'$300.50',apy:'',apyPos:null},{label:'USDC',sym:'USDC',amount:'300 USDC',value:'$300.00',apy:'+12.4% APR',apyPos:true}],netValue:'$600.50',feesEarned:'$4.28'},
-    {protocol:'Hyperliquid',type:'Staking',chain:'HyperEVM',icon:'H',color:'#627EEA',items:[{label:'Staked',sym:'USDC',amount:'200 USDC',value:'$200.00',apy:'+8.5% APY',apyPos:true}],netValue:'$200.00'}
-  ];
-
-  const nfts=[
-    {collection:'Pudgy Penguins',id:'#1234',floor:'0.36 ETH',value:'$899',rarity:'Rare',color:'#0284c7',ch:'P'},
-    {collection:'Azuki',id:'#5678',floor:'0.12 ETH',value:'$300',rarity:'Common',color:'#e11d48',ch:'A'}
-  ];
-
-  const receiptCount=tokens.filter(t=>t.receipt).length;
-  const visibleTokens=tokens.filter(t=>!(t.receipt&&S.hideReceipts));
-
-  const tokenTab=`<div>
-    <div class="row-sb" style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--f2)">
-      <div>
-        <span class="text-xs tc3">Token 持仓总估值</span>
-        <span class="text-xs" style="color:#7c3aed;cursor:pointer;margin-left:8px" onclick="event.stopPropagation();setF('receiptDedup')">· ${receiptCount} receipt${receiptCount>1?'s':''} excluded ⓘ</span>
-      </div>
-      <span class="text-sm fw6">$4,318.41</span>
-    </div>
-    <div class="row-sb" style="padding:9px 16px;border-bottom:1px solid var(--border);gap:12px">
-      <div class="row" style="gap:8px;background:var(--f3);border-radius:6px;padding:7px 12px;border:1px solid var(--border);flex:1">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <span class="text-xs tc3">搜索代币…</span>
-      </div>
-      <div class="row" style="gap:8px;cursor:pointer;flex-shrink:0;padding:4px 6px" onclick="toggleHideReceipts();setF('receiptToken')">
-        <span class="text-xs tc2">Hide receipts</span>
-        <div style="width:34px;height:20px;border-radius:10px;position:relative;flex-shrink:0;background:${S.hideReceipts?'var(--accent)':'var(--f3)'};border:1px solid ${S.hideReceipts?'var(--accent)':'var(--border)'};transition:background .2s">
-          <div style="position:absolute;top:2px;left:${S.hideReceipts?'16':'2'}px;width:14px;height:14px;border-radius:50%;background:${S.hideReceipts?'#fff':'var(--t3)'};transition:left .15s"></div>
-        </div>
-      </div>
-    </div>
-    ${visibleTokens.map((t,i)=>{
-      if(t.receipt){
-        return `<div class="list-row" style="background:rgba(124,58,237,0.04);opacity:0.95;border-left:3px solid rgba(124,58,237,0.45);padding-left:13px" onclick="setF('receiptToken')">
-          <div style="margin-right:12px;position:relative">
-            ${tokenIcon(t.underlying||t.sym,36)}
-            <div style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:${t.protocolColor};border:2px solid var(--white);display:flex;align-items:center;justify-content:center">
-              <span style="font-size:9px;color:#fff;font-weight:800">${t.protocolIcon}</span>
-            </div>
-          </div>
-          <div class="flex1">
-            <div class="row mb4" style="gap:6px;flex-wrap:wrap">
-              <span class="text-xs fw6">${t.sym}</span>
-              <span class="pill" style="background:rgba(124,58,237,0.12);color:#7c3aed;font-size:10px">Receipt</span>
-            </div>
-            <div class="text-xs tc3">${t.amount} · ${t.protocol}</div>
-          </div>
-          <div class="ta-right">
-            <div class="text-xs tc3" style="font-style:italic">${t.value} in DeFi</div>
-            <a class="text-xs tca fw5" style="cursor:pointer" onclick="event.stopPropagation();S.assetTab='defi';render();setF('assetTabDefi')">→ View in DeFi</a>
-          </div>
-        </div>`;
-      }
-      return `<div class="list-row" style="opacity:${t.dust?0.8:1}" onclick="S.token='${t.sym}';setF('${t.dust?'dustToken':'assetTabToken'}');goTo('token-detail')">
-        <div style="margin-right:12px">${tokenIcon(t.sym,36)}</div>
-        <div class="flex1">
-          <div class="row mb4" style="gap:6px">
-            <span class="text-xs fw6">${t.sym}</span>
-            ${t.dust?'<span class="pill pill-warning">Dust</span>':''}
-          </div>
-          <div class="text-xs tc3">${t.amount}</div>
-        </div>
-        <div class="ta-right">
-          <div class="text-xs fw5">${t.value}</div>
-          <div class="text-xs tc3">${t.pct}%</div>
-        </div>
-      </div>`;
-    }).join('')}
-  </div>`;
-
-  const defiTab=`<div>
-    <div class="row-sb" style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--f2)">
-      <span class="text-xs tc3">DeFi 持仓总估值</span>
-      <span class="text-sm fw6">$1,976.75</span>
-    </div>
-    ${defiPositions.map((pos,pi)=>`
-      <div style="border-bottom:${pi<defiPositions.length-1?'1px solid var(--border)':'none'}">
-        <div class="list-row" onclick="setF('assetTabDefi')" style="gap:12px;padding:12px 16px">
-          <div style="width:32px;height:32px;border-radius:8px;background:${pos.color};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <span style="color:#fff;font-weight:800;font-size:14px">${pos.icon}</span>
-          </div>
-          <div class="flex1">
-            <div class="text-xs fw6 mb4">${pos.protocol}</div>
-            <div class="row" style="gap:6px">
-              <span class="pill pill-neutral" style="font-size:10px">${pos.type}</span>
-              <span class="pill pill-neutral" style="font-size:10px">${pos.chain}</span>
-            </div>
-          </div>
-          <div class="ta-right">
-            <div class="text-xs fw6">${pos.netValue}</div>
-            ${pos.feesEarned?`<div class="text-xs tcs">+${pos.feesEarned} fees</div>`:''}
-          </div>
-        </div>
-        ${pos.items.map(item=>`
-          <div class="row" style="padding:8px 16px 8px 60px;border-top:1px solid var(--border);background:var(--f2)">
-            <span class="text-xs tc3" style="width:64px;flex-shrink:0">${item.label}</span>
-            <div class="flex1">
-              <span class="text-xs fw5">${item.amount}</span>
-            </div>
-            <div class="ta-right">
-              <div class="text-xs fw5">${item.value}</div>
-              ${item.apy?`<div class="text-xs" style="color:${item.apyPos?'var(--success)':'var(--danger)'}">${item.apy}</div>`:''}
-            </div>
-          </div>`).join('')}
-      </div>`).join('')}
-  </div>`;
-
-  const nftTab=`<div>
-    <div style="padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(234,179,8,0.08);display:flex;align-items:center;gap:8px">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span class="text-xs" style="color:#b45309">NFT 参考估值不计入头部总资产，仅供查看</span>
-    </div>
-    <div class="row-sb" style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--f2)">
-      <span class="text-xs tc3">NFT 参考估值（地板价基准）</span>
-      <span class="text-sm fw6 tc2">~$1,199.00</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px">
-      ${nfts.map(nft=>`
-        <div style="border-radius:10px;border:1px solid var(--border);overflow:hidden;cursor:pointer" onclick="setF('assetTabNft')">
-          <div style="height:120px;background:${nft.color};display:flex;align-items:center;justify-content:center">
-            <span style="font-size:48px;color:rgba(255,255,255,0.5);font-weight:700">${nft.ch}</span>
-          </div>
-          <div style="padding:10px 12px">
-            <div class="row-sb mb4">
-              <div>
-                <div class="text-xs tc3">${nft.collection}</div>
-                <div class="text-xs fw6">${nft.id}</div>
-              </div>
-              <span class="pill ${nft.rarity==='Rare'?'pill-info':'pill-neutral'}">${nft.rarity}</span>
-            </div>
-            <div class="row-sb" style="margin-top:8px">
-              <span class="text-xs tc3">${nft.floor}</span>
-              <span class="text-xs fw6">~${nft.value}</span>
-            </div>
-          </div>
-        </div>`).join('')}
-    </div>
-  </div>`;
-
-  return `<div class="stack">
-    ${portfolioHeader()}
-    ${portfolioActions()}
-    <div class="overcard">
-      <div class="tabs-row">
-        ${['Token','DeFi','NFT'].map(tab=>`
-          <div class="tab-item ${S.assetTab===tab.toLowerCase()?'active':''}" onclick="switchAssetTab('${tab.toLowerCase()}');setF('assetTab${tab}')">${tab}</div>`).join('')}
-      </div>
-      <div id="assetTabContent">
-        ${S.assetTab==='token'?tokenTab:S.assetTab==='defi'?defiTab:nftTab}
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderActivityDetail(){
-  const onChain=[
-    {type:'Receive',label:'Received ETH',time:'2 days ago',amount:'+0.5 ETH',addr:'0x9e8f…6f',chain:'Arbitrum',pos:true},
-    {type:'Send',label:'Sent USDC',time:'3 days ago',amount:'-200 USDC',addr:'0x8776…58',chain:'Ethereum',pos:false},
-    {type:'Receive',label:'Received USDC',time:'5 days ago',amount:'+500 USDC',addr:'0xa0a0…73',chain:'Arbitrum',pos:true},
-    {type:'Move',label:'Move ARB',time:'1 week ago',amount:'16 ARB',addr:'0x7f3a…9f',chain:'Arbitrum',pos:null},
-    {type:'Receive',label:'Received LINK',time:'1 week ago',amount:'+0.0052 LINK',addr:'0x9e8f…6f',chain:'Ethereum',pos:true},
-    {type:'Send',label:'Sent ETH',time:'2 weeks ago',amount:'-0.05 ETH',addr:'0x8776…58',chain:'HyperEVM',pos:false},
-    {type:'Receive',label:'Received USDT',time:'2 weeks ago',amount:'+500 USDT',addr:'TRKF…9F',chain:'Tron',pos:true},
-    {type:'Send',label:'Sent USDT',time:'3 weeks ago',amount:'-80 USDT',addr:'0x7f3a…9f',chain:'Arbitrum',pos:false}
-  ];
-  const offChain=[
-    {type:'Deposit',label:'Deposit to Aave',time:'3 days ago',amount:'500 USDC',platform:'Aave V3',pos:null},
-    {type:'Borrow',label:'Borrow from Aave',time:'3 days ago',amount:'0.05 ETH',platform:'Aave V3',pos:false},
-    {type:'AddLP',label:'Add Liquidity',time:'1 week ago',amount:'0.12 ETH + 300 USDC',platform:'Uniswap V3',pos:null},
-    {type:'Stake',label:'Stake USDC',time:'1 week ago',amount:'200 USDC',platform:'Hyperliquid',pos:null},
-    {type:'Approval',label:'Token Approval',time:'1 week ago',amount:'∞ USDC',platform:'Uniswap V3',pos:null},
-    {type:'ClaimReward',label:'Claim Rewards',time:'2 weeks ago',amount:'+4.28 USDC',platform:'Uniswap V3',pos:true}
-  ];
-
-  function txIcon(type){
-    if(type==='Receive'||type==='ClaimReward') return {icon:'↓',bg:'#ecfdf5',color:'#10b981'};
-    if(type==='Send'||type==='Borrow') return {icon:'↑',bg:'rgba(212,24,61,0.1)',color:'#d4183d'};
-    if(type==='Approval') return {icon:'✓',bg:'rgba(234,179,8,0.15)',color:'#eab308'};
-    if(type==='AddLP') return {icon:'+',bg:'#e0e7ff',color:'#4f46e5'};
-    if(type==='Deposit'||type==='Stake') return {icon:'⬇',bg:'#e0e7ff',color:'#4f46e5'};
-    return {icon:'↔',bg:'var(--f2)',color:'var(--t2)'};
+  // Update sidebar nav
+  if (navItem) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    navItem.classList.add('active');
   }
 
-  const list=S.activityTab==='onchain'?onChain:offChain;
-
-  const rows=list.map((tx,i)=>{
-    const ic=txIcon(tx.type);
-    const badge='chain' in tx
-      ? `<span class="chain-badge" style="background:${chainColor(tx.chain)}22;color:${chainColor(tx.chain)}">${tx.chain}</span>`
-      : `<span class="pill pill-neutral" style="font-size:11px">${tx.platform}</span>`;
-    return `<div class="list-row" onclick="setF('transactionDetail');goTo('transaction-detail')">
-      <div style="width:36px;height:36px;border-radius:50%;background:${ic.bg};display:flex;align-items:center;justify-content:center;margin-right:14px;flex-shrink:0">
-        <span style="font-size:14px;color:${ic.color};font-weight:700">${ic.icon}</span>
-      </div>
-      <div class="flex1">
-        <div class="text-xs fw5 mb4">${tx.label}</div>
-        <div class="row" style="gap:8px">${'time' in tx?`<span class="text-xs tc3">${tx.time}</span>`:''} ${badge}</div>
-      </div>
-      <div class="ta-right">
-        <div class="text-xs fw5" style="color:${tx.pos===true?'var(--success)':tx.pos===false?'var(--danger)':'var(--t1)'}">${tx.amount}</div>
-        ${'addr' in tx&&tx.addr?`<div class="mono tc3" style="font-size:10px">${tx.addr}</div>`:''}
-      </div>
-    </div>`;
-  }).join('');
-
-  return `<div class="stack">
-    ${portfolioHeader()}
-    ${portfolioActions()}
-    <div class="overcard">
-      <div class="tabs-row">
-        <div class="tab-item ${S.activityTab==='onchain'?'active':''}" onclick="switchActivityTab('onchain')">On-Chain Activities</div>
-        <div class="tab-item ${S.activityTab==='offchain'?'active':''}" onclick="switchActivityTab('offchain')">Off-Chain Activities</div>
-      </div>
-      <div id="activityList">${rows}</div>
-    </div>
-  </div>`;
-}
-
-function renderAgentTrading(){
-  const protocols=[
-    {protocol:'Lido Finance',type:'ETH 质押',icon:'L',color:'#00A3FF',active:true,desc:'自动复投质押收益，监控赎回窗口',lastRun:'2 hours ago',caps:['自动复投','收益追踪','赎回提醒']},
-    {protocol:'Native Staking',type:'ETH 质押',icon:'N',color:'#28A0F0',active:true,desc:'监控验证节点状态，收益自动再质押',lastRun:'3 hours ago',caps:['节点监控','自动复投','状态告警']},
-    {protocol:'Aave V3',type:'Lending',icon:'A',color:'#B6509E',active:true,desc:'优化借贷利率，监控健康因子防止清算',lastRun:'15 min ago',caps:['利率优化','清算防护','自动补充抵押']},
-    {protocol:'Uniswap V3',type:'LP Position',icon:'U',color:'#FF007A',active:false,desc:'管理价格区间，自动重新调整 LP 范围',lastRun:'Never',caps:['区间再平衡','手续费收集','无常损失监控']},
-    {protocol:'Hyperliquid',type:'Staking',icon:'H',color:'#627EEA',active:false,desc:'自动质押并追踪收益',lastRun:'Never',caps:['自动质押','收益追踪']}
-  ];
-
-  const universalContent=`<div style="padding:20px 20px 24px">
-    <div style="background:var(--f2);border-radius:8px;padding:14px 16px;margin-bottom:20px">
-      <p class="text-xs tc2" style="line-height:1.6">全局 Agent 获得统一授权，可自主调用所有已接入的 DeFi 协议。适合希望一键托管资产管理的用户。</p>
-    </div>
-    <div class="agent-card">
-      <div class="row" style="padding:16px 20px;border-bottom:1px solid var(--border);gap:14px">
-        <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#007fff,#0cc5ff);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          ${agentIcon('#fff')}
-        </div>
-        <div class="flex1">
-          <div class="row mb4" style="gap:8px">
-            <span class="fw6" style="font-size:15px">Omni DeFi Agent</span>
-            <span class="pill pill-success" style="font-size:11px">运行中</span>
-          </div>
-          <span class="text-xs tc3">已授权 5 个协议 · 上次执行 15 min ago</span>
-        </div>
-        <button class="btn-ghost" style="padding:6px 14px;font-size:12px" onclick="setF('agentUniversal')">设置</button>
-      </div>
-      <div style="padding:14px 20px;border-bottom:1px solid var(--border)">
-        <div class="sec-label mb8">支持操作</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px">
-          ${['Swap','借贷优化','ETH 质押复投','LP 再平衡','收益收集','清算防护'].map(c=>`<span class="pill pill-neutral">${c}</span>`).join('')}
-        </div>
-      </div>
-      <div style="padding:14px 20px">
-        <div class="sec-label mb8">已授权协议</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          ${[{icon:'L',color:'#00A3FF',name:'Lido'},{icon:'N',color:'#28A0F0',name:'Native'},{icon:'A',color:'#B6509E',name:'Aave'},{icon:'U',color:'#FF007A',name:'Uniswap'},{icon:'H',color:'#627EEA',name:'Hyperliquid'}].map(p=>`
-          <div class="row" style="gap:6px;padding:5px 10px;border-radius:6px;background:var(--f2);border:1px solid var(--border)">
-            <div style="width:18px;height:18px;border-radius:4px;background:${p.color};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <span style="font-size:9px;color:#fff;font-weight:800">${p.icon}</span>
-            </div>
-            <span class="text-xs">${p.name}</span>
-          </div>`).join('')}
-        </div>
-      </div>
-    </div>
-    <div class="row" style="gap:12px;margin-top:16px">
-      <button class="btn-accent" style="flex:1;justify-content:center;padding:12px 0" onclick="setF('agentUniversal')">启动 Agent</button>
-      <button class="btn-ghost" style="flex:1;justify-content:center;padding:12px 0" onclick="setF('agentUniversal')">暂停 Agent</button>
-    </div>
-  </div>`;
-
-  const protocolContent=`<div>
-    <div style="padding:14px 20px;border-bottom:1px solid var(--border);background:var(--f2)">
-      <p class="text-xs tc2" style="line-height:1.6">为每个 DeFi 协议单独配置专属 Agent，授权相互隔离，可按需启用或暂停单个协议的自动化。</p>
-    </div>
-    ${protocols.map((ag,i)=>{
-      const expanded=S.expandedProtocol===ag.protocol;
-      const toggleStyle=`width:40px;height:22px;border-radius:11px;position:relative;cursor:pointer;flex-shrink:0;background:${ag.active?'var(--accent)':'var(--f3)'};border:1px solid ${ag.active?'var(--accent)':'var(--border)'}`;
-      return `<div style="border-bottom:${i<protocols.length-1?'1px solid var(--border)':'none'}">
-        <div class="row" style="padding:14px 20px;gap:14px;cursor:pointer;background:${expanded?'var(--f2)':'transparent'}" onclick="toggleProtocol('${ag.protocol.replace(/'/g,"\\'")}');setF('agentProtocol')">
-          <div style="width:38px;height:38px;border-radius:9px;background:${ag.color};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <span style="color:#fff;font-weight:800;font-size:15px">${ag.icon}</span>
-          </div>
-          <div class="flex1">
-            <div class="row mb4" style="gap:8px">
-              <span class="text-xs fw6">${ag.protocol}</span>
-              <span class="pill pill-neutral" style="font-size:10px">${ag.type}</span>
-              <span class="pill ${ag.active?'pill-success':'pill-neutral'}" style="font-size:11px">${ag.active?'运行中':'未启用'}</span>
-            </div>
-            <span class="text-xs tc3">${ag.desc}</span>
-          </div>
-          <div style="${toggleStyle}" onclick="event.stopPropagation();setF('agentProtocol')">
-            <div style="position:absolute;top:3px;left:${ag.active?'20':'3'}px;width:16px;height:16px;border-radius:50%;background:${ag.active?'#fff':'var(--t3)'};transition:left .15s"></div>
-          </div>
-        </div>
-        ${expanded?`<div style="padding:0 20px 14px 72px;border-top:1px solid var(--border)">
-          <div class="row" style="gap:24px;padding-top:12px;margin-bottom:12px">
-            <div>
-              <div class="text-xs tc3 mb4">上次执行</div>
-              <div class="text-xs fw5">${ag.lastRun}</div>
-            </div>
-            <div>
-              <div class="text-xs tc3 mb4">支持操作</div>
-              <div class="row" style="gap:6px;flex-wrap:wrap">
-                ${ag.caps.map(c=>`<span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--f2);color:var(--t2)">${c}</span>`).join('')}
-              </div>
-            </div>
-          </div>
-          <div class="row" style="gap:8px">
-            <button class="btn-accent" style="font-size:12px;padding:6px 14px">配置 Agent</button>
-            <button class="btn-ghost" style="font-size:12px;padding:6px 14px">查看日志</button>
-          </div>
-        </div>`:''}
-      </div>`;
-    }).join('')}
-  </div>`;
-
-  return `<div class="stack">
-    ${portfolioHeader()}
-    ${portfolioActions()}
-    <div class="overcard">
-      <div class="tabs-row">
-        <div class="tab-item ${S.agentMode==='universal'?'active':''}" onclick="switchAgentMode('universal');setF('agentUniversal')">全局 Agent</div>
-        <div class="tab-item ${S.agentMode==='protocol'?'active':''}" onclick="switchAgentMode('protocol');setF('agentProtocol')">协议 Agent</div>
-      </div>
-      <div id="agentModeContent">
-        ${S.agentMode==='universal'?universalContent:protocolContent}
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderStakingDetail(){
-  const positions=[
-    {validator:'Lido Finance',network:'Ethereum',amount:'0.18 ETH',value:'$450.75',apy:'3.9%',status:'Active',statusColor:'#16a34a',reward:'+0.0029 ETH'},
-    {validator:'Native Staking',network:'Arbitrum',amount:'0.14 ETH',value:'$350.59',apy:'3.6%',status:'Active',statusColor:'#16a34a',reward:'+0.0019 ETH'}
-  ];
-  const rewards=[
-    {date:'Apr 27, 2026',amount:'+0.00018 ETH',value:'+$0.45'},
-    {date:'Apr 26, 2026',amount:'+0.00018 ETH',value:'+$0.45'},
-    {date:'Apr 25, 2026',amount:'+0.00017 ETH',value:'+$0.43'},
-    {date:'Apr 24, 2026',amount:'+0.00019 ETH',value:'+$0.48'},
-    {date:'Apr 23, 2026',amount:'+0.00016 ETH',value:'+$0.40'}
-  ];
-
-  return `<div class="stack">
-    ${portfolioHeader()}
-    ${portfolioActions()}
-
-    <!-- ETH Staking Hero -->
-    <div class="staking-hero" onclick="setF('stakingDetail')">
-      <div class="row mb16" style="gap:10px">
-        ${tokenIcon('ETH',28)}
-        <div>
-          <div class="fw6" style="font-size:16px">ETH 质押</div>
-          <div class="text-xs tc3">原生质押 · 3.8% APY</div>
-        </div>
-      </div>
-      <div class="row">
-        ${[
-          {label:'已质押总额',value:'0.32 ETH',sub:'≈ $801.34',c:'var(--t1)'},
-          {label:'累计收益',value:'+0.0048 ETH',sub:'≈ $12.02',c:'var(--success)'},
-          {label:'当前 APY',value:'3.8%',sub:'年化收益率',c:'#627EEA'}
-        ].map((item,i)=>`
-          <div style="flex:1;padding:0 16px;border-left:${i>0?'1px solid var(--border)':'none'}">
-            <div class="text-xs tc3 mb4">${item.label}</div>
-            <div style="font-size:18px;font-weight:700;color:${item.c};margin-bottom:2px">${item.value}</div>
-            <div class="text-xs tc3">${item.sub}</div>
-          </div>`).join('')}
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="row" style="gap:12px">
-      <button class="btn-accent" style="flex:1;justify-content:center;padding:13px 0" onclick="setF('stakingDetail')">质押更多</button>
-      <button class="btn-ghost" style="flex:1;justify-content:center;padding:13px 0" onclick="setF('stakingDetail')">赎回</button>
-    </div>
-
-    <!-- Staking Positions -->
-    <div class="overcard">
-      <div style="padding:12px 16px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <span class="sec-label">质押仓位</span>
-      </div>
-      ${positions.map((p,i)=>`
-        <div class="list-row" style="gap:14px;border-bottom:${i<positions.length-1?'1px solid var(--border)':'none'}" onclick="setF('stakingDetail')">
-          <div style="width:36px;height:36px;border-radius:50%;background:#627EEA22;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <span style="font-size:14px">⬡</span>
-          </div>
-          <div class="flex1">
-            <div class="row mb4" style="gap:8px">
-              <span class="text-xs fw5">${p.validator}</span>
-              <span class="pill" style="background:${p.statusColor}22;color:${p.statusColor};font-size:11px">${p.status}</span>
-            </div>
-            <span class="text-xs tc3">${p.network} · APY ${p.apy}</span>
-          </div>
-          <div class="ta-right">
-            <div class="text-xs fw5">${p.amount}</div>
-            <div class="text-xs tc3">${p.value}</div>
-          </div>
-        </div>`).join('')}
-    </div>
-
-    <!-- Reward History -->
-    <div class="overcard">
-      <div style="padding:12px 16px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <span class="sec-label">收益记录</span>
-      </div>
-      ${rewards.map((r,i)=>`
-        <div class="list-row" style="border-bottom:${i<rewards.length-1?'1px solid var(--border)':'none'}">
-          <div style="width:32px;height:32px;border-radius:50%;background:#16a34a22;display:flex;align-items:center;justify-content:center;margin-right:14px;flex-shrink:0">
-            <span style="font-size:13px;color:var(--success);font-weight:700">↓</span>
-          </div>
-          <div class="flex1">
-            <div class="text-xs fw5 mb4">质押收益</div>
-            <div class="text-xs tc3">${r.date}</div>
-          </div>
-          <div class="ta-right">
-            <div class="text-xs fw5 tcs">${r.amount}</div>
-            <div class="text-xs tc3">${r.value}</div>
-          </div>
-        </div>`).join('')}
-    </div>
-  </div>`;
-}
-
-function renderTokenDetail(){
-  const m=TOKEN_META[S.token]||TOKEN_META['ETH'];
-  const chartData=m.chartData[S.tokenChartPeriod]||m.chartData['7d'];
-  const arrowColor=m.changePos===true?'var(--success)':m.changePos===false?'var(--danger)':'var(--t3)';
-  const arrowChar=m.changePos===true?'↗':m.changePos===false?'↘':'→';
-
-  function txIcon(type){
-    if(type==='Receive') return {icon:'↓',bg:'#ecfdf5',color:'#10b981'};
-    if(type==='Send') return {icon:'↑',bg:'rgba(212,24,61,0.1)',color:'#d4183d'};
-    if(type==='APPROVAL') return {icon:'✓',bg:'rgba(234,179,8,0.15)',color:'#eab308'};
-    return {icon:'↔',bg:'var(--f2)',color:'var(--t2)'};
+  if (viewHistory[viewHistory.length - 1] !== id) {
+    viewHistory.push(id);
   }
-
-  const networkRows=m.networks.map((n,i)=>{
-    const cc=chainColor(n.name);
-    const hasMulti=n.addresses&&n.addresses.length>1;
-    const isExpanded=S.expandedNetworkRow===n.name;
-    const isLast=i===m.networks.length-1;
-    return `<div style="border-bottom:${!isLast||isExpanded?'1px solid var(--border)':'none'}">
-      <div class="net-row" style="background:${isExpanded?'var(--f2)':'transparent'}" onclick="toggleNetworkRow('${n.name}');setF('distributionByNetwork')">
-        <div style="width:32px;height:32px;border-radius:50%;background:${cc};display:flex;align-items:center;justify-content:center;margin-right:14px;flex-shrink:0">
-          <span style="font-size:10px;color:#fff;font-weight:800;letter-spacing:-0.3px">${n.name.slice(0,3).toUpperCase()}</span>
-        </div>
-        <div class="flex1">
-          <div class="row mb4" style="gap:6px">
-            <span class="text-xs fw5">${n.name}</span>
-            ${hasMulti?`<span style="font-size:10px;padding:1px 6px;border-radius:4px;background:${cc}22;color:${cc};font-weight:700">${n.addresses.length} 地址</span>`:''}
-          </div>
-          <span class="text-xs tc3">${n.amount}</span>
-        </div>
-        <div class="row" style="gap:10px">
-          <div class="ta-right">
-            <div class="text-xs fw5">${n.usd}</div>
-            <div class="text-xs tc3">${n.pct}%</div>
-          </div>
-          ${hasMulti?`<span style="font-size:11px;color:var(--t3)">${isExpanded?'▲':'▼'}</span>`:''}
-        </div>
-      </div>
-      ${hasMulti&&isExpanded?n.addresses.map((a,ai)=>`
-        <div class="row" style="padding:10px 20px 10px 66px;background:var(--f3);border-top:1px solid var(--border);cursor:pointer" onclick="setF('l2Addresses')">
-          <div style="width:26px;height:26px;border-radius:50%;background:var(--f2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
-            <span style="font-size:9px;color:var(--t3);font-weight:700">${ai===0?'M':'T'}</span>
-          </div>
-          <div class="flex1">
-            ${a.label?`<div class="text-xs fw5">${a.label}</div>`:''}
-            <div class="mono tc3" style="font-size:11px">${a.addr}</div>
-          </div>
-          <div class="ta-right">
-            <div class="text-xs fw5">${a.usd}</div>
-            <div class="text-xs tc3">${a.amount}</div>
-          </div>
-        </div>`).join(''):''}
-    </div>`;
-  }).join('');
-
-  const recentTxs=m.txs.map((tx,i)=>{
-    const ic=txIcon(tx.type);
-    return `<div class="row-sb" style="padding:9px 0;border-bottom:${i<m.txs.length-1?'1px solid var(--border)':'none'};cursor:pointer" onclick="setF('transactionDetail');goTo('transaction-detail')">
-      <div class="row" style="gap:10px">
-        <div style="width:28px;height:28px;border-radius:50%;background:${ic.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <span style="font-size:13px;color:${ic.color};font-weight:700">${ic.icon}</span>
-        </div>
-        <div>
-          <div class="text-xs fw5">${tx.type}</div>
-          <div class="text-xs tc3">${tx.time}</div>
-        </div>
-      </div>
-      <div class="ta-right">
-        <div class="text-xs fw5" style="color:${tx.pos===true?'var(--success)':tx.pos===false?'var(--danger)':'var(--t2)'}">${tx.amount}</div>
-        <div class="mono tc3" style="font-size:10px">${tx.addr}</div>
-      </div>
-    </div>`;
-  }).join('');
-
-  const lineId='td'+Date.now();
-
-  return `<div class="stack">
-    <!-- Hero -->
-    <div style="text-align:center;padding:8px 0 4px;cursor:pointer" onclick="setF('tokenDetailHero')">
-      <div class="row" style="align-items:center;justify-content:center;gap:12px;margin-bottom:4px">
-        ${tokenIcon(S.token,40)}
-        <span style="font-size:28px;font-weight:700;letter-spacing:-0.5px">${S.token}</span>
-      </div>
-      <div class="text-xs tc3">${m.name}</div>
-      ${m.dust?`<div style="margin-top:10px;background:var(--warning-light);border:1px solid #d97706;border-radius:8px;padding:10px 14px;text-align:left;cursor:pointer" onclick="event.stopPropagation();setF('dustBanner')">
-        <span class="fw6 tcw" style="font-size:13px">⚠ Dust balance</span>
-        <p class="text-xs tcw" style="margin-top:4px">Value below $0.10. You can swap or send this balance.</p>
-      </div>`:''}
-    </div>
-
-    <!-- Price Chart Card -->
-    <div class="card card-c" style="padding:24px 24px 20px" onclick="setF('priceChart')">
-      <div class="row-sb mb16" style="align-items:flex-start">
-        <div>
-          <div style="font-size:34px;font-weight:700;letter-spacing:-1px">${m.price}</div>
-          <div class="row mt4" style="gap:6px;margin-top:8px">
-            <span class="text-xs tc3">Token price · Last ${S.tokenChartPeriod}</span>
-            <span style="font-size:13px;font-weight:600;color:${arrowColor}">${arrowChar} ${m.change}</span>
-          </div>
-        </div>
-        <div class="row" style="gap:6px;padding-top:2px">
-          ${['24h','7d','30d','1y'].map(p=>`
-            <div style="cursor:pointer;padding:5px 12px;border-radius:20px;background:${S.tokenChartPeriod===p?'var(--accent)':'var(--f2)'}" onclick="event.stopPropagation();setTokenPeriod('${p}')">
-              <span style="font-size:12px;font-weight:${S.tokenChartPeriod===p?600:400};color:${S.tokenChartPeriod===p?'#fff':'var(--t2)'}">${p}</span>
-            </div>`).join('')}
-        </div>
-      </div>
-      <div id="tokenLineChart" style="width:100%;overflow:hidden">${buildLineChartWithLabels(chartData.vals,chartData.cats,560,200,'#007fff')}</div>
-    </div>
-
-    <!-- Holdings + Network Distribution -->
-    <div class="overcard" onclick="setF('distributionByNetwork')">
-      <div class="row-sb" style="padding:16px 20px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <div>
-          <div class="sec-label mb4">持仓数量</div>
-          <span style="font-size:20px;font-weight:700">${m.balance}</span>
-        </div>
-        <div class="ta-right">
-          <div class="sec-label mb4">持仓价值</div>
-          <span style="font-size:20px;font-weight:700">${m.value}</span>
-        </div>
-      </div>
-      <div class="row-sb" style="padding:10px 20px;background:var(--f2);border-bottom:${S.networkExpanded?'1px solid var(--border)':'none'};cursor:pointer" onclick="event.stopPropagation();toggleNetworkExpanded();setF('distributionByNetwork')">
-        <span class="sec-label">按网络分布</span>
-        <span style="font-size:11px;color:var(--t3)">${S.networkExpanded?'▲':'▼'}</span>
-      </div>
-      ${S.networkExpanded?`<div id="networkList">${networkRows}</div>`:''}
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="g3">
-      <button class="btn-accent" style="justify-content:center;padding:13px 0" onclick="setF('tokenDetailSR');goTo('send-l2')">
-        <span>↑</span> 发送
-      </button>
-      <button class="btn-ghost" style="justify-content:center;padding:13px 0" onclick="setF('tokenDetailSR');goTo('receive-l2')">
-        <span>↓</span> 接收
-      </button>
-      <button class="btn-ghost" style="justify-content:center;padding:13px 0" onclick="setF('tokenDetailSR')">
-        <span>⇄</span> 兑换
-      </button>
-    </div>
-
-    <!-- About + Recent Transactions -->
-    <div class="g2">
-      <div class="card card-c" onclick="setF('tokenAbout')">
-        <div class="row mb12" style="gap:8px">
-          <div style="width:20px;height:20px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <span style="font-size:11px;color:var(--t3)">i</span>
-          </div>
-          <span class="fw6 text-xs">About ${S.token}</span>
-        </div>
-        <p class="text-xs tc2 mb16" style="line-height:1.6">${m.about}</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border)">
-          ${m.stats.map((s,i)=>`
-            <div style="padding:10px 0;border-bottom:${i<2?'1px solid var(--border)':'none'}">
-              <div style="font-size:10px;color:var(--t3);letter-spacing:.5px;margin-bottom:3px">${s.label}</div>
-              <div class="text-xs fw6">${s.value}</div>
-            </div>`).join('')}
-        </div>
-      </div>
-
-      <div class="card card-c" onclick="setF('accountActivity')">
-        <div class="fw6 text-xs mb12">Recent Transactions</div>
-        <div style="display:flex;align-items:center;gap:8px;background:var(--f3);border-radius:6px;padding:7px 12px;border:1px solid var(--border);margin-bottom:12px">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <span class="text-xs tc3">Search transactions...</span>
-        </div>
-        ${recentTxs}
-      </div>
-    </div>
-  </div>`;
 }
 
-function renderTransactionDetail(){
-  const fields=[
-    {label:'交易类型',value:'Received ETH',mono:false},
-    {label:'金额',value:'+0.5 ETH ($1,250.00)',mono:false},
-    {label:'网络',value:'Arbitrum',mono:false},
-    {label:'状态',value:'Confirmed',pill:'success'},
-    {label:'时间',value:'Apr 22, 2026 14:23 UTC',mono:false},
-    {label:'发送方',value:'0x9e8f1a2b…3c4d5e6f',mono:true},
-    {label:'接收方',value:'0x7f3a4b8c…de9f8b2c',mono:true},
-    {label:'Gas 费',value:'$0.08',mono:false},
-    {label:'Tx Hash',value:'0x1a2b3c4d…8e9f0a1b',mono:true}
-  ];
-
-  return `<div class="stack">
-    <div>
-      <span style="cursor:pointer;color:var(--tlink);font-size:13px" onclick="goTo('activity-detail')">← 返回账户活动</span>
-    </div>
-    <div class="card card-c" onclick="setF('transactionDetail')">
-      <div class="fw6 mb16" style="font-size:16px">交易详情</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
-        ${fields.map((f,i)=>`
-          <div style="padding:10px 0;border-bottom:1px solid var(--border);padding-right:20px">
-            <div class="text-xs tc2 mb4">${f.label}</div>
-            ${f.pill
-              ?`<span class="pill pill-${f.pill}" style="font-size:12px">${f.value}</span>`
-              :`<div class="${f.mono?'mono':''} text-xs fw5">${f.value}</div>`}
-          </div>`).join('')}
-      </div>
-    </div>
-  </div>`;
+function goBack() {
+  if (viewHistory.length > 1) {
+    viewHistory.pop();
+    const prev = viewHistory[viewHistory.length - 1];
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(prev)?.classList.add('active');
+    document.getElementById('main').scrollTo(0, 0);
+  }
 }
 
-function renderSendL1(){
-  const tokens=[
-    {s:'ETH',a:'0.845 ETH',v:'$2,116.78',d:false},
-    {s:'USDC',a:'1,200 USDC',v:'$1,200.00',d:false},
-    {s:'USDT',a:'980 USDT',v:'$980.00',d:false},
-    {s:'ARB',a:'22 ARB',v:'$21.56',d:false},
-    {s:'LINK',a:'0.0052 LINK',v:'$0.07',d:true}
-  ];
-  return `<div class="stack" style="gap:0">
-    ${stepBar(['选择代币','选择公链','选择地址','转账表单'],0)}
-    <div class="card" style="padding:0;overflow:hidden">
-      <div style="padding:10px 16px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <span class="text-xs fw5 tc2">选择要转出的代币</span>
-      </div>
-      ${tokens.map(t=>`
-        <div class="list-row" style="opacity:${t.d?0.8:1}" onclick="setF('sendL1');S.token='${t.s}';goTo('send-l2')">
-          <div style="margin-right:12px">${tokenIcon(t.s,32)}</div>
-          <div class="flex1">
-            <div class="row" style="gap:6px">
-              <span class="text-xs fw5">${t.s}</span>
-              ${t.d?'<span class="pill pill-warning">Dust</span>':''}
-            </div>
-          </div>
-          <span class="text-xs tc2" style="margin-right:16px">${t.a}</span>
-          <span class="text-xs fw5">${t.v}</span>
-          <span class="text-xs tc3" style="margin-left:8px">▶</span>
-        </div>`).join('')}
-    </div>
-  </div>`;
+// ── Tab Switching ───────────────────────────────────────
+function switchTab(group, tab) {
+  const tabBar = document.getElementById(group + '-tabs');
+  const view = tabBar.closest('.view, .page-wrap');
+  const parent = tabBar.parentElement;
+  const tabs = tabBar.querySelectorAll('.tab-item');
+  const panels = parent.querySelectorAll('.tab-panel');
+  tabs.forEach(t => t.classList.remove('active'));
+  panels.forEach(p => p.classList.remove('active'));
+  const panelId = group + '-' + tab;
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.add('active');
+  const names = ['token','defi','nft','onchain','offchain'];
+  const idx = names.indexOf(tab);
+  if (tabs[idx]) tabs[idx].classList.add('active');
 }
 
-function renderSendL2(){
-  const chains=[
-    {name:'Arbitrum',amount:S.token==='USDC'?'800 USDC':'0.3 ETH',multi:true},
-    {name:'HyperEVM',amount:S.token==='USDC'?'200 USDC':'0.295 ETH',multi:false},
-    {name:'Ethereum',amount:S.token==='USDC'?'200 USDC':'0.25 ETH',multi:false}
-  ];
-  return `<div class="stack" style="gap:0">
-    ${stepBar(['选择代币','选择公链','选择地址','转账表单'],1)}
-    <div class="card" style="padding:0;overflow:hidden">
-      <div style="padding:10px 16px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <span class="text-xs fw5 tc2">${S.token} · 选择转出网络</span>
-      </div>
-      ${chains.map(c=>`
-        <div class="list-row" onclick="setF('sendL2');goTo(${c.multi?"'send-l3'":"'send-form'"})">
-          <div style="width:32px;height:32px;border-radius:50%;background:${chainColor(c.name)};display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
-            <span style="font-size:10px;color:#fff;font-weight:800">${c.name.slice(0,3).toUpperCase()}</span>
-          </div>
-          <span class="text-xs fw5 flex1">${c.name}</span>
-          <span class="text-xs tc2" style="margin-right:16px">${c.amount}</span>
-          ${c.multi?'<span class="pill pill-info" style="margin-right:8px">多地址 → L3</span>':''}
-          <span class="text-xs tc3">▶</span>
-        </div>`).join('')}
-    </div>
-  </div>`;
+// ── Network Distribution ────────────────────────────────
+function toggleNetSection(id, hdr) {
+  const rows = document.getElementById(id);
+  const arrow = hdr.querySelector('.chevron');
+  const vis = rows.style.display !== 'none';
+  rows.style.display = vis ? 'none' : 'block';
+  if (arrow) { arrow.classList.toggle('open', !vis); arrow.textContent = vis ? '▼' : '▲'; }
 }
 
-function renderSendL3(){
-  const addrs=[
-    {n:'Main Wallet',a:'0x7f3a4b8c…de9f8b2c',v:S.token==='USDC'?'600 USDC':'0.18 ETH'},
-    {n:'Trading Wallet',a:'0x9e8f1a2b…3c4d5e6f',v:S.token==='USDC'?'200 USDC':'0.12 ETH'}
-  ];
-  return `<div class="stack" style="gap:0">
-    ${stepBar(['选择代币','选择公链','选择地址','转账表单'],2)}
-    <div class="card" style="padding:0;overflow:hidden">
-      <div style="padding:10px 16px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <span class="text-xs fw5 tc2">${S.token} · Arbitrum · 选择转出地址</span>
-      </div>
-      ${addrs.map(addr=>`
-        <div class="list-row" onclick="setF('sendL3');goTo('send-form')">
-          <div style="width:32px;height:32px;border-radius:50%;background:var(--f2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
-            <span class="text-xs fw6 tc2">${addr.n.slice(0,1)}</span>
-          </div>
-          <div class="flex1">
-            <div class="text-xs fw5 mb4">${addr.n}</div>
-            <div class="mono tc3" style="font-size:11px">${addr.a}</div>
-          </div>
-          <span class="text-xs fw5 ta-right" style="margin-right:8px">${addr.v}</span>
-          <span class="text-xs tc3">▶</span>
-        </div>`).join('')}
-    </div>
-    <div class="text-xs tc3" style="margin-top:8px">条件式层级：仅在该链存在多个转出地址时显示此步。单一地址时跳过，直接进入转账表单。</div>
-  </div>`;
+function toggleAddrs(id, arrowId) {
+  const rows = document.getElementById(id);
+  const arrow = document.getElementById(arrowId);
+  const open = rows.classList.toggle('open');
+  if (arrow) { arrow.classList.toggle('open', open); arrow.textContent = open ? '▲' : '▼'; }
 }
 
-function renderSendForm(){
-  return `<div class="stack" style="gap:0">
-    ${stepBar(['选择代币','选择公链','选择地址','转账表单'],3)}
-    <div class="card card-c" onclick="setF('sendForm')" style="gap:14px;display:flex;flex-direction:column">
-      <!-- From (prefilled) -->
-      <div>
-        <div class="text-xs tc2 mb8">From</div>
-        <div style="background:var(--f3);border-radius:6px;padding:10px 14px;border:1px solid var(--border)">
-          <div class="text-xs fw5 mb4">${S.token} · Arbitrum · Main Wallet</div>
-          <div class="mono tc3" style="font-size:11px">0x7f3a4b8c…de9f8b2c</div>
-        </div>
-      </div>
-      <!-- To -->
-      <div>
-        <div class="text-xs tc2 mb8">To（收款地址）</div>
-        <input class="input-f" type="text" placeholder="粘贴或输入收款地址 0x..." onclick="event.stopPropagation()">
-      </div>
-      <!-- Amount -->
-      <div>
-        <div class="text-xs tc2 mb8">Amount</div>
-        <input class="input-f" type="text" placeholder="0.00 ${S.token}" onclick="event.stopPropagation()">
-        <div class="text-xs tc3" style="margin-top:6px">Available: ${TOKEN_META[S.token]?.balance||'0'}</div>
-      </div>
-      <!-- Gas + Confirm -->
-      <div class="row-sb" style="margin-top:4px">
-        <span class="text-xs tc2">Gas fee: ~$0.12</span>
-        <button class="btn-accent" onclick="event.stopPropagation()">Confirm Send</button>
-      </div>
-    </div>
-  </div>`;
+// ── Price Period ────────────────────────────────────────
+function setPeriod(btn, period, change, isUp, labelId) {
+  const bar = btn.closest('.period-bar');
+  bar.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const el = document.getElementById(labelId);
+  if (el) {
+    el.textContent = `Token price · Last ${period}   ${isUp ? '↗' : '↘'} ${isUp ? '+' : ''}${change}`;
+    el.className = 'td-change ' + (isUp ? 'up' : 'down');
+  }
 }
 
-function renderReceiveL1(){
-  return `<div class="stack" style="gap:0">
-    ${stepBar(['选择代币','选择公链','QR / 地址'],0)}
-    <div class="card" style="padding:0;overflow:hidden">
-      <div style="padding:10px 16px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <span class="text-xs fw5 tc2">选择要收款的代币</span>
-      </div>
-      ${['ETH','USDC','USDT','ARB','LINK'].map(sym=>`
-        <div class="list-row" onclick="setF('receiveL1');S.token='${sym}';goTo('receive-l2')">
-          <div style="margin-right:12px">${tokenIcon(sym,32)}</div>
-          <span class="text-xs fw5 flex1">${sym}</span>
-          <span class="text-xs tc3 tc2">${TOKEN_META[sym]?.name||''}</span>
-          <span class="text-xs tc3" style="margin-left:12px">▶</span>
-        </div>`).join('')}
-    </div>
-  </div>`;
+// ── Agent Mode ──────────────────────────────────────────
+function switchAgentMode(mode) {
+  document.querySelectorAll('#agent-bar .agent-tab').forEach(t => t.classList.remove('active'));
+  const idx = mode === 'global' ? 0 : 1;
+  document.querySelectorAll('#agent-bar .agent-tab')[idx]?.classList.add('active');
+  document.getElementById('agent-global').style.display = mode === 'global' ? 'block' : 'none';
+  document.getElementById('agent-protocol').style.display = mode === 'protocol' ? 'block' : 'none';
 }
 
-function renderReceiveL2(){
-  const chains=[
-    {name:'Arbitrum',multi:true},
-    {name:'HyperEVM',multi:false},
-    {name:'Ethereum',multi:false}
-  ];
-  return `<div class="stack" style="gap:0">
-    ${stepBar(['选择代币','选择公链','QR / 地址'],1)}
-    <div class="card" style="padding:0;overflow:hidden">
-      <div style="padding:10px 16px;background:var(--f2);border-bottom:1px solid var(--border)">
-        <span class="text-xs fw5 tc2">${S.token} · 选择收款网络</span>
-      </div>
-      ${chains.map(c=>`
-        <div class="list-row" onclick="setF('receiveL2');goTo('receive-qr')">
-          <div style="width:32px;height:32px;border-radius:50%;background:${chainColor(c.name)};display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
-            <span style="font-size:10px;color:#fff;font-weight:800">${c.name.slice(0,3).toUpperCase()}</span>
-          </div>
-          <span class="text-xs fw5 flex1">${c.name}</span>
-          ${c.multi?'<span class="pill pill-info" style="margin-right:8px">多地址</span>':''}
-          <span class="text-xs tc3">▶</span>
-        </div>`).join('')}
-    </div>
-    <div class="text-xs tc3" style="margin-top:8px">多地址时将进入 L3 选收款地址（本原型简化演示，直接进入 QR）。</div>
-  </div>`;
+function toggleProtoAgent(el) {
+  const isOn = el.classList.toggle('on');
+  el.classList.toggle('off', !isOn);
+  const row = el.closest('tr');
+  const statusCell = row.querySelector('td:nth-child(3) span');
+  if (statusCell) {
+    statusCell.textContent = isOn ? '● Active' : '○ Disabled';
+    statusCell.style.color = isOn ? 'var(--up)' : 'var(--text-3)';
+  }
 }
 
-function renderReceiveQR(){
-  return `<div class="stack" style="gap:0">
-    ${stepBar(['选择代币','选择公链','QR / 地址'],2)}
-    <div class="card card-c" onclick="setF('receiveQR')">
-      <div class="row" style="gap:28px;align-items:flex-start;flex-wrap:wrap">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-          <div class="qr-wrap">
-            ${qrSVG(152)}
-          </div>
-          <span class="pill pill-neutral">${S.token} · Arbitrum</span>
-        </div>
-        <div class="flex1">
-          <div class="text-xs tc2 mb8">收款地址</div>
-          <div style="background:var(--f3);border-radius:6px;padding:12px 16px;font-family:'Courier New',monospace;font-size:13px;word-break:break-all;margin-bottom:12px;border:1px solid var(--border)">
-            0x7f3a4b8cde9f8b2c1a5e3d7c9f2b4a6e
-          </div>
-          <div class="text-xs tc3" style="line-height:1.6">地址在此最后一刻才完整揭露，此前各层级只展示账户昵称，不提前显示地址文字。</div>
-          <div class="row" style="gap:10px;margin-top:16px">
-            <button class="btn-accent" onclick="event.stopPropagation()">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              复制地址
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
+// ── Send Modal Steps ────────────────────────────────────
+const sendStepDots = ['s1','s2','s3','s4'];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Navigation & State Mutations
-// ─────────────────────────────────────────────────────────────────────────────
-function goTo(screen){
-  S.screen=screen;
-  render();
-  updateNav();
-}
+function gotoSendStep(panelId, completedStep) {
+  ['send-l1','send-l2','send-l3','send-form'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById(panelId);
+  if (target) target.style.display = 'block';
 
-function setF(key){
-  S.fKey=key;
-  showFeaturePanel(key);
-}
-
-function updateNav(){
-  document.querySelectorAll('.nav-item').forEach(el=>{
-    const id=el.id.replace('nav-','');
-    el.classList.toggle('active',id===S.screen);
+  // Update step dots
+  sendStepDots.forEach((dotId, i) => {
+    const dot = document.getElementById(dotId);
+    if (!dot) return;
+    if (i < completedStep) { dot.className = 'step-dot done'; dot.textContent = '✓'; }
+    else if (i === completedStep) { dot.className = 'step-dot active'; dot.textContent = i + 1 <= 3 ? i + 1 : 'Form'; }
+    else { dot.className = 'step-dot'; dot.textContent = i + 1 <= 3 ? i + 1 : 'Form'; }
   });
 }
 
-function switchAssetTab(tab){
-  S.assetTab=tab;
-  render();
+// ── Receive Modal Steps ─────────────────────────────────
+function gotoRecvStep(panelId) {
+  ['recv-l1','recv-l2','recv-qr'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById(panelId);
+  if (target) target.style.display = 'block';
 }
 
-function switchActivityTab(tab){
-  S.activityTab=tab;
-  render();
-}
+// ── Modal Control ───────────────────────────────────────
+function openModal(modalId, initialPanel) {
+  const overlay = document.getElementById(modalId);
+  overlay.classList.add('open');
 
-function switchAgentMode(mode){
-  S.agentMode=mode;
-  render();
-}
+  if (modalId === 'modal-send') {
+    ['send-l1','send-l2','send-l3','send-form'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    const initial = document.getElementById(initialPanel);
+    if (initial) initial.style.display = 'block';
+    // Reset step dots
+    sendStepDots.forEach((dotId, i) => {
+      const dot = document.getElementById(dotId);
+      if (!dot) return;
+      dot.className = i === 0 ? 'step-dot active' : 'step-dot';
+      dot.textContent = i < 3 ? i + 1 : 'Form';
+    });
+    if (initialPanel === 'send-l2') {
+      sendStepDots.forEach((dotId, i) => {
+        const dot = document.getElementById(dotId);
+        if (!dot) return;
+        if (i === 0) { dot.className = 'step-dot done'; dot.textContent = '✓'; }
+        else if (i === 1) { dot.className = 'step-dot active'; dot.textContent = '2'; }
+        else { dot.className = 'step-dot'; dot.textContent = i < 3 ? i + 1 : 'Form'; }
+      });
+    }
+  }
 
-function toggleNetworkRow(name){
-  S.expandedNetworkRow=S.expandedNetworkRow===name?'':name;
-  render();
-}
-
-function toggleNetworkExpanded(){
-  S.networkExpanded=!S.networkExpanded;
-  render();
-}
-
-function toggleProtocol(name){
-  S.expandedProtocol=S.expandedProtocol===name?'':name;
-  render();
-}
-
-function toggleHideReceipts(){
-  S.hideReceipts=!S.hideReceipts;
-  render();
-}
-
-function switchChartPeriod(p){
-  S.chartPeriod=p;
-  render();
-}
-
-function setTokenPeriod(p){
-  S.tokenChartPeriod=p;
-  render();
-}
-
-function render(){
-  const main=document.getElementById('main');
-  switch(S.screen){
-    case 'dashboard-unauth': main.innerHTML=renderDashboardUnauth(); break;
-    case 'dashboard-empty':  main.innerHTML=renderDashboardEmpty();  break;
-    case 'dashboard':        main.innerHTML=renderDashboard();       break;
-    case 'asset-detail':     main.innerHTML=renderAssetDetail();     break;
-    case 'activity-detail':  main.innerHTML=renderActivityDetail();  break;
-    case 'agent-trading':    main.innerHTML=renderAgentTrading();    break;
-    case 'staking-detail':   main.innerHTML=renderStakingDetail();   break;
-    case 'token-detail':     main.innerHTML=renderTokenDetail();     break;
-    case 'transaction-detail': main.innerHTML=renderTransactionDetail(); break;
-    case 'send-l1':          main.innerHTML=renderSendL1();          break;
-    case 'send-l2':          main.innerHTML=renderSendL2();          break;
-    case 'send-l3':          main.innerHTML=renderSendL3();          break;
-    case 'send-form':        main.innerHTML=renderSendForm();        break;
-    case 'receive-l1':       main.innerHTML=renderReceiveL1();       break;
-    case 'receive-l2':       main.innerHTML=renderReceiveL2();       break;
-    case 'receive-qr':       main.innerHTML=renderReceiveQR();       break;
-    default:                 main.innerHTML=renderDashboard();
+  if (modalId === 'modal-receive') {
+    ['recv-l1','recv-l2','recv-qr'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    const initial = document.getElementById(initialPanel);
+    if (initial) initial.style.display = 'block';
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Feature Panel
-// ─────────────────────────────────────────────────────────────────────────────
-function showFeaturePanel(key){
-  const info=F[key];
-  if(!info) return;
-  document.getElementById('fp-label').textContent=info.label;
-  document.getElementById('fp-title').textContent=info.title;
-  const pEl=document.getElementById('fp-priority');
-  pEl.textContent=info.priority;
-  pEl.className='pill '+(info.priority==='P0'?'pill-accent':'pill-neutral');
-  document.getElementById('fp-desc').textContent=info.desc;
-  document.getElementById('feature-panel').classList.add('vis');
+function closeModal(modalId) {
+  document.getElementById(modalId)?.classList.remove('open');
 }
 
-function hideFeaturePanel(){
-  document.getElementById('feature-panel').classList.remove('vis');
+function closeModalOutside(event, modalId) {
+  if (event.target.id === modalId) closeModal(modalId);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Init
-// ─────────────────────────────────────────────────────────────────────────────
-render();
-updateNav();
 </script>
+
 </body>
 </html>
