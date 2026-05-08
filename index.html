@@ -1015,107 +1015,6 @@ svg    { display: block; }
 .txn-amount { font-size: 14px; font-weight: 700; text-align: right; }
 .txn-usd { font-size: 11px; color: var(--text-3); text-align: right; margin-top: 2px; }
 
-/* Transaction Detail View */
-.txn-detail-hero {
-  background: var(--card);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border);
-  padding: 28px 24px 20px;
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-  box-shadow: var(--shadow-card);
-}
-.txn-detail-icon {
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  margin-bottom: 4px;
-}
-.txn-detail-type-label {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-1);
-  display: flex; align-items: center; gap: 8px;
-}
-.txn-detail-meta {
-  display: flex; align-items: center; gap: 8px;
-  margin-top: 2px;
-}
-.txn-detail-status {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 12px; font-weight: 600;
-  padding: 3px 10px;
-  border-radius: var(--radius-pill);
-}
-.txn-detail-status.confirmed { background: var(--up-dim); color: var(--up); }
-.txn-detail-status.pending   { background: var(--warn-dim); color: var(--warn); }
-.txn-detail-status.failed    { background: var(--down-dim); color: var(--down); }
-.txn-detail-amounts {
-  width: 100%;
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.txn-detail-amount-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 8px 12px;
-  background: var(--surface);
-  border-radius: var(--radius-md);
-}
-.txn-detail-amount-label { font-size: 12px; color: var(--text-3); }
-.txn-detail-amount-val   { font-size: 15px; font-weight: 700; }
-.txn-detail-amount-usd   { font-size: 11px; color: var(--text-3); margin-top: 1px; text-align: right; }
-.txn-detail-net {
-  font-size: 12px;
-  color: var(--text-3);
-  padding-top: 4px;
-}
-.txn-detail-fields {
-  background: var(--card);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-.txn-detail-field {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 12px 20px;
-  border-bottom: 1px solid var(--border);
-}
-.txn-detail-field:last-child { border: none; }
-.txn-detail-label { font-size: 12px; color: var(--text-3); white-space: nowrap; padding-top: 2px; }
-.txn-detail-value { font-size: 13px; font-weight: 500; color: var(--text-1); text-align: right; word-break: break-all; }
-.txn-hash-display {
-  font-family: 'Courier New', monospace;
-  font-size: 12px;
-  color: var(--text-2);
-  word-break: break-all;
-}
-.copy-hash-btn {
-  display: inline-flex; align-items: center;
-  background: none; border: none; cursor: pointer;
-  color: var(--accent); font-size: 13px; padding: 0 0 0 6px;
-}
-.explorer-link {
-  color: var(--accent);
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-}
-.explorer-link:hover { text-decoration: underline; }
-
 /* ─── Send / Receive Modal ──────────────────────────── */
 .modal-overlay {
   display: none;
@@ -1488,6 +1387,110 @@ svg    { display: block; }
   .dash-grid { grid-template-columns: 1fr; }
   .nft-grid { grid-template-columns: repeat(2, 1fr); }
 }
+/* ── Transaction Detail ─────────────────────────────── */
+.txn-detail-hero {
+  background: linear-gradient(135deg, var(--hero-start), var(--hero-end));
+  border-radius: var(--radius-xl);
+  padding: 28px 24px 24px;
+  margin-bottom: 16px;
+  text-align: center;
+  color: var(--text-1);
+}
+.txn-detail-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(37,208,122,.15);
+  color: var(--up);
+  margin-bottom: 14px;
+}
+.txn-detail-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin: 0 auto 10px;
+}
+.txn-detail-title { font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+.txn-detail-amount-primary { font-size: 30px; font-weight: 700; line-height: 1.1; }
+.txn-detail-amount-secondary { font-size: 20px; font-weight: 600; margin-top: 6px; }
+.txn-detail-fiat { font-size: 13px; color: var(--text-2); margin-top: 8px; }
+.txn-detail-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.txn-detail-field {
+  display: flex;
+  align-items: center;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  min-height: 48px;
+}
+.txn-detail-field:last-child { border: none; }
+.txn-detail-label { font-size: 13px; color: var(--text-3); min-width: 96px; flex-shrink: 0; }
+.txn-detail-val { font-size: 13px; font-weight: 500; color: var(--text-1); flex: 1; word-break: break-all; line-height: 1.4; }
+.txn-detail-val-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.txn-copy-btn {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.txn-copy-btn:hover { color: var(--text-1); border-color: var(--border-hi); background: var(--hover); }
+.txn-copy-btn.copied { color: var(--up); border-color: var(--up); }
+.txn-explorer-btn {
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-dim);
+  font-weight: 600;
+  transition: opacity .15s;
+}
+.txn-explorer-btn:hover { opacity: .8; }
+.txn-flow-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+.txn-flow-heading {
+  font-size: 11px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px;
+}
+.txn-flow-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.txn-flow-item:last-child { border: none; }
+.txn-flow-dir {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+.txn-flow-name { flex: 1; font-size: 14px; font-weight: 600; color: var(--text-1); }
+.txn-flow-amt { font-size: 14px; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -1633,7 +1636,7 @@ svg    { display: block; }
               <span class="card-link" onclick="showView('v-activity', null)">All activity →</span>
             </div>
             <div class="card-body" style="padding:4px 20px">
-              <div class="txn-row txn-row--expanded">
+              <div class="txn-row txn-row--expanded" onclick="showTxnDetail('txn-swap-uniswap')">
                 <div class="txn-icon" style="background:var(--defi-dim);color:var(--defi)">⇄</div>
                 <div style="flex:1"><div class="txn-type">Swap <span class="txn-type-badge">Uniswap V3</span></div><div class="txn-time">1 day ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div>
                 <div class="txn-amounts">
@@ -1642,10 +1645,10 @@ svg    { display: block; }
                   <div class="txn-usd">−$3.59 net</div>
                 </div>
               </div>
-              <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received ETH</div><div class="txn-time">2 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.5 ETH</div><div class="txn-usd">$1,252.09</div></div></div>
-              <div class="txn-row"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDC</div><div class="txn-time">3 days ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-200 USDC</div><div class="txn-usd">$200.00</div></div></div>
-              <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDC</div><div class="txn-time">5 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDC</div><div class="txn-usd">$500.00</div></div></div>
-              <div class="txn-row" style="border:none"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDT</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDT</div><div class="txn-usd">$500.00</div></div></div>
+              <div class="txn-row" onclick="showTxnDetail('txn-recv-eth')"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received ETH</div><div class="txn-time">2 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.5 ETH</div><div class="txn-usd">$1,252.09</div></div></div>
+              <div class="txn-row" onclick="showTxnDetail('txn-sent-usdc')"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDC</div><div class="txn-time">3 days ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-200 USDC</div><div class="txn-usd">$200.00</div></div></div>
+              <div class="txn-row" onclick="showTxnDetail('txn-recv-usdc')"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDC</div><div class="txn-time">5 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDC</div><div class="txn-usd">$500.00</div></div></div>
+              <div class="txn-row" style="border:none" onclick="showTxnDetail('txn-recv-usdt')"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDT</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDT</div><div class="txn-usd">$500.00</div></div></div>
             </div>
           </div>
         </div>
@@ -2233,7 +2236,7 @@ svg    { display: block; }
         <div class="tab-panel active" id="activity-onchain" style="padding-top:8px">
 
           <!-- Multi-token: Swap via Uniswap -->
-          <div class="txn-row txn-row--expanded">
+          <div class="txn-row txn-row--expanded" onclick="showTxnDetail('txn-swap-uniswap')">
             <div class="txn-icon" style="background:var(--defi-dim);color:var(--defi)">⇄</div>
             <div style="flex:1">
               <div class="txn-type">Swap <span class="txn-type-badge">Uniswap V3</span></div>
@@ -2246,16 +2249,16 @@ svg    { display: block; }
             </div>
           </div>
 
-          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received ETH</div><div class="txn-time">2 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.5 ETH</div><div class="txn-usd">$1,252.09</div></div></div>
-          <div class="txn-row"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDC</div><div class="txn-time">3 days ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-200 USDC</div><div class="txn-usd">$200.00</div></div></div>
-          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDC</div><div class="txn-time">5 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDC</div><div class="txn-usd">$500.00</div></div></div>
-          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDT</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDT</div><div class="txn-usd">$500.00</div></div></div>
-          <div class="txn-row"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent ETH</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">HyperEVM</span></div></div><div><div class="txn-amount" style="color:var(--down)">-0.05 ETH</div><div class="txn-usd">$125.21</div></div></div>
-          <div class="txn-row"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDT</div><div class="txn-time">3 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-80 USDT</div><div class="txn-usd">$80.00</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-recv-eth')"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received ETH</div><div class="txn-time">2 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.5 ETH</div><div class="txn-usd">$1,252.09</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-sent-usdc')"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDC</div><div class="txn-time">3 days ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-200 USDC</div><div class="txn-usd">$200.00</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-recv-usdc')"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDC</div><div class="txn-time">5 days ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDC</div><div class="txn-usd">$500.00</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-recv-usdt')"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">↓</div><div style="flex:1"><div class="txn-type">Received USDT</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+500 USDT</div><div class="txn-usd">$500.00</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-sent-eth')"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent ETH</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">HyperEVM</span></div></div><div><div class="txn-amount" style="color:var(--down)">-0.05 ETH</div><div class="txn-usd">$125.21</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-sent-usdt')"><div class="txn-icon" style="background:var(--down-dim);color:var(--down)">↑</div><div style="flex:1"><div class="txn-type">Sent USDT</div><div class="txn-time">3 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--down)">-80 USDT</div><div class="txn-usd">$80.00</div></div></div>
         </div>
         <div class="tab-panel" id="activity-offchain" style="padding-top:8px">
           <!-- Multi-token: Add Liquidity (ETH + USDC) -->
-          <div class="txn-row txn-row--expanded">
+          <div class="txn-row txn-row--expanded" onclick="showTxnDetail('txn-addliq-uniswap')">
             <div class="txn-icon" style="background:var(--defi-dim);color:var(--defi)">⊕</div>
             <div style="flex:1">
               <div class="txn-type">Add Liquidity <span class="txn-type-badge">Uniswap V3</span></div>
@@ -2268,51 +2271,65 @@ svg    { display: block; }
             </div>
           </div>
 
-          <div class="txn-row"><div class="txn-icon" style="background:var(--defi-dim);color:var(--defi)">+</div><div style="flex:1"><div class="txn-type">Deposit — Aave V3</div><div class="txn-time">1 week ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--defi)">+USDC</div><div class="txn-usd">$374.91</div></div></div>
-          <div class="txn-row"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">⬡</div><div style="flex:1"><div class="txn-type">Stake — Lido Finance</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.18 ETH</div><div class="txn-usd">$450.75</div></div></div>
-          <div class="txn-row"><div class="txn-icon" style="background:var(--accent-dim);color:var(--accent)">◈</div><div style="flex:1"><div class="txn-type">Claim Rewards — Lido</div><div class="txn-time">3 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.00054 ETH</div><div class="txn-usd">$1.35</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-deposit-aave')"><div class="txn-icon" style="background:var(--defi-dim);color:var(--defi)">+</div><div style="flex:1"><div class="txn-type">Deposit — Aave V3</div><div class="txn-time">1 week ago &nbsp;·&nbsp; <span class="chain-badge">Arbitrum</span></div></div><div><div class="txn-amount" style="color:var(--defi)">+USDC</div><div class="txn-usd">$374.91</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-stake-lido')"><div class="txn-icon" style="background:var(--up-dim);color:var(--up)">⬡</div><div style="flex:1"><div class="txn-type">Stake — Lido Finance</div><div class="txn-time">2 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.18 ETH</div><div class="txn-usd">$450.75</div></div></div>
+          <div class="txn-row" onclick="showTxnDetail('txn-claim-lido')"><div class="txn-icon" style="background:var(--accent-dim);color:var(--accent)">◈</div><div style="flex:1"><div class="txn-type">Claim Rewards — Lido</div><div class="txn-time">3 weeks ago &nbsp;·&nbsp; <span class="chain-badge">Ethereum</span></div></div><div><div class="txn-amount" style="color:var(--up)">+0.00054 ETH</div><div class="txn-usd">$1.35</div></div></div>
         </div>
       </div>
     </div>
 
-    <!-- ══ VIEW: Transaction Detail ════════════════════ -->
+    <!-- ══ VIEW: Transaction Detail ══════════════════════ -->
     <div class="view" id="v-txn-detail">
       <div class="page-wrap-narrow">
         <div class="page-head">
           <button class="back-btn" onclick="goBack()">←</button>
-          <div><div class="page-title">Transaction</div></div>
+          <div class="page-title">Transaction</div>
         </div>
 
         <!-- Hero -->
         <div class="txn-detail-hero">
-          <div class="txn-detail-icon" id="td-icon"></div>
-          <div class="txn-detail-type-label">
-            <span id="td-type"></span>
-            <span id="td-badge-wrap"></span>
-          </div>
-          <div class="txn-detail-meta">
-            <span class="txn-detail-status confirmed" id="td-status"></span>
-            <span class="chain-badge" id="td-chain"></span>
-          </div>
-          <div class="txn-detail-amounts" id="td-amounts"></div>
-          <div class="txn-detail-net" id="td-net"></div>
+          <div id="txnd-status" class="txn-detail-status-badge">✓ Confirmed</div>
+          <div id="txnd-icon" class="txn-detail-icon"></div>
+          <div id="txnd-title" class="txn-detail-title"></div>
+          <div id="txnd-amounts"></div>
+          <div id="txnd-fiat" class="txn-detail-fiat"></div>
         </div>
 
-        <!-- Core fields -->
-        <div class="txn-detail-fields" id="td-core-fields"></div>
+        <!-- Token Flow (multi-token only) -->
+        <div id="txnd-flow" class="txn-flow-card" style="display:none">
+          <div class="txn-flow-heading">Token Flow</div>
+          <div id="txnd-flow-rows"></div>
+        </div>
 
-        <!-- Hash & Explorer -->
-        <div class="txn-detail-fields">
+        <!-- Detail fields -->
+        <div class="txn-detail-card">
           <div class="txn-detail-field">
-            <div class="txn-detail-label">Tx Hash</div>
-            <div class="txn-detail-value">
-              <div class="txn-hash-display" id="td-hash"></div>
-              <button class="copy-hash-btn" onclick="copyTxnHash()" title="Copy">⎘ Copy</button>
-            </div>
+            <div class="txn-detail-label">Date & Time</div>
+            <div class="txn-detail-val" id="txnd-date"></div>
           </div>
           <div class="txn-detail-field">
-            <div class="txn-detail-label">Block Explorer</div>
-            <div class="txn-detail-value"><a class="explorer-link" id="td-explorer" href="#" target="_blank">View on Explorer ↗</a></div>
+            <div class="txn-detail-label">Chain</div>
+            <div class="txn-detail-val" id="txnd-chain"></div>
+          </div>
+          <div class="txn-detail-field" id="txnd-from-row">
+            <div class="txn-detail-label">From</div>
+            <div class="txn-detail-val" id="txnd-from"></div>
+            <button class="txn-copy-btn" id="txnd-from-copy" onclick="txnCopy('txnd-from-copy','txnd-from')">⎘</button>
+          </div>
+          <div class="txn-detail-field" id="txnd-to-row">
+            <div class="txn-detail-label">To</div>
+            <div class="txn-detail-val" id="txnd-to"></div>
+            <button class="txn-copy-btn" id="txnd-to-copy" onclick="txnCopy('txnd-to-copy','txnd-to')">⎘</button>
+          </div>
+          <div class="txn-detail-field" id="txnd-gas-row">
+            <div class="txn-detail-label">Gas Fee</div>
+            <div class="txn-detail-val" id="txnd-gas"></div>
+          </div>
+          <div class="txn-detail-field">
+            <div class="txn-detail-label">Tx Hash</div>
+            <div class="txn-detail-val" id="txnd-hash"></div>
+            <button class="txn-copy-btn" id="txnd-hash-copy" onclick="txnCopy('txnd-hash-copy','txnd-hash')">⎘</button>
+            <a class="txn-explorer-btn" id="txnd-explorer" href="#" target="_blank">↗ Explorer</a>
           </div>
         </div>
       </div>
@@ -2644,6 +2661,189 @@ function toggleTheme() {
   const html = document.documentElement;
   const isDark = html.classList.toggle('dark');
   document.getElementById('theme-icon').textContent = isDark ? '☀' : '☾';
+}
+
+// ── Transaction Detail ───────────────────────────────────
+const TXN_DATA = {
+  'txn-swap-uniswap': {
+    type: 'Swap', badge: 'Uniswap V3',
+    iconBg: 'var(--defi-dim)', iconColor: 'var(--defi)', iconChar: '⇄',
+    amounts: [{ text: '−500 USDC', color: 'var(--down)' }, { text: '+0.1982 ETH', color: 'var(--up)' }],
+    fiat: '−$3.59 net (after fees)',
+    flow: [
+      { dirBg: 'var(--down-dim)', dirColor: 'var(--down)', dir: '↑', token: 'USDC', amt: '−500 USDC', amtColor: 'var(--down)' },
+      { dirBg: 'var(--up-dim)',   dirColor: 'var(--up)',   dir: '↓', token: 'ETH',  amt: '+0.1982 ETH', amtColor: 'var(--up)' },
+    ],
+    date: 'May 6, 2026 · 09:17 UTC', chain: 'Arbitrum',
+    from: '0x71Be4aE5d7F78C832cf...8F3a', fromSub: 'My Wallet',
+    to:   '0x68b3465833fb72A70ec...3A8a', toSub: 'Uniswap V3 Router',
+    gas: '0.000085 ETH ($0.21)',
+    hash: '0x7f3b9c2a1e4d8f0b6e...a291', explorerUrl: 'https://arbiscan.io',
+  },
+  'txn-recv-eth': {
+    type: 'Received ETH',
+    iconBg: 'var(--up-dim)', iconColor: 'var(--up)', iconChar: '↓',
+    amounts: [{ text: '+0.5 ETH', color: 'var(--up)' }], fiat: '$1,252.09',
+    date: 'May 5, 2026 · 11:04 UTC', chain: 'Arbitrum',
+    from: '0x4F23b8cA7D91e2fB...c1D7',
+    to:   '0x71Be4aE5d7F78C832cf...8F3a', toSub: 'My Wallet',
+    gas: '—', hash: '0x3a1c8e7b2f9d0c4a5e...b812', explorerUrl: 'https://arbiscan.io',
+  },
+  'txn-sent-usdc': {
+    type: 'Sent USDC',
+    iconBg: 'var(--down-dim)', iconColor: 'var(--down)', iconChar: '↑',
+    amounts: [{ text: '−200 USDC', color: 'var(--down)' }], fiat: '$200.00',
+    date: 'May 4, 2026 · 16:52 UTC', chain: 'Ethereum',
+    from: '0x71Be4aE5d7F78C832cf...8F3a', fromSub: 'My Wallet',
+    to:   '0xE7a2D4f91B3c8e5a2...9B0c',
+    gas: '0.00031 ETH ($0.78)', hash: '0x9c4d2f1b8a0e3b6c7d...2f45', explorerUrl: 'https://etherscan.io',
+  },
+  'txn-recv-usdc': {
+    type: 'Received USDC',
+    iconBg: 'var(--up-dim)', iconColor: 'var(--up)', iconChar: '↓',
+    amounts: [{ text: '+500 USDC', color: 'var(--up)' }], fiat: '$500.00',
+    date: 'May 2, 2026 · 08:30 UTC', chain: 'Arbitrum',
+    from: '0x2C8b3e7aD4f91B2c...3aE5',
+    to:   '0x71Be4aE5d7F78C832cf...8F3a', toSub: 'My Wallet',
+    gas: '—', hash: '0x1e5a9b3c8f2d4e0a7b...c731', explorerUrl: 'https://arbiscan.io',
+  },
+  'txn-recv-usdt': {
+    type: 'Received USDT',
+    iconBg: 'var(--up-dim)', iconColor: 'var(--up)', iconChar: '↓',
+    amounts: [{ text: '+500 USDT', color: 'var(--up)' }], fiat: '$500.00',
+    date: 'Apr 24, 2026 · 14:22 UTC', chain: 'Arbitrum',
+    from: '0x9D4f2a8bC3e1f7D...7F2b',
+    to:   '0x71Be4aE5d7F78C832cf...8F3a', toSub: 'My Wallet',
+    gas: '—', hash: '0x5c8e3b1a9f2d0e4c6b...d209', explorerUrl: 'https://arbiscan.io',
+  },
+  'txn-sent-eth': {
+    type: 'Sent ETH',
+    iconBg: 'var(--down-dim)', iconColor: 'var(--down)', iconChar: '↑',
+    amounts: [{ text: '−0.05 ETH', color: 'var(--down)' }], fiat: '$125.21',
+    date: 'Apr 24, 2026 · 09:55 UTC', chain: 'HyperEVM',
+    from: '0x71Be4aE5d7F78C832cf...8F3a', fromSub: 'My Wallet',
+    to:   '0x1A5e7c2B8f4d9E3a0b...8C3d',
+    gas: '0.00008 ETH ($0.20)', hash: '0x2b7d4e9c1f3a8b0d5c...e471', explorerUrl: 'https://purrsec.com',
+  },
+  'txn-sent-usdt': {
+    type: 'Sent USDT',
+    iconBg: 'var(--down-dim)', iconColor: 'var(--down)', iconChar: '↑',
+    amounts: [{ text: '−80 USDT', color: 'var(--down)' }], fiat: '$80.00',
+    date: 'Apr 17, 2026 · 20:11 UTC', chain: 'Arbitrum',
+    from: '0x71Be4aE5d7F78C832cf...8F3a', fromSub: 'My Wallet',
+    to:   '0x6B7c4d2E9f1b3A8e0c...2D9f',
+    gas: '0.000065 ETH ($0.16)', hash: '0x8a1f3c7e9b2d0e5a4c...7b38', explorerUrl: 'https://arbiscan.io',
+  },
+  'txn-addliq-uniswap': {
+    type: 'Add Liquidity', badge: 'Uniswap V3',
+    iconBg: 'var(--defi-dim)', iconColor: 'var(--defi)', iconChar: '⊕',
+    amounts: [{ text: '−0.12 ETH', color: 'var(--down)' }, { text: '−300 USDC', color: 'var(--down)' }],
+    fiat: '$600.50 position value',
+    flow: [
+      { dirBg: 'var(--down-dim)', dirColor: 'var(--down)', dir: '↑', token: 'ETH',  amt: '−0.12 ETH',  amtColor: 'var(--down)' },
+      { dirBg: 'var(--down-dim)', dirColor: 'var(--down)', dir: '↑', token: 'USDC', amt: '−300 USDC', amtColor: 'var(--down)' },
+    ],
+    date: 'May 3, 2026 · 13:40 UTC', chain: 'Ethereum',
+    from: '0x71Be4aE5d7F78C832cf...8F3a', fromSub: 'My Wallet',
+    to:   '0xC36442b4a4522E871F...1F0',  toSub: 'Uniswap V3: Positions NFT',
+    gas: '0.00042 ETH ($1.05)', hash: '0x4e9b2c1a7f3d8e0b5c...f193', explorerUrl: 'https://etherscan.io',
+  },
+  'txn-deposit-aave': {
+    type: 'Deposit', badge: 'Aave V3',
+    iconBg: 'var(--defi-dim)', iconColor: 'var(--defi)', iconChar: '+',
+    amounts: [{ text: '−374.91 USDC', color: 'var(--down)' }], fiat: 'Received 374.91 aUSDC',
+    date: 'Apr 30, 2026 · 10:08 UTC', chain: 'Arbitrum',
+    from: '0x71Be4aE5d7F78C832cf...8F3a', fromSub: 'My Wallet',
+    to:   '0x794a678D4CE4AA6B8D...1b3c', toSub: 'Aave V3 Pool',
+    gas: '0.000095 ETH ($0.24)', hash: '0xb3c9f2e1a7d4b0c8e5...8a20', explorerUrl: 'https://arbiscan.io',
+  },
+  'txn-stake-lido': {
+    type: 'Stake', badge: 'Lido Finance',
+    iconBg: 'var(--up-dim)', iconColor: 'var(--up)', iconChar: '⬡',
+    amounts: [{ text: '−0.18 ETH', color: 'var(--down)' }, { text: '+0.18 stETH', color: 'var(--up)' }],
+    fiat: '$450.75',
+    flow: [
+      { dirBg: 'var(--down-dim)', dirColor: 'var(--down)', dir: '↑', token: 'ETH',   amt: '−0.18 ETH',   amtColor: 'var(--down)' },
+      { dirBg: 'var(--up-dim)',   dirColor: 'var(--up)',   dir: '↓', token: 'stETH', amt: '+0.18 stETH', amtColor: 'var(--up)' },
+    ],
+    date: 'Apr 23, 2026 · 15:30 UTC', chain: 'Ethereum',
+    from: '0x71Be4aE5d7F78C832cf...8F3a', fromSub: 'My Wallet',
+    to:   '0xae7ab96520DE3A18E5...c7f0', toSub: 'Lido: stETH Token',
+    gas: '0.00028 ETH ($0.70)', hash: '0x6d0b4e9c2f1a8e3b7d...c548', explorerUrl: 'https://etherscan.io',
+  },
+  'txn-claim-lido': {
+    type: 'Claim Rewards', badge: 'Lido',
+    iconBg: 'var(--accent-dim)', iconColor: 'var(--accent)', iconChar: '◈',
+    amounts: [{ text: '+0.00054 ETH', color: 'var(--up)' }], fiat: '$1.35 claimed',
+    date: 'Apr 16, 2026 · 07:44 UTC', chain: 'Ethereum',
+    from: '0xae7ab96520DE3A18E5...c7f0', fromSub: 'Lido: stETH Token',
+    to:   '0x71Be4aE5d7F78C832cf...8F3a', toSub: 'My Wallet',
+    gas: '0.00019 ETH ($0.48)', hash: '0x2a8c5e9b1d3f7a0c4e...b162', explorerUrl: 'https://etherscan.io',
+  },
+};
+
+function showTxnDetail(id) {
+  const d = TXN_DATA[id];
+  if (!d) return;
+
+  // Status
+  const statusBadge = document.getElementById('txnd-status');
+  if (statusBadge) statusBadge.style.display = 'inline-flex';
+
+  // Icon
+  const icon = document.getElementById('txnd-icon');
+  icon.style.background = d.iconBg;
+  icon.style.color = d.iconColor;
+  icon.textContent = d.iconChar;
+
+  // Title
+  const titleEl = document.getElementById('txnd-title');
+  titleEl.innerHTML = d.type + (d.badge ? ` <span class="txn-type-badge">${d.badge}</span>` : '');
+
+  // Amounts
+  const amtsEl = document.getElementById('txnd-amounts');
+  amtsEl.innerHTML = d.amounts.map((a, i) =>
+    `<div class="${i === 0 ? 'txn-detail-amount-primary' : 'txn-detail-amount-secondary'}" style="color:${a.color}">${a.text}</div>`
+  ).join('');
+
+  // Fiat
+  document.getElementById('txnd-fiat').textContent = d.fiat || '';
+
+  // Token Flow
+  const flowCard = document.getElementById('txnd-flow');
+  if (d.flow && d.flow.length) {
+    flowCard.style.display = 'block';
+    document.getElementById('txnd-flow-rows').innerHTML = d.flow.map(f =>
+      `<div class="txn-flow-item">
+        <div class="txn-flow-dir" style="background:${f.dirBg};color:${f.dirColor}">${f.dir}</div>
+        <div class="txn-flow-name">${f.token}</div>
+        <div class="txn-flow-amt" style="color:${f.amtColor}">${f.amt}</div>
+      </div>`
+    ).join('');
+  } else {
+    flowCard.style.display = 'none';
+  }
+
+  // Fields
+  const setField = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+  setField('txnd-date', d.date);
+  setField('txnd-chain', `<span class="chain-badge">${d.chain}</span>`);
+  setField('txnd-from', d.from + (d.fromSub ? `<div class="txn-detail-val-sub">${d.fromSub}</div>` : ''));
+  setField('txnd-to',   d.to   + (d.toSub   ? `<div class="txn-detail-val-sub">${d.toSub}</div>`   : ''));
+  setField('txnd-gas',  d.gas);
+  setField('txnd-hash', d.hash);
+  const explorerLink = document.getElementById('txnd-explorer');
+  if (explorerLink) explorerLink.href = d.explorerUrl || '#';
+
+  showView('v-txn-detail', null);
+}
+
+function txnCopy(btnId, srcId) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.classList.add('copied');
+  btn.textContent = '✓';
+  setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '⎘'; }, 1500);
 }
 
 // ── Receipt Token Toggle ────────────────────────────────
