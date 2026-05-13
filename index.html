@@ -1441,11 +1441,7 @@ svg    { display: block; }
 .ov-badge.intent { background: var(--accent-dim); color: var(--accent); }
 .ov-badge.status { background: var(--up-dim); color: var(--up); }
 .ov-badge.date { background: var(--surface); color: var(--text-3); }
-.ov-section-label {
-  font-size: 11px; font-weight: 700; color: var(--text-3);
-  text-transform: uppercase; letter-spacing: .06em;
-  margin: 8px 0 12px;
-}
+/* .ov-section-label — redefined in Module Cards section below */
 
 /* ── Feature Tree ── */
 .feat-tree {
@@ -1615,6 +1611,203 @@ svg    { display: block; }
 .ft-badge.new  { background: var(--accent-dim); color: var(--accent); }
 .ft-badge.reuse { background: var(--warn-dim); color: var(--warn); }
 .ft-badge.proto { background: var(--surface); color: var(--text-3); border: 1px solid var(--border); }
+
+/* ── Overview: Architecture Diagram (Flow Grid) ─────── */
+.arch-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+.arch-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+.arch-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-3); }
+.arch-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+/* Arch diagram: SVG-connected node layout */
+.arch-diagram {
+  position: relative;
+  min-width: 520px;
+}
+.arch-svg {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; overflow: visible;
+}
+.arch-row {
+  display: flex; gap: 12px;
+  justify-content: center;
+  position: relative; z-index: 1;
+}
+.arch-spacer { height: 60px; }
+/* Node cards */
+.arch-node {
+  display: inline-flex; flex-direction: column; align-items: flex-start;
+  padding: 10px 16px; min-width: 132px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 10px; cursor: pointer; transition: all .15s;
+  text-align: left; gap: 2px;
+}
+.arch-node:hover { border-color: var(--accent); background: var(--accent-dim); }
+.arch-node:hover .arch-node-name { color: var(--accent); }
+.arch-node.root {
+  background: var(--accent-dim); border-color: var(--accent);
+  min-width: 240px; align-items: center; text-align: center;
+  box-shadow: 0 0 0 4px oklch(from var(--accent) l c h / .08);
+}
+.arch-node.root { box-shadow: 0 0 0 4px var(--accent-dim); }
+.arch-node.modal { border-style: dashed; }
+.arch-node.modal:hover { border-color: var(--text-3); background: var(--surface); }
+.arch-node.modal:hover .arch-node-name { color: var(--text-2); }
+.arch-node-name { font-size: 13px; font-weight: 700; color: var(--text-1); }
+.arch-node.root .arch-node-name { color: var(--accent); font-size: 14px; }
+.arch-node-sub { font-size: 10px; color: var(--text-3); line-height: 1.4; }
+.arch-node-int {
+  display: inline-block; font-size: 9px; font-weight: 700; color: var(--text-3);
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 5px; margin-top: 4px;
+}
+.arch-node.m1 { border-left: 3px solid var(--accent); }
+.arch-node.m2 { border-left: 3px solid var(--defi); }
+.arch-node.m3 { border-left: 3px solid var(--up); }
+/* SVG connection line styles */
+.arch-line { fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.arch-line.lm1 { stroke: var(--accent); }
+.arch-line.lm2 { stroke: var(--defi); }
+.arch-line.lm3 { stroke: var(--up); }
+.arch-line.dashed { stroke-dasharray: 5 4; opacity: .75; }
+/* SVG arrow marker fills */
+.arrow-fill-m1 { fill: var(--accent); }
+.arrow-fill-m2 { fill: var(--defi); }
+.arrow-fill-m3 { fill: var(--up); }
+
+/* ── Overview: Module Cards ─────────────────────────── */
+.ov-section-label {
+  font-size: 11px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: .07em;
+  margin: 28px 0 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ov-section-label::before {
+  content: ''; width: 3px; height: 13px;
+  background: var(--accent); border-radius: 2px; flex-shrink: 0;
+}
+.mod-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+}
+.mod-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.mod-card.m1 .mod-head { background: linear-gradient(110deg, var(--accent-dim) 0%, var(--surface) 70%); }
+.mod-card.m2 .mod-head { background: linear-gradient(110deg, var(--defi-dim)   0%, var(--surface) 70%); }
+.mod-card.m3 .mod-head { background: linear-gradient(110deg, var(--up-dim)     0%, var(--surface) 70%); }
+.mod-num {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800; flex-shrink: 0; line-height: 1;
+}
+.m1 .mod-num { background: var(--accent-dim); color: var(--accent); }
+.m2 .mod-num { background: var(--defi-dim);   color: var(--defi); }
+.m3 .mod-num { background: var(--up-dim);     color: var(--up); }
+.mod-title { font-size: 15px; font-weight: 800; color: var(--text-1); letter-spacing: -.01em; }
+.mod-desc  { font-size: 12px; color: var(--text-3); margin-top: 2px; line-height: 1.4; }
+.mod-int-tag {
+  margin-left: auto; font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: var(--radius-pill);
+  background: var(--surface); color: var(--text-3);
+  border: 1px solid var(--border); white-space: nowrap; flex-shrink: 0;
+}
+/* User Story rows */
+.us-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.us-row:last-child { border-bottom: none; }
+.us-row:hover { background: var(--surface); }
+.us-id {
+  font-size: 10px; font-weight: 800; letter-spacing: .02em;
+  border-radius: 6px; padding: 3px 8px; flex-shrink: 0;
+  margin-top: 1px; white-space: nowrap; min-width: 40px; text-align: center;
+  border: 1.5px solid;
+}
+/* US-N labels: neutral across all modules — module color is reserved for the header only */
+.m1 .us-id,
+.m2 .us-id,
+.m3 .us-id {
+  background: var(--card);
+  color: var(--text-2);
+  border-color: var(--border);
+  font-weight: 700;
+}
+.us-body { flex: 1; min-width: 0; }
+.us-text { font-size: 13px; color: var(--text-1); line-height: 1.65; margin-bottom: 10px; }
+.us-feats { display: flex; flex-wrap: wrap; gap: 6px; }
+.us-feat {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 11px; color: var(--text-2);
+  cursor: pointer; transition: all .12s;
+}
+.us-feat:not(.no-link):hover {
+  border-color: var(--accent); color: var(--accent);
+  background: var(--accent-dim); transform: translateY(-1px);
+  box-shadow: 0 2px 6px var(--shadow-sm);
+}
+.us-feat.no-link { cursor: default; opacity: .75; }
+/* Priority badges */
+.pb {
+  display: inline-flex; align-items: center;
+  height: 16px; padding: 0 5px;
+  border-radius: 4px; font-size: 9px; font-weight: 800; letter-spacing: .03em;
+  flex-shrink: 0; line-height: 1;
+}
+.pb.p0 { background: var(--down-dim); color: var(--down); }
+.pb.p1 { background: var(--warn-dim);   color: var(--warn); }
+.pb.p2 { background: var(--surface);  color: var(--text-3); border: 1px solid var(--border); }
+/* Priority summary grid */
+.prio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 28px;
+}
+.prio-col {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); overflow: hidden;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+}
+.prio-col.p0-col { border-top: 3px solid var(--down); }
+.prio-col.p1-col { border-top: 3px solid var(--warn); }
+.prio-col.p2-col { border-top: 3px solid var(--text-3); }
+.prio-col-head {
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.prio-col-head-top { display: flex; align-items: center; gap: 8px; }
+.prio-col-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+.prio-col-sub { font-size: 11px; color: var(--text-3); }
+.prio-col-items { padding: 6px 0 4px; }
+.prio-item-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 5px 16px;
+  font-size: 12px; color: var(--text-2); line-height: 1.5;
+}
+.prio-item-sym { font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+.p0-col .prio-item-sym { color: var(--down); }
+.p1-col .prio-item-sym { color: var(--warn); }
+.p2-col .prio-item-sym { color: var(--text-3); }
 
 /* ── Activity Filter Bar ────────────────────────────── */
 .activity-filter-bar {
@@ -1830,10 +2023,10 @@ svg    { display: block; }
     <div class="nav-section">
       <div class="nav-label">Portfolio</div>
       <button class="nav-item active" onclick="showView('v-dashboard', this)">
-        <span class="nav-icon">◈</span><span class="nav-label-text">Dashboard</span>
+        <span class="nav-icon">◈</span><span class="nav-label-text">Homepage</span>
       </button>
       <button class="nav-item" onclick="showView('v-assets', this)">
-        <span class="nav-icon">◫</span><span class="nav-label-text">Assets</span>
+        <span class="nav-icon">◫</span><span class="nav-label-text">Portfolio</span>
       </button>
       <button class="nav-item" onclick="showView('v-token-eth', this)">
         <span class="nav-icon">◎</span><span class="nav-label-text">Token Profile</span>
@@ -1870,346 +2063,371 @@ svg    { display: block; }
 
         <!-- Hero -->
         <div class="ov-hero">
-          <div class="ov-hero-label">alpha.token.im · UI Prototype</div>
-          <div class="ov-hero-title">功能总览</div>
-          <div class="ov-hero-sub">本原型基于 INT-001 / INT-002 / INT-003 三份 PRD 构建。<br>下方树状图展示各功能的归属关系，点击节点右侧按钮可直接跳转查看。</div>
+          <div class="ov-hero-label">alpha.token.im · UI Prototype · v0.3</div>
+          <div class="ov-hero-title">产品功能总览</div>
+          <div class="ov-hero-sub">本文档面向产品、设计与开发，说明当前版本支持的功能模块、对应的 User Story，以及各功能的实现优先级。<br>点击功能 chip 可直接跳转到原型中的对应页面。</div>
           <div class="ov-badge-row">
-            <span class="ov-badge intent">INT-001 Portfolio Dashboard</span>
-            <span class="ov-badge intent">INT-002 Unified Balance</span>
-            <span class="ov-badge intent">INT-003 Token Profile</span>
-            <span class="ov-badge status">● Prototype · v0.3</span>
-            <span class="ov-badge date">May 2026</span>
+            <span class="ov-badge intent">Module 1 · HomePage</span>
+            <span class="ov-badge intent">Module 2 · Portfolio Dashboard</span>
+            <span class="ov-badge intent">Module 3 · Token Profile</span>
+            <span class="ov-badge status">● 3 Modules · 10 Views · 2 Modals</span>
           </div>
         </div>
 
-        <!-- Feature Tree -->
-        <div class="ov-section-label">功能归属树</div>
-        <div class="feat-tree">
+        <!-- ─ Page Architecture ─────────────────────────── -->
+        <div class="ov-section-label">页面架构</div>
+        <div class="arch-wrap">
+          <div class="arch-legend">
+            <div class="arch-legend-item"><div class="arch-legend-dot" style="background:var(--accent)"></div>Module 1 · HomePage</div>
+            <div class="arch-legend-item"><div class="arch-legend-dot" style="background:var(--defi)"></div>Module 2 · Portfolio Dashboard</div>
+            <div class="arch-legend-item"><div class="arch-legend-dot" style="background:var(--up)"></div>Module 3 · Token Profile</div>
+            <div class="arch-legend-item"><div class="arch-legend-dot" style="border:1.5px dashed var(--text-3);background:transparent"></div>Modal / 弹窗</div>
+          </div>
+          <div class="arch-diagram" id="arch-diagram">
+            <!-- SVG overlay for connection lines (drawn by JS) -->
+            <svg id="arch-svg" class="arch-svg"></svg>
 
-          <!-- Root -->
-          <div class="feat-root">
-            <div class="feat-root-icon">◈</div>
-            <div>
-              <div class="feat-root-name">alpha.token.im</div>
+            <!-- L0: Root -->
+            <div class="arch-row">
+              <button class="arch-node root" id="arch-n-homepage" onclick="showView('v-dashboard',null)">
+                <div class="arch-node-name">Homepage</div>
+                <div class="arch-node-sub">总资产 · 涨跌幅 · 快捷操作 · Recent Activity</div>
+                <div class="arch-node-int">INT-001</div>
+              </button>
             </div>
-            <div class="feat-root-meta">3 Intents · 9 Views · 2 Modals</div>
+
+            <div class="arch-spacer"></div>
+
+            <!-- L1: First-level pages -->
+            <div class="arch-row">
+              <button class="arch-node m2" id="arch-n-portfolio" onclick="showView('v-assets',null)">
+                <div class="arch-node-name">Portfolio</div>
+                <div class="arch-node-sub">Token / DeFi / NFT</div>
+                <div class="arch-node-int">INT-002</div>
+              </button>
+              <button class="arch-node m1" id="arch-n-activity" onclick="showView('v-activity',null)">
+                <div class="arch-node-name">Activity</div>
+                <div class="arch-node-sub">On-Chain / Off-Chain</div>
+                <div class="arch-node-int">INT-001</div>
+              </button>
+              <button class="arch-node m1" id="arch-n-staking" onclick="showView('v-staking',null)">
+                <div class="arch-node-name">Staking</div>
+                <div class="arch-node-sub">ETH 质押汇总</div>
+                <div class="arch-node-int">INT-001</div>
+              </button>
+              <button class="arch-node m1" id="arch-n-agent" onclick="showView('v-agent',null)">
+                <div class="arch-node-name">Agent Trading</div>
+                <div class="arch-node-sub">AI 自动化交易</div>
+                <div class="arch-node-int">INT-001</div>
+              </button>
+            </div>
+
+            <div class="arch-spacer"></div>
+
+            <!-- L2: Detail pages -->
+            <div class="arch-row">
+              <button class="arch-node m3" id="arch-n-token" onclick="showView('v-token-eth',null)">
+                <div class="arch-node-name">Token Profile</div>
+                <div class="arch-node-sub">ETH / Dust · 价格图 · 持仓分布</div>
+                <div class="arch-node-int">INT-003</div>
+              </button>
+              <button class="arch-node m1" id="arch-n-txn" onclick="showTxnDetail('txn-001')">
+                <div class="arch-node-name">Transaction Detail</div>
+                <div class="arch-node-sub">Hero · Token Flow · Fields</div>
+                <div class="arch-node-int">INT-001 · 复用于 INT-003</div>
+              </button>
+              <button class="arch-node m3 modal" id="arch-n-send" onclick="openModal('modal-send','send-l1')">
+                <div class="arch-node-name">Send / Receive ⤤</div>
+                <div class="arch-node-sub">三层级弹窗流程</div>
+                <div class="arch-node-int">INT-003 · 复用于 INT-001</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Module 1: HomePage ─────────────────────────── -->
+        <div class="ov-section-label">功能模块与 User Story</div>
+        <div class="mod-card m1">
+          <div class="mod-head">
+            <div class="mod-num">01</div>
+            <div>
+              <div class="mod-title">Module 1 · HomePage</div>
+              <div class="mod-desc">用户打开 App 后的首屏，聚焦「一眼看清资产，一步发起操作」</div>
+            </div>
+            <div class="mod-int-tag">INT-001</div>
           </div>
 
-          <!-- ── INT-001 · Portfolio Dashboard ── -->
-          <div class="feat-intent i001">
-            <div class="feat-intent-head" onclick="toggleFeatNode('int001')">
-              <span class="feat-intent-caret" id="caret-int001">▾</span>
-              <span class="feat-intent-dot"></span>
-              <span class="feat-intent-name">Portfolio Dashboard</span>
-              <span class="feat-intent-id">INT-001</span>
-              <span class="feat-intent-count">5 功能</span>
+          <div class="us-row">
+            <div class="us-id">US-1</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能一目了然资产总价值及最近的涨跌情况</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-dashboard',null)"><span class="pb p0">P0</span>总资产估值（USD）</span>
+                <span class="us-feat" onclick="showView('v-dashboard',null)"><span class="pb p0">P0</span>今日涨跌幅 + 折线缩略图</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>Donut 图（Token/DeFi 占比）</span>
+              </div>
             </div>
-            <div class="feat-intent-body" id="int001-body">
+          </div>
 
-              <!-- Dashboard -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--accent-dim);color:var(--accent)">◈</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">Dashboard</div>
-                    <div class="feat-item-desc">总资产估值（Token+DeFi）· 今日涨跌幅 · 快捷操作 · Donut 占比图 · Recent Activity 预览 · 主题切换</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-go-btn" onclick="showView('v-dashboard',null)">查看 →</button>
-                  </div>
-                </div>
+          <div class="us-row">
+            <div class="us-id">US-2</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能在 Homepage 快速发起常用操作</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="openModal('modal-send','send-l1')"><span class="pb p0">P0</span>Send 按钮</span>
+                <span class="us-feat" onclick="openModal('modal-receive','recv-l1')"><span class="pb p0">P0</span>Receive 按钮</span>
+                <span class="us-feat" onclick="showView('v-staking',null)"><span class="pb p0">P0</span>Stake 按钮 → 质押页</span>
+                <span class="us-feat" onclick="showView('v-agent',null)"><span class="pb p0">P0</span>Agent 按钮 → AI Agent 页</span>
               </div>
-
-              <!-- Activity (expandable) -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--surface);color:var(--text-2)">↕</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">
-                      Activity
-                      <span class="ft-badge new">new filter</span>
-                    </div>
-                    <div class="feat-item-desc">On-Chain / Off-Chain 双 Tab · 多代币交易行 · Pill 筛选栏（默认折叠）</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-expand-btn open" id="exp-activity" onclick="toggleFeatNode('activity')"></button>
-                    <button class="feat-go-btn" onclick="showView('v-activity',null)">查看 →</button>
-                  </div>
-                </div>
-              </div>
-              <!-- Activity sub-items -->
-              <div class="feat-sub-body" id="activity-body">
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">📄</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">
-                        Transaction Detail
-                        <span class="ft-badge new">new</span>
-                        <span class="ft-badge reuse">↗ 复用于 INT-003</span>
-                      </div>
-                      <div class="feat-sub-desc">Hero（状态·金额）· Token Flow · 字段卡片 · Tx Hash 复制 · 链浏览器跳转</div>
-                    </div>
-                    <div class="feat-sub-actions">
-                      <button class="feat-go-btn" onclick="showTxnDetail('txn-001')">查看 →</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">▦</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">筛选栏 (Filter Bar)</div>
-                      <div class="feat-sub-desc">Type / Status / Time 三维 Pill · 默认折叠 · 激活时 Header 显示 badge 计数 · Reset 按钮</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Send / Receive (expandable) -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--down-dim);color:var(--down)">⇅</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">
-                      Send / Receive
-                      <span class="ft-badge reuse">↗ 复用于 INT-003</span>
-                    </div>
-                    <div class="feat-item-desc">三层级流程（L1 选代币 → L2 选链 → 表单/QR）· 地址最后揭露 · 步骤指示器</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-go-btn" onclick="openModal('modal-send','send-l1')">Send →</button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Staking -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--up-dim);color:var(--up)">⬡</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">ETH Staking</div>
-                    <div class="feat-item-desc">质押汇总（总量·收益·APY）· 协议仓位列表 · 按日收益图 · 质押 / 赎回入口</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-go-btn" onclick="showView('v-staking',null)">查看 →</button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Agent Trading (expandable) -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--accent-dim);color:var(--accent)">✦</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">Agent Trading</div>
-                    <div class="feat-item-desc">全局模式（单一授权）· 协议模式（独立开关）· 操作类型展示 · 上次执行时间</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-expand-btn open" id="exp-agent" onclick="toggleFeatNode('agent')"></button>
-                    <button class="feat-go-btn" onclick="showView('v-agent',null)">查看 →</button>
-                  </div>
-                </div>
-              </div>
-              <!-- Agent sub-items -->
-              <div class="feat-sub-body" id="agent-body">
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">◉</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">Global Agent Mode</div>
-                      <div class="feat-sub-desc">单一开关授权全部协议，启动 / 暂停</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">◎</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">Protocol Agent Mode</div>
-                      <div class="feat-sub-desc">各协议独立开关 · 分别展示支持的操作类型</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">⚙</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">
-                        Config &amp; Logs
-                        <span class="ft-badge proto">待完善</span>
-                      </div>
-                      <div class="feat-sub-desc">配置入口 · 执行日志（原型占位）</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
-          </div><!-- /INT-001 -->
+          </div>
 
-          <!-- ── INT-002 · Unified Balance ── -->
-          <div class="feat-intent i002">
-            <div class="feat-intent-head" onclick="toggleFeatNode('int002')">
-              <span class="feat-intent-caret" id="caret-int002">▾</span>
-              <span class="feat-intent-dot"></span>
-              <span class="feat-intent-name">Unified Balance</span>
-              <span class="feat-intent-id">INT-002</span>
-              <span class="feat-intent-count">1 功能 · 3 Tabs</span>
+          <div class="us-row">
+            <div class="us-id">US-3</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能看到账户最近的交易记录，区分链上与链下活动</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-dashboard',null)"><span class="pb p0">P0</span>Homepage Recent Activity 预览（5 条）</span>
+                <span class="us-feat" onclick="showView('v-activity',null)"><span class="pb p0">P0</span>完整 Activity 列表（On-Chain / Off-Chain）</span>
+                <span class="us-feat" onclick="showView('v-activity',null)"><span class="pb p1">P1</span>筛选栏（Type / Status / Time）</span>
+                <span class="us-feat" onclick="showTxnDetail('txn-001')"><span class="pb p1">P1</span>交易详情页（Hero · Token Flow · Fields）</span>
+              </div>
             </div>
-            <div class="feat-intent-body" id="int002-body">
+          </div>
 
-              <!-- Assets (expandable) -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--defi-dim);color:var(--defi)">◫</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">Assets</div>
-                    <div class="feat-item-desc">跨链代币聚合视图，含 Token · DeFi · NFT 三个 Tab</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-expand-btn open" id="exp-assets" onclick="toggleFeatNode('assets')"></button>
-                    <button class="feat-go-btn" onclick="showView('v-assets',null)">查看 →</button>
-                  </div>
-                </div>
+          <div class="us-row">
+            <div class="us-id">US-4</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能根据需要自定义首页显示的内容，例如行情等</div>
+              <div class="us-feats">
+                <span class="us-feat no-link"><span class="pb p2">P2</span>首页 Widget 自定义（规划中）</span>
+                <span class="us-feat no-link"><span class="pb p2">P2</span>行情 / 市场数据模块（规划中）</span>
               </div>
-              <!-- Assets sub-items -->
-              <div class="feat-sub-body" id="assets-body">
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">◧</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">Token Tab</div>
-                      <div class="feat-sub-desc">同代币跨链聚合为一行 · 凭证代币（stETH / aUSDC / LP / HYPE）默认折叠并标注「In DeFi」· Show / Hide 开关</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">⬡</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">
-                        DeFi Tab
-                        <span class="ft-badge new">new</span>
-                      </div>
-                      <div class="feat-sub-desc">5 协议 · 7 仓位 · 协议卡片（持仓明细 + contextual 操作 + DApp 链接）· Hyperliquid 多产品节（Spot / Perp / Staking）</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">◻</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">NFT Tab</div>
-                      <div class="feat-sub-desc">NFT 列表 · 地板价参考 · 标注不计入总资产</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
-          </div><!-- /INT-002 -->
+          </div>
+        </div>
 
-          <!-- ── INT-003 · Token Profile ── -->
-          <div class="feat-intent i003">
-            <div class="feat-intent-head" onclick="toggleFeatNode('int003')">
-              <span class="feat-intent-caret" id="caret-int003">▾</span>
-              <span class="feat-intent-dot"></span>
-              <span class="feat-intent-name">Token Profile</span>
-              <span class="feat-intent-id">INT-003</span>
-              <span class="feat-intent-count">2 功能 + 2 复用</span>
+        <!-- ─ Module 2: Portfolio Dashboard ─────────────── -->
+        <div class="mod-card m2">
+          <div class="mod-head">
+            <div class="mod-num">02</div>
+            <div>
+              <div class="mod-title">Module 2 · Portfolio Dashboard</div>
+              <div class="mod-desc">以「现金 / 存款与收益 / 负债」三类资产维度呈现持仓结构</div>
             </div>
-            <div class="feat-intent-body" id="int003-body">
+            <div class="mod-int-tag">INT-001 · INT-002</div>
+          </div>
 
-              <!-- ETH Profile (expandable) -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--up-dim);color:var(--up)">◎</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">Token Profile – ETH</div>
-                    <div class="feat-item-desc">价格走势图（24h/7d/30d/1y）· 跨链持仓分布 · 操作按钮 · About · 市场统计 · 近期交易入口</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-expand-btn open" id="exp-token-eth" onclick="toggleFeatNode('token-eth')"></button>
-                    <button class="feat-go-btn" onclick="showView('v-token-eth',null)">查看 →</button>
-                  </div>
-                </div>
+          <div class="us-row">
+            <div class="us-id">US-1</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能清楚看到资产的种类，包括随时可以消费的现金、固定的存款和收益、欠款及需要支付的利息</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>Token Tab → 现金（自由流通代币）</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>DeFi Tab → 存款 / 质押 / LP 仓位</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>DeFi Tab → 借贷仓位（Aave V3）</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>凭证代币标注「In DeFi」，不重复计价</span>
               </div>
-              <!-- Token ETH sub-items -->
-              <div class="feat-sub-body" id="token-eth-body">
-                <div class="feat-sub-item">
-                  <div class="feat-sub-connector"></div>
-                  <div class="feat-sub-inner">
-                    <span class="feat-sub-sym">↗</span>
-                    <div class="feat-sub-body-text">
-                      <div class="feat-sub-name">
-                        Transaction Detail
-                        <span class="ft-badge reuse">↗ 复用 INT-001</span>
-                      </div>
-                      <div class="feat-sub-desc">近期交易列表点击后进入，交易详情页由 INT-001 定义</div>
-                    </div>
-                    <div class="feat-sub-actions">
-                      <button class="feat-go-btn" onclick="showTxnDetail('txn-001')">查看 →</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Dust Token -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--warn-dim);color:var(--warn)">⚑</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">Token Profile – Dust</div>
-                    <div class="feat-item-desc">橙色警告提示 · 粉尘处理引导（Swap / Receive 更多）· 余额低于阈值时触发</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-go-btn" onclick="showView('v-token-dust',null)">查看 →</button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Send/Receive reuse -->
-              <div class="feat-item">
-                <div class="feat-connector"></div>
-                <div class="feat-item-inner">
-                  <div class="feat-item-icon" style="background:var(--surface);color:var(--text-3)">⇅</div>
-                  <div class="feat-item-body">
-                    <div class="feat-item-name">
-                      Send / Receive
-                      <span class="ft-badge reuse">↗ 复用 INT-001</span>
-                    </div>
-                    <div class="feat-item-desc">从 Token Profile 的操作按钮发起，流程与定义相同</div>
-                  </div>
-                  <div class="feat-item-actions">
-                    <button class="feat-go-btn" onclick="openModal('modal-send','send-l1')">Send →</button>
-                  </div>
-                </div>
-              </div>
-
             </div>
-          </div><!-- /INT-003 -->
+          </div>
 
-        </div><!-- /feat-tree -->
+          <div class="us-row">
+            <div class="us-id">US-2</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我看到的现金价值是能够实时变成法币的价值</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>Token Tab 跨链聚合余额 × 实时报价</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>Token 持仓小计（凭证代币已排除）</span>
+                <span class="us-feat no-link"><span class="pb p1">P1</span>报价实时刷新（60s 缓存，下期接入）</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-3</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我看到的存款价值应该包含存入的仓位及产生的收益，同时能够根据存款类型显示额外的信息，例如质押展示年化及提取时间、添加流动性展示代币实时余额及价值等</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-staking',null)"><span class="pb p0">P0</span>质押类 → 总量 · 收益 · APY · 提取入口</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>借贷类 → 供应量 + 供应 APY</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>LP 类 → Token 余额 + 价格区间</span>
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>多产品协议 → 按产品子类分组展示</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-4</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我看到的负债价值应该包含我借出的资金价值及已经产生的利息，同时能够显示当前借款仓位的健康程度</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>借贷仓位卡片 → 借款容量 · Health Factor 进度条</span>
+                <span class="us-feat no-link"><span class="pb p1">P1</span>负债利息实时累计 + 清算风险预警（下期接入）</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Module 3: Token Profile ────────────────────── -->
+        <div class="mod-card m3">
+          <div class="mod-head">
+            <div class="mod-num">03</div>
+            <div>
+              <div class="mod-title">Module 3 · Token Profile</div>
+              <div class="mod-desc">以代币为中心的纵深视图：聚合余额 → 链分布 → 价格 → 操作</div>
+            </div>
+            <div class="mod-int-tag">INT-002 · INT-003</div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-1</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能看到某个代币在多链账户下的余额，统一管理资产</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-assets',null)"><span class="pb p0">P0</span>Token Tab 同代币跨链聚合显示总价值</span>
+                <span class="us-feat" onclick="showView('v-token-eth',null)"><span class="pb p0">P0</span>Token Detail → 聚合总余额 + 法币价值</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-2</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能在代币详情页看到当前代币在特定公链网络及地址下的余额，精准管理资金</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-token-eth',null)"><span class="pb p0">P0</span>「按网络分布」可折叠区块（各链余额）</span>
+                <span class="us-feat no-link"><span class="pb p1">P1</span>多地址网络行 inline 展开（账户昵称 + 地址）</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-3</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能在代币详情页看到代币的价格走势图</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-token-eth',null)"><span class="pb p0">P0</span>价格走势图（24h / 7d / 30d / 1y 切换）</span>
+                <span class="us-feat" onclick="showView('v-token-eth',null)"><span class="pb p0">P0</span>价格变动文案（口径与所选周期一致）</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-4</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能在代币详情页看到代币信息以帮我更了解当前代币</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-token-eth',null)"><span class="pb p0">P0</span>About 区块（代币简介）</span>
+                <span class="us-feat" onclick="showView('v-token-eth',null)"><span class="pb p0">P0</span>市场统计（市值 · 24h 量 · 流通量 · ATH）</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-5</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能在代币详情页看到代币交易记录，了解当前代币最近的活动</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="showView('v-token-eth',null)"><span class="pb p0">P0</span>近期交易列表（类型 · 时间 · 金额）</span>
+                <span class="us-feat" onclick="showTxnDetail('txn-001')"><span class="pb p0">P0</span>点击进入交易详情页</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-6</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能在代币详情页看到代币授权情况</div>
+              <div class="us-feats">
+                <span class="us-feat no-link"><span class="pb p2">P2</span>Token Approvals 视图（规划中，未在原型实现）</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-row">
+            <div class="us-id">US-7</div>
+            <div class="us-body">
+              <div class="us-text">阿珍：我能在代币详情页看到代币支持的功能并快速操作</div>
+              <div class="us-feats">
+                <span class="us-feat" onclick="openModal('modal-send','send-l1')"><span class="pb p1">P1</span>Send → 三层级发送流程</span>
+                <span class="us-feat" onclick="openModal('modal-receive','recv-l1')"><span class="pb p1">P1</span>Receive → 三层级收款 + QR</span>
+                <span class="us-feat no-link"><span class="pb p2">P2</span>Swap 兑换界面（下期实现）</span>
+                <span class="us-feat" onclick="showView('v-token-dust',null)"><span class="pb p1">P1</span>Dust 代币提示 + 处理引导</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Priority Summary ───────────────────────────── -->
+        <div class="ov-section-label" style="margin-top:8px">优先级排期</div>
+        <div class="prio-grid">
+          <!-- P0 -->
+          <div class="prio-col p0-col">
+            <div class="prio-col-head">
+              <div class="prio-col-head-top">
+                <span class="pb p0" style="height:19px;padding:0 8px;font-size:10px">P0</span>
+                <span class="prio-col-title">已实现</span>
+              </div>
+              <div class="prio-col-sub">5/22 Demo · 当前原型可交互</div>
+            </div>
+            <div class="prio-col-items">
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>首页总资产 + 涨跌幅 + 快捷操作</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>Donut 资产占比图</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>Activity 列表 + On/Off-Chain 双 Tab</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>Token Tab 同代币跨链聚合显示总价值</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>DeFi Tab 协议卡片（5 协议 · 7 仓位）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>Hyperliquid 多产品卡（Spot / Perp / Staking）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>ETH Staking 汇总 + 仓位列表</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>Token Detail（价格图 · 持仓分布 · About）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">✓</span>Agent Trading（全局 / 协议两种模式）</div>
+            </div>
+          </div>
+          <!-- P1 -->
+          <div class="prio-col p1-col">
+            <div class="prio-col-head">
+              <div class="prio-col-head-top">
+                <span class="pb p1" style="height:19px;padding:0 8px;font-size:10px">P1</span>
+                <span class="prio-col-title">下期实现</span>
+              </div>
+              <div class="prio-col-sub">Next Sprint · 设计中</div>
+            </div>
+            <div class="prio-col-items">
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>Activity 筛选栏（Type / Status / Time）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>交易详情页（Hero · Token Flow · Fields）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>Dust 代币标识与引导</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>Send / Receive 三层级流程</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>Token Detail 多地址 inline 展开（L2）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>报价数据实时接入（当前为静态数据）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>Health Factor 临近清算预警</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>借贷利息累计实时计算</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>Activity 无限滚动加载</div>
+              <div class="prio-item-row"><span class="prio-item-sym">→</span>Agent Trading 配置与日志</div>
+            </div>
+          </div>
+          <!-- P2 -->
+          <div class="prio-col p2-col">
+            <div class="prio-col-head">
+              <div class="prio-col-head-top">
+                <span class="pb p2" style="height:19px;padding:0 8px;font-size:10px">P2</span>
+                <span class="prio-col-title">后期规划</span>
+              </div>
+              <div class="prio-col-sub">Later · 待排期</div>
+            </div>
+            <div class="prio-col-items">
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>Swap 兑换界面</div>
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>首页 Widget 自定义</div>
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>行情 / 市场数据模块</div>
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>Token Approvals 授权视图</div>
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>通知详情页</div>
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>账户管理（创建 / 删除）</div>
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>NFT 详情页</div>
+              <div class="prio-item-row"><span class="prio-item-sym">○</span>Gas 估算与链上签名</div>
+            </div>
+          </div>
+        </div>
 
         <!-- Scope Notes -->
-        <div class="ov-section-label" style="margin-top:24px">原型说明</div>
+        <div class="ov-section-label">原型说明</div>
         <div class="txn-detail-card" style="margin-bottom:32px">
           <div class="txn-detail-field">
             <div class="txn-detail-label">数据</div>
@@ -2345,7 +2563,7 @@ svg    { display: block; }
       <div class="page-wrap">
         <div class="page-head">
           <div>
-            <div class="page-title">Assets</div>
+            <div class="page-title">Portfolio</div>
             <div class="page-sub">Unified balance across all chains and addresses</div>
           </div>
         </div>
@@ -3516,6 +3734,102 @@ function applyActivityFilters() {
 }
 
 /* ── Feature Tree: toggle Intent section or sub-list ── */
+/* ── Architecture Diagram: SVG Connection Lines ─────── */
+function drawArchConnections() {
+  const svg = document.getElementById('arch-svg');
+  const diag = document.getElementById('arch-diagram');
+  if (!svg || !diag) return;
+
+  const dr = diag.getBoundingClientRect();
+  if (dr.width === 0) return; // view not visible
+
+  svg.innerHTML = '';
+  svg.setAttribute('width',  dr.width);
+  svg.setAttribute('height', dr.height);
+
+  // Arrow marker definitions (one per module color)
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  ['m1','m2','m3'].forEach(m => {
+    const mk = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    mk.setAttribute('id',          `arch-arrow-${m}`);
+    mk.setAttribute('viewBox',     '0 0 10 10');
+    mk.setAttribute('refX',        '9');
+    mk.setAttribute('refY',        '5');
+    mk.setAttribute('markerWidth', '5');
+    mk.setAttribute('markerHeight','5');
+    mk.setAttribute('orient',      'auto-start-reverse');
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+    p.setAttribute('class', `arrow-fill-${m}`);
+    mk.appendChild(p);
+    defs.appendChild(mk);
+  });
+  svg.appendChild(defs);
+
+  // Helper: get node bounds relative to diagram
+  function bounds(id) {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return {
+      cx: (r.left + r.right)  / 2 - dr.left,
+      cy: (r.top  + r.bottom) / 2 - dr.top,
+      top:    r.top    - dr.top,
+      bottom: r.bottom - dr.top,
+      left:   r.left   - dr.left,
+      right:  r.right  - dr.left,
+    };
+  }
+
+  // Helper: draw a bezier curve between two nodes
+  function connect(fromId, toId, colorCls, dashed) {
+    const f = bounds(fromId);
+    const t = bounds(toId);
+    if (!f || !t) return;
+
+    let d;
+    const sameRow = Math.abs(f.cy - t.cy) < 40;
+
+    if (sameRow) {
+      // Horizontal side-to-side (Token Profile ↔ siblings)
+      const goRight = t.cx > f.cx;
+      const x1 = goRight ? f.right  : f.left;
+      const x2 = goRight ? t.left   : t.right;
+      const y1 = f.cy, y2 = t.cy;
+      const gap = Math.abs(x2 - x1);
+      d = `M ${x1} ${y1} C ${x1 + gap * .45} ${y1}, ${x2 - gap * .45} ${y2}, ${x2} ${y2}`;
+    } else {
+      // Top-to-bottom bezier
+      const x1 = f.cx, y1 = f.bottom;
+      const x2 = t.cx, y2 = t.top;
+      const my = (y1 + y2) / 2;
+      d = `M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`;
+    }
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('class', `arch-line l${colorCls}${dashed ? ' dashed' : ''}`);
+    path.setAttribute('marker-end', `url(#arch-arrow-${colorCls})`);
+    svg.appendChild(path);
+  }
+
+  // ── Define all connections ──────────────────────────
+  // Homepage → L1 (solid)
+  connect('arch-n-homepage',  'arch-n-portfolio', 'm2', false);
+  connect('arch-n-homepage',  'arch-n-activity',  'm1', false);
+  connect('arch-n-homepage',  'arch-n-staking',   'm1', false);
+  connect('arch-n-homepage',  'arch-n-agent',     'm1', false);
+  // L1 → L2 (solid)
+  connect('arch-n-portfolio', 'arch-n-token',     'm3', false);
+  connect('arch-n-activity',  'arch-n-txn',       'm1', false);
+  // Token Profile → siblings at L2 (dashed — reuse / entry points)
+  connect('arch-n-token',     'arch-n-txn',       'm3', true);
+  connect('arch-n-token',     'arch-n-send',      'm3', true);
+}
+
+// ── Legend: also add a connection-type legend entry ──
+// (rendered inline in arch-legend via CSS, no extra JS needed)
+
 function toggleFeatNode(id) {
   const body   = document.getElementById(id + '-body');
   const caret  = document.getElementById('caret-' + id);   // Intent toggle
@@ -3771,6 +4085,11 @@ function showView(id, navItem) {
   if (viewHistory[viewHistory.length - 1] !== id) {
     viewHistory.push(id);
   }
+
+  // Redraw arch diagram connections when overview becomes visible
+  if (id === 'v-overview') {
+    requestAnimationFrame(drawArchConnections);
+  }
 }
 
 function goBack() {
@@ -3926,6 +4245,23 @@ function closeModal(modalId) {
 function closeModalOutside(event, modalId) {
   if (event.target.id === modalId) closeModal(modalId);
 }
+
+// Draw arch connections when overview is the initial active view,
+// and redraw on window resize with debounce
+(function initArch() {
+  let _resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(drawArchConnections, 120);
+  });
+  // If the page loads with overview already active, draw immediately
+  window.addEventListener('load', function () {
+    const ov = document.getElementById('v-overview');
+    if (ov && ov.classList.contains('active')) {
+      requestAnimationFrame(drawArchConnections);
+    }
+  });
+}());
 </script>
 
 </body>
